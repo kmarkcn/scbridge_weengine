@@ -1,0 +1,51 @@
+{template 'common/header'}
+	<script type="text/javascript" src="./resource/script/jquery.zclip.min.js"></script>
+	<div id="main-column" class="container-12 clearfix member-center">
+		<div class="column2 grid-3 alpha omega">
+			{template 'lbs/nav'}
+		</div>
+		<div class="column1 grid-10 alpha omega">
+			<div class="list">
+				{loop $list $row}
+				<div class="account_item clearfix">
+					<div class="account_content clearfix">
+						<div class="data fl">{$row[name]}</div>
+						<div class="fr">
+						<a href="{php echo create_url('lbs/post', array('id' => $row['id']))}">编辑</a>
+						&nbsp;
+						<a onclick="return confirm('删除地址将不可恢复，确认吗？');return false;" href="{php echo create_url('lbs/delete', array('id' => $row['id']))}">删除</a>
+						</div>
+					</div>
+					<div class="account_desc clearfix" style="height:auto;">
+						<div id="pic_{$row[id]}" style="height: 100%"><label>商户封面：</label><img width="100" src="{$_W['attachurl']}{$row['picture']}"></div>
+						</br>
+						{if $type == null}<div id="description_{$row[id]}">商户类别：{if $row['type'] == '3'}
+							购物
+						{else if $row['type'] == '1'}
+							美食
+						{else if $row['type'] == '4'}
+							休闲
+						{else if $row['type'] == '2'}
+							娱乐
+						{/if}</div>
+						{/if}
+					</div>
+				</div>
+				
+				<script type="text/javascript">
+					$(function() {
+						$("#api_{$row[weid]} button").zclip({
+							path:'./resource/script/ZeroClipboard.swf',
+							copy:$('#api_{$row[weid]} input').val()
+						});
+						$("#token_{$row[weid]} button").zclip({
+							path:'./resource/script/ZeroClipboard.swf',
+							copy:$('#token_{$row[weid]} input').val()
+						});
+					});
+				</script>
+				{/loop}
+			</div>
+		</div>
+	</div>
+{template 'common/footer'}

@@ -1,0 +1,39 @@
+{template 'common/header'}
+	<div id="main-column" class="container-12 clearfix member-center">
+		<div class="column2 grid-3 alpha omega">
+			{template 'stat/nav'}
+		</div>
+		<div class="column1 grid-10 alpha omega">
+			{template 'stat/keyword_search'}
+			<div class="form manage_list">
+				<form action="" method="post" onsubmit="">
+				<table border="0" cellspacing="0" cellpadding="0" width="100%">
+					<tr class="listHead">
+						<td style="width:40px; padding-left:5px;">选择</td>
+						<td style="width:150px;">关键字</td>
+						<td>规则</td>
+						<td style="width:80px;">模块</td>
+						<td style="width:100px;">命中次数</td>
+						<td style="width:100px;">最后触发</td>
+						<td style="width:100px;">操作</td>
+					</tr>
+					{loop $list $row}
+					<tr class="list" id="list">
+						<td><input type="checkbox" name="select[]" value="{$row['id']}" /></td>
+					   	<td>{$keywords[$row['kid']]['content']}</td>
+						<td>{if empty($row['rid'])}N/A{else}<a target="_blank" href="{php echo create_url('rule/post', array('id' => $row['rid']))}">{$rules[$row['rid']]['name']}</a>{/if}</td>
+					   	<td>{if $rules[$row['rid']]['module']}{$rules[$row['rid']]['module']}{else}default{/if}</td>
+						<td>{$row['hit']}</td>
+						<td style="font-size:12px; color:#666;">{php echo date('Y-m-d <br /> h:i:s', $row['lastupdate']);}</td>
+						<td>
+					   		<a target="_blank" href="{php echo create_url('stat/trend/rule', array('id' => $row['rid']))}">使用率走势</a>
+						</td>
+					</tr>
+					{/loop}
+				</table>
+				</form>
+			</div>
+			{$pager}
+		</div>
+	</div>
+{template 'common/footer'}

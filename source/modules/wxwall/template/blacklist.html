@@ -1,0 +1,52 @@
+{template 'common/header'}
+	<div id="main-column" class="container-12 clearfix member-center">
+		<div class="column2 grid-3 alpha omega">
+			<div class="area hot-tag">
+				<h5>微信墙</h5>
+				<ul>
+					<li><a href="{php echo create_url('rule/post', array('id' => $id))}">返回话题</a></li>
+					<li><a target="_blank" href="{php echo create_url('index/module', array('do' => 'detail', 'name' => 'wxwall', 'id' => $id))}">查看内容</a></li>
+					<li><a href="{php echo create_url('index/module', array('do' => 'manage', 'name' => 'wxwall', 'id' => $id))}">审核内容</a></li>
+					<li class="current"><a href="{php echo create_url('index/module', array('do' => 'blacklist', 'name' => 'wxwall', 'id' => $id))}">黑名单</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="column1 grid-10 alpha omega">
+			<div class="form manage_list">
+				<form action="" method="post" onsubmit="">
+				<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr class="listHead">
+					<td style="width:40px; padding-left:5px;">选择</td>
+					<td>用户</td>
+					<td style="width:100px;">最后发表</td>
+					<td style="width:110px;"></td>
+				</tr>
+				{loop $list $row}
+				<tr class="list" id="list">
+					<td><input type="checkbox" name="select[]" value="{$row['id']}" /></td>
+					<td>
+						<img src="{$_W['attachurl']}{$row['avatar']}" class="avatar" />
+						<div class="mainContent">
+							<div class="nickname">{$row['nickname']}</div>
+						</div>
+					</td>
+					<td style="font-size:12px; color:#666;">
+						<div style="margin-bottom:10px;">{php echo date('Y-m-d H:i:s', $row['lastupdate']);}</div>
+					</td>
+					<td></td>
+				</tr>
+				{/loop}
+				<tr>
+					<td><input type="checkbox" onclick="selectall(this, 'select');" /></td>
+					<td>
+						<input type="submit" name="delete" value="解除" class="btn alpha" />
+						<input type="hidden" name="token" value="{$_W['token']}" />
+					</td>
+				</tr>
+				</table>
+				</form>
+			</div>
+			{$pager}
+		</div>
+	</div>
+{template 'common/footer'}

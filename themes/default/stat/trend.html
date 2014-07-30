@@ -1,0 +1,124 @@
+{template 'common/header'}
+	<div id="main-column" class="container-12 clearfix member-center">
+			<div class="floattop">
+				<ul>
+						<li><a {if $_GPC['days'] == '7' || empty($_GPC['days'])}class="current"{/if}href="{php echo create_url('stat/trend/rule', array('id' => $id, 'days' => 7))}">近7天走势</a></li>
+						<li><a {if $_GPC['days'] == '30'}class="current"{/if} href="{php echo create_url('stat/trend/rule', array('id' => $id, 'days' => 30))}">近30天走势</a></li>
+						<li><a {if $_GPC['days'] == '60'}class="current"{/if} href="{php echo create_url('stat/trend/rule', array('id' => $id, 'days' => 60))}">近60天走势</a></li>
+				</ul>
+			</div>
+		<div class="form">
+			<h6>规则使用率走势</h6>
+			<div id="trend"></div>
+				<h6 style="margin-top:10px;">所属关键字使用率走势</h6>
+				{loop $keywords $id $row}
+				<p style="margin-top:10px;">关键字：{$keywordnames[$id]['content']}</p>
+				<div id="trend_keyword_{$id}"></div>
+				{/loop}
+		</div>
+	</div>
+<script type="text/javascript">
+	var day = ['{php echo implode('\',\'', $day)}'];
+	function initchart(id, options) {
+		var defaults = {
+			chart: {
+				renderTo:id,
+				zoomType:'xy',
+				type:'areaspline',
+				backgroundColor:'#F3F3F3'
+			},
+			title: {
+				text: ""
+			},
+			credits:{
+				enabled:false
+			},
+			yAxis: [{ // Secondary yAxis
+				title: {
+					text: ""
+				},
+				labels: {
+					formatter: function() {
+						return this.value + '个';
+					},
+					style: {
+						color: '#666',
+						fontFamily:'Microsoft yahei'
+					}
+				},
+				gridLineColor:"#D2D1D1",
+				allowDecimals:false
+			}],
+			xAxis: [{
+				labels:{
+					formatter: function() {
+						return this.value;
+					},
+					style: {
+						color: '#000'
+					}
+				},
+				title: {
+					text: '',
+					style: {
+						color: '#7eafdd'
+					}
+				},
+				lineColor: "#8E8E8F",
+				lineWidth: 2
+			}],
+			legend: {
+				enabled:false
+			},
+			labels: {
+				style: {
+					color: '#CCC'
+				}
+			},
+			tooltip:{
+				backgroundColor:'#525253',
+				borderColor:"#000",
+				style:{
+					color: "#fff"
+				},
+				headerFormat:'',
+				pointFormat: '<b style="font-family:Microsoft yahei">{point.y}个</b>'
+			},
+			plotOptions: {
+				areaspline: {
+					fillColor: "rgba(190,216,240,0.7)"
+				}
+			},
+			exporting: {
+				enabled: false
+			},
+			series: [{
+				name: '触发次数'
+			}]
+		};
+		var config = $.extend({}, defaults, options);
+		return new Highcharts.Chart(config);	
+	}
+	$(function(){
+		new initchart('trend', {
+			series: [{
+				data: [{php echo implode(',', $hit)}]
+			}],
+			xAxis: [{
+				categories: day
+			}]
+		});	
+		{loop $keywords $id $row}
+		new initchart('trend_keyword_{$id}', {
+			series: [{
+				data: [{php echo implode(',', $row['hit'])}]
+			}],
+			xAxis: [{
+				categories: day
+			}]
+		});	
+		{/loop}
+	});
+</script>
+<script type="text/javascript" src="./resource/script/highcharts.js"></script>
+{template 'common/footer'}

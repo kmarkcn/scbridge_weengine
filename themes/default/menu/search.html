@@ -1,0 +1,52 @@
+{if $rule}
+    <div class="rule_item clearfix" style="margin:10px auto 30px auto;">
+        <div class="rule_content clearfix" style="position:relative;padding-right:28px;">
+            <div class="data fl">当前设定的回复规则  -  {$rule['rule']['name']}</div>
+        </div>
+        <div class="rule_desc clearfix" style="height:auto;line-height:25px;position:relative;">
+            {loop $rule['keyword'] $kw}
+           <span class="rule_kw"> {$kw['content']}</span>
+            {/loop}
+            {if $wechat['welcomerid'] == $rule['rule']['id'] || $wechat['defaultrid'] == $rule['rule']['id']}
+            <div class="system_button">
+                {if $wechat['welcomerid'] == $rule['rule']['id']}<a href="javascript:;" style="color:#FF3300;display:block;" switch="1">此规则为欢迎信息</a>{/if}
+                {if $wechat['defaultrid'] == $rule['rule']['id']}<a href="javascript:;" style="color:#FF3300;display:block;" switch="1">此规则为默认信息</a>{/if}
+            </div>
+            {/if}
+        </div>
+    </div>
+{/if}
+<div class="main">
+    <div class="con">
+        <label for="kw">按名称查找规则</label> &nbsp; &nbsp; &nbsp; 
+        <input type="text" id="kw" class="txt grid-2 alpha pin" style="width: 305px;" value="{$_GPC['keyword']}">
+        <input type="button" value="搜索" class="grid-2 btn alpha fr" onclick="loadRules();">
+    </div>
+</div>
+<div class="list">
+    {loop $list $row}
+    <div class="rule_item clearfix" style="margin:10px auto auto auto;">
+        <div class="rule_content clearfix" style="position:relative;padding-right:28px;">
+            <div class="data fl">{if $row['cid']}{if $cates[$row['cid']]['parent']}<a href="#" style="margin-right:10px;font-weight:normal;color:#F60;">[{$cates[$row['cid']]['parent']}]</a>{/if}<a href="#" style="margin-right:10px;font-weight:normal;color:#F60;">[{$cates[$row['cid']]['name']}]</a>{/if}{$row[name]}</div>
+            <div class="fr">
+                <a href="javascript:;" onclick="selectRule('{$row['id']}');">选用此规则</a>
+            </div>
+        </div>
+        <div class="rule_desc clearfix" style="height:auto;line-height:25px;position:relative;">
+            {loop $row['keywords'] $kw}
+           <span class="rule_kw"> {$kw['content']}</span>
+            {/loop}
+            {if $wechat['welcomerid'] == $row['id'] || $wechat['defaultrid'] == $row['id'] || $rule['rule']['id'] == $row['id']}
+            <div class="system_button">
+                {if $wechat['welcomerid'] == $row['id']}<a href="javascript:;" style="color:#FF3300;display:block;" switch="1">此规则为欢迎信息</a>{/if}
+                {if $wechat['defaultrid'] == $row['id']}<a href="javascript:;" style="color:#FF3300;display:block;" switch="1">此规则为默认信息</a>{/if}
+                {if $rule['rule']['id'] == $row['id']}<a href="javascript:;" style="color:#FF3300;display:block;" switch="1">此规则为当前菜单选择项</a>{/if}
+            </div>
+            {/if}
+        </div>
+    </div>
+    {/loop}
+</div>
+<div>
+    {$pager}
+</div>

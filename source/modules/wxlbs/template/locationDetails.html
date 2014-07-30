@@ -1,0 +1,31 @@
+{template 'mobile/uikit_header'}
+
+<title>{$location['name']}</title>
+<body>
+
+<article class="uk-article">
+	<h1 class="uk-article-title">{$location['name']}</h1>
+		
+	
+	<div class="uk-width-medium">
+	<img class="uk-thumbnail uk-thumbnail-large" src="{$location['picture']}" alt="{$location['name']}">
+	</div>
+	
+	<p class="uk-article-lead">{$location['description']}</p>
+	
+
+	<div class="uk-width-medium">
+		<a class="uk-button uk-button-primary uk-button-expand" href="{$directionPath}">查看路线</a>
+	</div>
+
+</article>
+	
+<!--<h1>{$location['name']}</h1>
+
+<p><img alt="locationImg" src="{$location['picture']}"></p>
+
+<p>{$location['description']}</p>
+
+<a href="{$directionPath}">check for the directions</a>-->
+
+{template 'mobile/footer'}

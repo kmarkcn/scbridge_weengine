@@ -1,0 +1,23 @@
+<div class="floattop">
+	<ul>
+		<li><a {if $_GPC['do'] == 'hit' || empty($_GPC['do'])}class="current"{/if}href="{php echo create_url('stat/rule/hit')}">已触发规�?</a></li>
+		<li><a {if $_GPC['do'] == 'miss'}class="current"{/if} href="{php echo create_url('stat/rule/miss')}">未触发规�?</a></li>
+	</ul>
+</div>
+<div class="manage_search form">
+	<form action="" method="get">
+	<input type="hidden" name="act" value="rule" />
+	<input type="hidden" name="do" value="{$_GPC['do']}" />
+	<div class="title">搜索</div>
+	<div class="main">
+		<div class="con">
+			<label for="date1">时间范围</label>
+			<input type="text" class="txt grid-2 alpha pin datepicker" id="date1" name="starttime" value="{if $starttime}{php echo date('Y-m-d', $starttime)}{/if}" />
+			<input type="text" class="txt grid-2 alpha pin datepicker" id="date2" name="endtime" value="{if $endtime}{php echo date('Y-m-d', $endtime)}{/if}" />
+		</div>
+		<div class="con">
+			<input type="submit" name="" value="搜索" class="grid-2 btn alpha fr" />
+		</div>
+	</div>
+	</form>
+</div>

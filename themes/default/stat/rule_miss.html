@@ -1,0 +1,31 @@
+{template 'common/header'}
+	<div id="main-column" class="container-12 clearfix member-center">
+		<div class="column2 grid-3 alpha omega">
+			{template 'stat/nav'}
+		</div>
+		<div class="column1 grid-10 alpha omega">
+			{template 'stat/rule_search'}
+			<div class="form manage_list">
+				<form action="" method="post" onsubmit="">
+				<table border="0" cellspacing="0" cellpadding="0" width="100%">
+					<tr class="listHead">
+						<td style="padding-left:5px;">规则名称</td>
+						<td style="width:80px;">模块</td>
+						<td style="width:150px;">操作</td>
+					</tr>
+					{loop $list $row}
+					<tr class="list" id="list">
+						<td><a target="_blank" href="{php echo create_url('rule/post', array('id' => $row['id']))}">{$row['name']}</a></td>
+						<td>{$row['module']}</td>
+						<td>
+					   		<a target="_blank" href="{php echo create_url('stat/trend/rule', array('id' => $row['id']))}">使用率走势</a>
+						</td>
+					</tr>
+					{/loop}
+				</table>
+				</form>
+			</div>
+			{$pager}
+		</div>
+	</div>
+{template 'common/footer'}

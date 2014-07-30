@@ -1,0 +1,47 @@
+@charset "utf-8";
+/* CSS Document */
+body{ 
+	margin:64px 0 43px 0 !important;
+	background-color: #eee;
+	
+}
+.ma-content {
+	height: auto;
+	width: 100%;  
+}
+.ma-table {
+	margin-top: 5%;
+	width: 100%;
+	  
+}
+.ma-table td{
+	padding: 4%;
+	text-align:center;
+}
+.ma-input{ 
+   height: 25px;
+   width: 55%;
+   line-height: 25px;
+   font-size: 1em;
+   border: 2px solid transparent;
+   background-color: white;
+}
+.ma-table .ma-td1{
+   text-align: center;
+   font-size: 1em;
+   font-weight: bold;
+}
+.ma-foot{
+   position: relative;
+   margin-top: 2%;
+   widtn: 100%;
+   text-align: center;
+}
+.ma-input-false{
+   border: 2px solid red;
+  
+}
+.ma-table .ma-td2{
+	padding: 10%;
+	border-bottom: 1px solid #ccc;
+}

@@ -1,0 +1,22 @@
+2014-07-29 07:16:14 trace :
+------------
+Array:
+from : fromUser ;
+to : toUser ;
+time : 1406618175 ;
+type : text ;
+event :  ;
+tousername : toUser ;
+fromusername : fromUser ;
+createtime : 1406618175 ;
+msgtype : text ;
+content : 测试内容 ;
+msgid : 1234567890123456 ;
+
+2014-07-29 07:16:15 response :
+------------
+Array:
+module : default ;
+rule :  ;
+content : Array ;
+

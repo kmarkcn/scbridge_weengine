@@ -1,0 +1,234 @@
+{template 'common/header'}
+<script type="text/javascript">
+    var pIndex = 1;
+    var currentKey = null;
+    $(function(){
+        $('tbody.mlist').sortable();
+        $('.smlist').sortable();
+        $('.action').dialog({modal:true, title:'请选择点击此菜单要执行的规则', width:700, autoOpen:false});
+    });
+    function generateKey() {
+        return 'k' + new Date().getTime();
+    }
+    function addMenu() {
+        if($('.mlist .hover').length >= 3) {
+            return;
+        }
+        var key = generateKey();
+        var html = '<tr class="hover" key="' + key + '">'+
+						'<td>'+
+							'<div class="td106">'+
+                                '<input type="text" class="txt grid-4 alpha pin" value=""> '+
+                                '<span class="addnewtype"><a href="javascript:;" onclick="addSubMenu(\'' + key + '\');">添加子菜单</a></span>'+
+							'</div>'+
+                            '<div class="smlist" key="' + key + '"></div>'+
+						'</td>'+
+                        '<td style="padding-top:15px;">'+
+                            '<a href="javascript:;" onclick="setMenuAction(\'' + key + '\');">设置动作</a> &nbsp; '+
+                            '<a href="javascript:;" onclick="deleteMenu(\'' + key + '\')">删除菜单</a>'+
+                        '</td>'+
+					'</tr>';
+        $('tbody.mlist').append(html);
+    }
+    function addSubMenu(bKey) {
+        if($('.smlist[key="' + bKey + '"] div').length >= 5) {
+            return;
+        }
+        var key = generateKey();
+        var html = '' +
+                '<div class="tb106" style="margin-top: 20px; padding-left:80px; background: url("./resource/image/bg_repno.gif") no-repeat -245px -545px;" key="' + key + '">'+
+                    '<input type="text" class="txt grid-3 alpha pin" value="">'+
+                    '<a href="javascript:;" onclick="setMenuAction(\'' + key + '\');">设置动作</a> &nbsp; '+
+                    '<a href="javascript:;" onclick="deleteMenu(\'' + key + '\')">删除菜单</a>'+
+                '</div>';
+        $('.smlist[key="' + bKey + '"]').append(html);
+    }
+    function deleteMenu(key) {
+        if($('.smlist div[key="' + key + '"]').length > 0) {
+            $('.smlist div[key="' + key + '"]').remove();
+            return;
+        }
+        $('.mlist .hover[key="' + key + '"]').remove();
+    }
+    function setMenuAction(key) {
+        currentKey = key;
+        $('.action').dialog('open');
+        pIndex = 1;
+        loadRules();
+    }
+    function loadRules() {
+        var kwd = $('#kw').val();
+        $('.rule-list').html('加载中...');
+        var key = currentKey;
+        var rid = $('.mlist .hover[key="' + key + '"]').attr('rid');
+        if(!rid) {
+            rid = $('.smlist div[key="' + key + '"]').attr('rid');
+        }
+        if(!rid) {
+            rid = '';
+        }
+        $.post('{php echo create_url('menu/search');}', {keyword: kwd, page: pIndex, rule: rid}, function(dat){
+            $('.rule-list').html(dat);
+        });
+    }
+    function p(url, pindex, state) {
+        pIndex = pindex;
+        loadRules();
+    }
+    function selectRule(rid) {
+        var key = currentKey;
+        if(key == null) return;
+        $('.mlist .hover[key="' + key + '"]').attr('rid', rid);
+        $('.smlist div[key="' + key + '"]').attr('rid', rid);
+        $('.action').dialog('close');
+        currentKey = null;
+    }
+    function saveMenu() {
+        var dat = '[';
+        if($('.grid-4:text,.grid-3:text').filter(function(){ return $.trim($(this).val()) == '';}).length > 0) {
+            alert('存在未输入名称的菜单.');
+            return;
+        }
+        if($('.grid-4:text').filter(function(){ return $.trim($(this).val()).length > 4;}).length > 0) {
+            alert('主菜单的名称长度不能超过4个字.');
+            return;
+        }
+        if($('.grid-3:text').filter(function(){ return $.trim($(this).val()).length > 8;}).length > 0) {
+            alert('子菜单的名称长度不能超过8个字.');
+            return;
+        }
+        var error = false;
+        $('.mlist .hover').each(function(){
+            dat += '{"type": "click","name": "' + $.trim($(this).find('.grid-4:text').val()) + '","key": "' + $(this).attr('key') + '"';
+            if($(this).find('.smlist div').length > 0) {
+                dat += ',"sub_button": [';
+                $(this).find('.smlist div').each(function(){
+                    dat += '{"type": "click","name": "' + $.trim($(this).find('.grid-3:text').val()) + '","key": "' + $(this).attr('key') + '"';
+                    var rid = parseInt($(this).attr('rid'));
+                    if(isNaN(rid)) {
+                        alert('子菜单项 “' + $.trim($(this).find('.grid-3:text').val()) + '”未设置对应规则.');
+                        error = true;
+                        return false;
+                    }
+                    dat += ',"rule": "' + rid + '"';
+                    dat += '},';
+                });
+                if(error) {
+                    return false;
+                }
+                dat = dat.slice(0,-1);
+                dat += ']';
+            } else {
+                var rid = parseInt($(this).attr('rid'));
+                if(isNaN(rid)) {
+                    alert('菜单 “' + $.trim($(this).find('.grid-4:text').val()) + '”不存在子菜单项, 且未设置对应规则.');
+                    error = true;
+                    return false;
+                }
+                dat += ',"rule": "' + rid + '"';
+            }
+            dat += "},";
+        });
+        if(error) {
+            return;
+        }
+        dat = dat.slice(0,-1);
+        dat += ']';
+        $('#do').val(dat);
+        $('#form')[0].submit();
+    }
+</script>
+	<div id="main-column" class="container-12 clearfix member-center">
+		<div class="column2 grid-3 alpha omega">
+			{template 'menu/nav'}
+		</div>
+		<div class="column1 grid-10 alpha omega modules">
+			<div class="form">
+				<div class="form_h">
+					<h6>菜单设计器</h6>
+				</div>
+				<table border="0" cellspacing="0" cellpadding="0" width="100%">
+                    <tr class="header">
+                        <td>分类名称</td>
+                        <td style="width:150px;">操作</td>
+                    </tr>
+                <tbody class="mlist">
+				{if !empty($menus['menu']['button'])}
+				{loop $menus['menu']['button'] $row}
+                    <tr class="hover" key="{$row['key']}" rid="{$row['rid']}">
+						<td>
+							<div class="td106">
+                                <input type="text" class="txt grid-4 alpha pin" value="{$row['name']}">
+                                <span class="addnewtype"><a href="javascript:;" onclick="addSubMenu('{$row['key']}');">添加子菜单</a></span>
+							</div>
+                            <div class="smlist" key="{$row['key']}">
+                                {if !empty($row['sub_button'])}
+                                {loop $row['sub_button'] $btn}
+                                <div class="tb106" style="margin-top: 20px; padding-left:80px; background: url('./resource/image/bg_repno.gif') no-repeat -245px -545px;" key="{$btn['key']}" rid="{$btn['rid']}">
+                                    <input type="text" class="txt grid-3 alpha pin" value="{$btn['name']}">
+                                    <a href="javascript:;" onclick="setMenuAction('{$btn['key']}');">设置动作</a> &nbsp;
+                                    <a href="javascript:;" onclick="deleteMenu('{$btn['key']}')">删除菜单</a>
+                                </div>
+                                {/loop}
+                                {/if}
+                            </div>
+						</td>
+                        <td style="padding-top:15px;">
+                            <a href="javascript:;" onclick="setMenuAction('{$row['key']}');">设置动作</a> &nbsp;
+                            <a href="javascript:;" onclick="deleteMenu('{$row['key']}')">删除菜单</a>
+                        </td>
+					</tr>
+				{/loop}
+				{/if}
+                </tbody>
+					<tr class="hover">
+						<td>
+							<div class="td106">
+                                <span class="addnewtype"><a href="javascript:;" onclick="addMenu();">添加菜单</a></span>
+							</div>
+						</td>
+                        <td style="vertical-align:middle;"></td>
+					</tr>
+				</table>
+				<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+					<th>点击拖动菜单项空白处可进行排序</th>
+				</tr>
+				</table>
+                <form action="" method="post" id="form">
+                    <div class="form_h">
+                        <h6>操作</h6>
+                    </div>
+                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                        <tr>
+                            <th>保存菜单结构</th>
+                            <td>
+                                <input type="button" value="保存" class="btn grid-2 alpha" onclick="saveMenu();"/>
+                                <div class="notice">保存当前菜单结构至公众平台, 由于缓存可能需要在24小时内生效</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>删除菜单</th>
+                            <td>
+                                <input type="button" value="删除" class="btn grid-2 alpha" onclick="$('#do').val('remove');$('#form')[0].submit();" />
+                                <div class="notice">清除自定义菜单</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>刷新菜单</th>
+                            <td>
+                                <input type="button" value="刷新" class="btn grid-2 alpha" onclick="$('#do').val('refresh');$('#form')[0].submit();" />
+                                <div class="notice">重新从公众平台获取菜单信息</div>
+                            </td>
+                        </tr>
+                    </table>
+                    <input name="do" id="do" type="hidden" />
+                </form>
+                <div class="action" style="display:none;">
+                    <div class="form rule-list" style="margin: 10px 20px 5px 20px;">
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+{template 'common/footer'}

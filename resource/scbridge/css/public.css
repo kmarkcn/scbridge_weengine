@@ -1,0 +1,166 @@
+@charset "utf-8";
+/* CSS Document */
+
+html,body{ height:100%; width:100%;}
+body{margin:0;paddding:0;font-size:12px;color:#666;line-height:20px;font-family:"宋体";}
+ul,li,dl,dt,dd{list-style:none;margin:0;padding:0;}
+table{border:0;margin:0;border-collapse:collapse;} table th, table td{padding:0;})
+.pubbox{width:1002px;margin:0 auto;}
+.fl{float:left;}
+.fr{float:right;}
+img,input{border:0;margin:0;padding:0;vertical-align:middle;}              
+a{text-decoration:none;color:#666;}
+.clear{line-height:0;clear:both;font-size:0;height:0;}
+.yh{font-family:"微软雅黑", "黑体", "宋体";}
+.f14{font-size:14px;}
+.blue{color:blue;}
+.red{color:red;}
+.orange{color:#ff6600;}
+.hs{color:#999999;}
+img{vertical-align:middle;border:none;}
+.pad10{padding:10px;}
+.underline{text-decoration:underline;}
+.c12{line-height:0;clear:both;font-size:0;height:12px;}
+.clearfix:before,.clearfix:after {content:"";display:table;}
+.clearfix:after {clear:both;overflow:hidden;}
+.clearfix{zoom:1;}
+.none{ display:none;}
+.red_12{ color:#FE0133; font-size:12px;}
+.f12{ font-size:12px;}
+.border_red{ border-color:white !important;}
+
+*{ -moz-box-sizing:border-box;  /*适应火狐浏览器*/	-webkit-box-sizing:border-box; /*适应谷歌浏览器*/	box-sizing:border-box; padding: 0; margin: 0;}
+
+/*div{ border:1px solid red;}*/
+
+
+
+.public-reserve{
+	position: fixed;
+	bottom: 43px;
+	left: 0px;
+	height: 57px;
+	width: 100%;
+	line-height: 68px;
+	text-align: center;
+	background-image: url(../img/hotel-reserve_02.png);
+}
+.public-btn-reserve{
+	height: 35px;
+}
+
+
+/*以下是酒店-公用头部*/
+.public-head-father{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 64px;
+	z-index: 99;
+}
+.public-head{
+	position: relative;
+	width: 100%;
+	height: 64px;
+	letter-spacing: 0.2em;
+	line-height: 64px;
+	font-size: 1.8em;
+	font-family: "微软雅黑";
+	text-align: center;
+	color: white;
+	background-image:url(../img/header.png);
+	background-size: cover;
+	
+}
+.public-left{
+	position: absolute;
+	left: 10px;
+	top: 30%;
+	width: 15px;
+}
+
+/*以上是酒店-公用头部*/
+
+
+/*以下是会员-公用头部*/
+.mp-head{
+	position:relative;
+	height:120px;
+	width: 100%;
+	background-size: cover;	
+    background-image: url(../img/member-center_02.png);
+}
+.mp-h-img{
+	margin-top: 28px;
+	margin-left: 10%;
+	width: 60px;
+	height: 60px;
+	border: 2px solid white;
+	border-radius: 45%;
+}
+.mp-h-p{
+	position: absolute;
+	left: 33%;
+	top: 0;
+	height: 100%;
+	width: 100%;
+}
+.mp-name{
+	color: black;
+	font-size: 1.5em;
+	font-weight: bold;
+	line-height: 120px;
+	
+}
+.mp-h-div{
+	display: inline-block;
+	padding: 0 8px;
+	height: 28px;
+	font-size: 1.2em;
+	line-height: 28px;
+	color: white;
+	border-radius: 8px;
+	background-image: url(../img/member-center_01.png);
+	background-size: cover;
+	
+}
+
+
+/*以上是会员-公用头部*/
+
+
+/*以下是公用底部*/
+.public-foot{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	height: 43px;	
+	width: 100%;
+	background-image: url(../img/member-center_19.png);
+	background-size: cover; 
+	z-index: 99;
+}
+.public-foot-01,
+.public-foot-02,
+.public-foot-03{
+	height: 43px;
+	float: left;
+	cursor: pointer;
+}
+.public-foot-01{ width: 27%;}
+.public-foot-02{ 
+	width: 40%;
+	margin:0 1%;
+
+}
+.public-foot-03{ width: 31%;}
+/*以上是公用底部*/
+
+
+
+
+
+
+
+

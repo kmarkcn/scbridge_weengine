@@ -1,2 +1,141 @@
 @charset "utf-8";
 /* CSS Document */
+html,body{
+	/*overflow-x: hidden;*/
+}
+
+
+
+/*以下是当前余额·充值·修改信息*/
+.mc-list{
+	position: relative;
+	width: 100%;
+	height: 90px;
+}
+.mc-ul-01{
+	width:100%;
+	
+}
+.mc-ul-01>li{
+	margin-top: 10px;
+	width: 33.3%;
+	height: 70px;
+	border-right: 1px solid #ccc;
+	float: left;
+}
+.mc-ul-02{
+	width: 100%;
+}
+.mc-ul-02>li{
+	width: 100%;
+	height: 100%;
+	line-height: 35px;
+	font-size: 14px;
+	color: #666;
+	text-align: center;
+}
+.mc-ul-02 img{
+	width: 32px;
+	height: 24px;
+	cursor: pointer;
+}
+.mc-red-16{
+	position: relative;
+	top: 5px;
+	left: 3px;
+	font-size: 16px;
+	font-family: "微软雅黑";
+	color: #ef6d6d;
+	
+}
+/*以上是当前余额·充值·修改信息*/
+
+/*以下是中间内容*/
+.mc-content{
+	border-top: 1px solid #ccc;
+	background-color: #f4f4f4;
+}
+
+.mc-c-top{
+	position: relative;
+	width: 100%;
+	height: 40px;
+	
+	
+}
+.mc-c-top span{
+	font-size: 14px;
+	line-height: 40px;
+	
+}
+
+.mc-goods{
+	position: relative;
+	margin:0 auto  6px auto;
+	padding: 3px 5px;
+	width: 320px;
+	height: 90px;
+	border: 1px solid #ccc;
+	background-color: white;
+}
+.mc-ul-03>li{
+	float: left;	
+}
+.mc-li-02{
+	margin:0 5px;
+	width: 145px;
+}
+.mc-goods-img{
+	width: 100px;
+	height: 80px;
+}
+.mc-goods-name{
+	font-size: 14px;
+	color: #666;
+}
+
+.mc-ul-04{}
+.mc-ul-04>li{
+	line-height: 27px;
+}
+
+.mc-li-04{
+}
+.mc-li-04 img{
+	margin-right: 3px;
+	width: 16px;
+	height: 16px;
+}
+.mc-li-05{
+	
+	font-size:10px;
+	color: #999;
+}
+
+.mc-li-03{
+	margin-left: -10px;
+	width: 60px;
+}
+.mc-li-03 li{
+	height: 27px;
+}
+.mc-16{
+	font-size: 16px;
+	font-family: "微软雅黑";
+}
+.mc-span{
+	font-size: 8px;
+	color: #eb6d20;
+
+}
+/*以上是中间内容*/
+
+
+
+
+
+
+
+
+
+

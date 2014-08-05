@@ -1,0 +1,38 @@
+@charset "utf-8";
+/* CSS Document */
+.hr-content{
+	padding: 64px 0 100px 0;
+}
+.hr-goods{
+	margin: auto;
+	width: 320px;
+	
+}
+.hr-h1{
+	padding-left: 3%;
+	height: 40px;
+	font-size: 20px;
+	font-family: "微软雅黑";
+	font-weight: 500;
+	line-height: 40px;
+	color: #dd4a38;
+}
+
+.hr-red{
+	color: #dd4a38;
+}
+.hr-ul{}
+.hr-ul li{
+	padding:0 6%;
+	line-height: 30px;
+	font-size: 16px;
+	font-family: "微软雅黑";
+	color: #666;
+}
+.hr-li p{
+	text-indent: 2em;
+	font-size: 12px;
+	line-height: 20px;
+	color: #666;
+	
+}

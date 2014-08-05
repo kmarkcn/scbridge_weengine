@@ -20,15 +20,13 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型&nbsp;
 							<select name='ismeeting'>
 								<option value='0' 
-									{if $hotel['level']=='1'}
+									{if $room['is_meeting']==0}
 										selected='selected'
-									{else}
 									{/if}
 								>普通房</option>
 								<option value='1'
-									{if $hotel['level']=='2'}
+									{if $room['is_meeting']==1}
 										selected='selected'
-									{else}
 									{/if}
 								>会议室</option>
 							</select>

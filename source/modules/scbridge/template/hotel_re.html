@@ -18,8 +18,8 @@
     	<!--以下是头部-->
         <div class="public-head-father">
             <div class="public-head">
-                <a href="./index.php?act=module&name=scbridge&do=hotel_center"><img class="public-left"  src="./resource/scbridge/img/header-left.png"></a>
-                酒店预定
+                <a href="./index.php?act=module&name=scbridge&do=meeting_center"><img class="public-left"  src="./resource/scbridge/img/header-left.png"></a>
+                会议预定
             </div>
         </div>
         <!--以上是头部-->
@@ -32,7 +32,8 @@
             	<ul class="hr-ul">
                 	<li>等级：<span>{$hotel['level']}</span></li>
                     <li>地址：<span>{$hotel['address']}</span></li>
-                    <li>参考价（每天）：<span>{$hotel['pr_min']}</span>&nbsp;元&nbsp;~&nbsp;<span>{$hotel['pr_max']}</span>&nbsp;元</li>
+                    <li>参考价(全天):<span>{$hotel['pr_min']}</span>&nbsp;元&nbsp;~&nbsp;<span>{$hotel['pr_max']}</span>&nbsp;元</li>
+                    <li>容纳人数：<span>{$hotel['num_min']}</span>&nbsp;人&nbsp;~&nbsp;<span>{$hotel['num_max']}</span>&nbsp;人</li>
                     <li class="hr-li">
                     	<p>
                        		{$hotel['description']}

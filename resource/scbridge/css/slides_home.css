@@ -1,0 +1,67 @@
+<style>
+html, body {
+  height: 100%;
+  width: 100%;
+  border: 0px;
+  margin: 0px;
+}
+.button-area {
+  margin-top: 1%;
+  padding: 0px;
+  
+  text-align:center;
+}
+
+#slides {
+  display: none;
+}
+
+.slidesjs-pagination {
+  position: absolute;
+  left: 53%;
+  top: 85%;
+  margin:0 -22.5px;
+  list-style: none;
+  z-index: 99;
+}
+
+.slidesjs-pagination li {
+  float: left;
+  margin: 0 1px;
+}
+
+.slidesjs-pagination li a {
+  display: block;
+  width: 13px;
+  height: 0;
+  padding-top: 13px;
+  background-image: url(../img/pagination.png);
+  background-position: 0 0;
+  float: left;
+  overflow: hidden;
+}
+
+.slidesjs-pagination li a.active,
+.slidesjs-pagination li a:hover.active {
+  background-position: 0 -13px
+}
+
+.slidesjs-pagination li a:hover {
+  background-position: 0 -26px
+}
+
+#slides a:link,
+#slides a:visited {
+  color: #333
+}
+
+#slides a:hover,
+#slides a:active {
+  color: #9e2020
+}
+
+.navbar {
+  overflow: hidden
+}
+</style>
+<!-- End SlidesJS Optional-->

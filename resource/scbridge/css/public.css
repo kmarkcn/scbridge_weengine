@@ -30,10 +30,8 @@ img{vertical-align:middle;border:none;}
 .border_red{ border-color:white !important;}
 
 *{ -moz-box-sizing:border-box;  /*适应火狐浏览器*/	-webkit-box-sizing:border-box; /*适应谷歌浏览器*/	box-sizing:border-box; padding: 0; margin: 0;}
-
-/*div{ border:1px solid red;}*/
-
-input {
+input,.textfocus
+ {
 	    color:#333;
 	    line-height:normal;
 	    font-family:"Microsoft YaHei",Tahoma,Verdana,SimSun;
@@ -80,13 +78,19 @@ input {
 	    border-bottom-style:solid;
 	    border-left-style:solid;
 	}
-input:focus {
+input:focus
+,.textfocus:focus {
 	     border: 1px solid #fafafa;
 	    -webkit-box-shadow: 0px 0px 6px #007eff;
 	     -moz-box-shadow: 0px 0px 5px #007eff;
 	     box-shadow: 0px 0px 5px #007eff;   
 	    
 }
+
+
+
+/*div{ border:1px solid red;}*/
+
 
 
 .public-reserve{
@@ -103,6 +107,40 @@ input:focus {
 	height: 35px;
 }
 
+
+
+/*以下是商城公用头部*/
+.public-right{
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 30%;
+	height: 60px;
+}
+.pr-ul li{
+	border-top: 2px solid #900;
+	background-color: #bc3b2b;
+	cursor: pointer;
+}
+.pr-ul .pr-li-01{
+	padding-top: 10px;
+	height: 60px;
+	border-top: none;
+	font-size: 14px;
+	line-height: 22px;
+	text-align: center;
+}
+.pr-img{
+	position: relative;
+	left: -4px;
+	width: 25px;
+}
+.pr-li-02{
+	display: none;
+	font-size: 14px;
+	line-height: 25px;
+}
+/*以上是商城公用头部*/
 
 /*以下是酒店-公用头部*/
 .public-head-father{

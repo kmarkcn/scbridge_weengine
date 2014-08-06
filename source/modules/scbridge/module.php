@@ -45,7 +45,10 @@ class ScbridgeModule extends WeModule {
 			$hotels[$i]['price_normal']=$pr['price_normal'];
 		}
 		//print_r($hotels);
+		$title='酒店预订';
+		include $this->template('scbridge:header');
 		include $this->template('scbridge:member_product');
+		include $this->template('scbridge:footer');
 	}
 	
 	public function dohotel_content(){
@@ -74,7 +77,10 @@ class ScbridgeModule extends WeModule {
 		$ho=pdo_fetch($sql_2);
 		$hotel['pr_min']=$ho['pri'];
 		$hotel['pr_max']=$ho['pr'];
+		$title='酒店预订';
+		include $this->template('scbridge:header');
 		include $this->template('scbridge:hotel-reserve');
+		include $this->template('scbridge:footer');
 		
 	}
 	
@@ -108,7 +114,10 @@ class ScbridgeModule extends WeModule {
 		$ho=pdo_fetch($sql_3);
 		$hotel['num_min']=$ho['pri'];
 		$hotel['num_max']=$ho['pr'];
+		$title='会议预订';
+		include $this->template('scbridge:header');
 		include $this->template('scbridge:hotel_re');
+		include $this->template('scbridge:footer');
 	
 	}
 	
@@ -167,6 +176,27 @@ class ScbridgeModule extends WeModule {
 	public function domember_rigister() {
 		global $_W, $_GPC;
 		include $this->template('scbridge:register');
+	}
+	
+	
+	//商城导航
+	public function doshop_center(){
+		global $_W,$_GPC;
+		$title='商城';
+		include $this->template('scbridge:header');
+		include $this->template('scbridge:store-nav');
+		include $this->template('scbridge:footer');
+	}
+	
+	public function doshop_list(){
+		global $_W,$_GPC;
+	
+		include $this->template('scbridge:store');
+	}
+	
+	public function dogoods_content(){
+		global $_W,$_GPC;
+		include $this->template('scbridge:store-goods');
 	}
 	
 }

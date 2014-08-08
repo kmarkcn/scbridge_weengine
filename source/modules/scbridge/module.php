@@ -84,6 +84,17 @@ class ScbridgeModule extends WeModule {
 		
 	}
 	
+	public function dohotel_booking(){
+		global $_W,$_GPC;
+		$h_id=$_GPC['id'];
+		include $this->template('scbridge:room-reserve');
+	}
+	
+	public function domeeting_booking(){
+		global $_W,$_GPC;
+		$h_id=$_GPC['id'];
+		include $this->template('scbridge:meeting-reserve-write');
+	}	
 	public function dohotel_contents(){
 		global $_W,$_GPC;
 		$h_id=$_GPC['h_id'];
@@ -121,10 +132,13 @@ class ScbridgeModule extends WeModule {
 	
 	}
 	
-	public function dohotel_booking(){
+	public function dovip_register(){
 		global $_W,$_GPC;
 		$h_id=$_GPC['h_id'];
+		$title='会员注册';
+		include $this->template('scbridge:header');
 		include $this->template('scbridge:register');
+		include $this->template('scbridge:footer');
 	}
 	
 	public function domeeting_center(){
@@ -155,8 +169,10 @@ class ScbridgeModule extends WeModule {
 					break;
 			}
 		}
-		
+		$title='会议预定';
+		include $this->template('scbridge:header');
 		include $this->template('scbridge:meeting-reserve');
+		include $this->template('scbridge:footer');
 	}
 	
 	
@@ -166,16 +182,20 @@ class ScbridgeModule extends WeModule {
 		//$from_user是进入页面后自己做匹配
 		$from_user=1;
 		if(empty($from_user)){
+			$title='会员注册';
+			include $this->template('scbridge:header');
 			include $this->template('scbridge:register');
+			include $this->template('scbridge:header');
 		}else{
 			include $this->template('scbridge:member_center');
+			include $this->template('scbridge:footer');
 		}
 	}
 	
-	
-	public function domember_rigister() {
+	public function domember_charge(){
 		global $_W, $_GPC;
-		include $this->template('scbridge:register');
+		include $this->template('scbridge:member-pay');
+		
 	}
 	
 	
@@ -190,13 +210,61 @@ class ScbridgeModule extends WeModule {
 	
 	public function doshop_list(){
 		global $_W,$_GPC;
-	
+		$good_type=$_GPC['good_type'];
+		$sql="select * from ims_goods where good_type= ".$good_type ." and good_stock > 0";
+		$goods=pdo_fetchall($sql);
+		switch ($good_type){
+			case 1:
+				$title='产品1';
+				break;
+			case 2:
+				$title='产品2';
+				break;
+			case 3:
+				$title='产品3';
+				break;
+			case 4:
+				$title='产品4';
+				break;
+			case 5:
+				$title='产品5';
+				break;
+			case 6:
+				$title='产品6';
+				break;
+		}
 		include $this->template('scbridge:store');
+		include $this->template('scbridge:footer');
 	}
 	
 	public function dogoods_content(){
 		global $_W,$_GPC;
+		$good_id=$_GPC['good_id'];
+		$good_type=$_GPC['good_type'];
+		$sql="select * from ims_goods where id= ".$good_id;
+		$good=pdo_fetch($sql);
+		switch ($good_type){
+			case 1:
+				$title='产品1';
+				break;
+			case 2:
+				$title='产品2';
+				break;
+			case 3:
+				$title='产品3';
+				break;
+			case 4:
+				$title='产品4';
+				break;
+			case 5:
+				$title='产品5';
+				break;
+			case 6:
+				$title='产品6';
+				break;
+		}
 		include $this->template('scbridge:store-goods');
+		include $this->template('scbridge:footer');
 	}
 	
 }

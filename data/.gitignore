@@ -1,3 +1,2 @@
-/tpl
 /config.php
-/install.lock
+/.gitignore

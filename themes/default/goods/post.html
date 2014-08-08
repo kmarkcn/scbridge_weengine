@@ -22,15 +22,45 @@
 						名称&nbsp;&nbsp;<input type="text" name="name" class="" value="{$goods['name']}" autofocus="autofocus" required="required"/>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类型&nbsp;&nbsp;
 							<select name='good_type'>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-								<option>6</option>
+								<option value='1'
+									{if $goods['good_type']=='1'}
+										selected='selected'
+									{else}
+									{/if}"
+								>产品1</option>
+								<option value='2'
+									{if $goods['good_type']=='2'}
+										selected='selected'
+									{else}
+									{/if}"
+								>产品2</option>
+								<option value='3'
+									{if $goods['good_type']=='3'}
+										selected='selected'
+									{else}
+									{/if}"
+								>产品3</option>
+								<option value='4'
+									{if $goods['good_type']=='4'}
+										selected='selected'
+									{else}
+									{/if}"
+								>产品4</option>
+								<option value='5'
+									{if $goods['good_type']=='5'}
+										selected='selected'
+									{else}
+									{/if}"
+								>产品5</option>
+								<option value='6'
+									{if $goods['good_type']=='6'}
+										selected='selected'
+									{else}
+									{/if}"
+								>产品6</option>
 							</select>
 						<br/><br/>
-						数量&nbsp;&nbsp;<input type="text" name="good_stock" class="" value="{$goods['name']}" autofocus="autofocus" required="required" style='width:60px;'/>
+						库存&nbsp;&nbsp;<input type="text" name="good_stock" class="" value="{$goods['good_stock']}" autofocus="autofocus" required="required" style='width:60px;'/>
 						<a style='font-size:6px;'>(以所卖每份为单位)</a>
 						&nbsp;&nbsp;价格&nbsp;&nbsp;<input type='text' style='width:80px;' name='price' autofocus="autofocus" required="required" value='{$goods['price']}'><a style='font-size:6px;'>(单位:元/份)</a>
 						</div>

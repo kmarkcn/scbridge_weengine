@@ -15,14 +15,7 @@
 
 <body>
 	<div class="ma">
-    	<!--以下是头部-->
-        <div class="public-head-father">
-            <div class="public-head">
-                <a href="./index.php?act=module&name=scbridge&do=index"><img class="public-left"  src="./resource/scbridge/img/header-left.png"></a>
-                会议预定
-            </div>
-        </div>
-        <!--以上是头部-->
+    	
         
         <!--以下是中间内容-->
         <div class="mr-content">
@@ -31,13 +24,14 @@
             	{loop $hotels $re}
             	<a href="./index.php?act=module&name=scbridge&do=hotel_contents&h_id={$re['id']}">	
                     <div class="mr-goods">
-                        <img class="mr-g-img" src="./resource/scbridge/img/meeting/meeting-reserve_01.png">
+                        <img class="mr-g-img" src="{$_W['attachurl']}{$re['icon']}">
                         <ul class="mr-ul">
                         	<li><h1>{$re['name']}</h1></li>
                             <li><span>等级：{$re['level']}/豪华</span></li>
                             <li><span>{$re['address']}</span></li>
                             <li>最大可容纳：<span class="mr-red">{$re['max_num']}</span>人</li>
                         </ul>
+                        <div class="clear"></div>
                     </div>
                 </a>
                {/loop}
@@ -46,13 +40,7 @@
         </div>
         <!--以上是中间内容-->
         
-       <!--以下是浮动的底部-->
-       <div class="public-foot">
-       		<a href="#"><img class="public-foot-01" src="./resource/scbridge/img/member-center_16.png"></a>
-            <a href="#"><img class="public-foot-02" src="./resource/scbridge/img/member-center_17.png"></a>
-            <a href="#"><img class="public-foot-03" src="./resource/scbridge/img/member-center_18.png"></a>
-       </div>
-       <!--以上是浮动的底部 -->
+      
         
 </div>
 </body>

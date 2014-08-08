@@ -1,47 +1,69 @@
 @charset "utf-8";
 /* CSS Document */
-body{
+body{ background-color: #f2f2f2;}
+.rr-content{
+	padding: 60px 0 100px 0;
 	background-color: #f2f2f2;
 }
-.mr-content{
-	padding: 60px 0 43px 0;
-	background-color: #f2f2f2;
-}
-.mr-c-body{
+.rr-goods{
 	margin: auto;
-	width: 320px;
-}
-.mr-goods{
-	margin: 10px auto 0 auto;
-	width: 300px;
-	height: 90px;	
-	border-bottom: 1px solid #ccc;
-}
-.mr-g-img{
-	float: left;
-	margin: 3px;
-	padding: 3px;
-	width: 80px;
-	height: 80px;
-	border: 1px solid #c1c1c1;
-}
-.mr-red{
-	color: #dc4b38;
-}
-.mr-ul{
-	float: left;
-	padding: 8px 0 0 3px;
 	
 }
-.mr-ul li{
-	line-height: 18px;
+.rr-table{
+	margin:8px auto 0  auto;
+	width: 310px;
+}
+.rr-td-01{
+	padding-right: 5%;
+	width: 30%;
+	text-align: right;
 	font-size: 12px;
-	color: #999;	
+	color: #666;
 }
-.mr-ul h1{
-	color: black;
-	font-size: 16px;
-	font-family: "微软雅黑";
-	font-weight: 500;
+.rr-table td{
+	height: 40px
+}
+.rr-area{
+	margin-top: 6px;
+	width: 170px;
+	height: 70px;
+	resize: none;
+}
+.rr-input-01{
+	width: 170px;
+}
+/*下拉选项间距*/
+.rr-select{
+	padding: 0;
+	height: 30px;
 	
+	
+}
+.rr-select>li{
+	position: relative;
+	padding-left: 5px;
+	width: 168px;
+	height: 28px;
+	line-height: 30px;
+	text-align: left;
+	display: none;
+	cursor: pointer;
+	background-color: white;
+	
+}
+.rr-select>li:nth-child(1){
+	display: block;
+	
+}
+
+.rr-td-02>span{
+	display: none;
+}
+.rr-td-02>span:nth-child(1){
+	display: block;
+	
+}
+.lhgcal{
+	
+	z-index: 9999;
 }

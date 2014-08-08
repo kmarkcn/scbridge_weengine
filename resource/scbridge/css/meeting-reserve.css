@@ -14,7 +14,7 @@ body{
 .mr-goods{
 	margin: 10px auto 0 auto;
 	width: 300px;
-	height: 90px;	
+	min-height: 90px;	
 	border-bottom: 1px solid #ccc;
 }
 .mr-g-img{
@@ -29,12 +29,13 @@ body{
 	color: #dc4b38;
 }
 .mr-ul{
+	width: 200px;
 	float: left;
-	padding: 8px 0 0 3px;
+	padding: 0 0 0 3px;
 	
 }
 .mr-ul li{
-	line-height: 18px;
+	line-height: 21px;
 	font-size: 12px;
 	color: #999;	
 }

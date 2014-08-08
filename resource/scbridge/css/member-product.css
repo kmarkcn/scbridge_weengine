@@ -38,7 +38,8 @@ body, html{
 }
 .wenbeng>h3{
 	font-size: 16px;
-	
+	height:20px;
+	overflow:hidden;
 }
 .mp-foot-father{
 	position: absolute;
@@ -62,7 +63,7 @@ body, html{
 }
 .mp-p1{
 	position: absolute;
-	left: 40%;
+	left: 45%;
 	top: 6px;
 	font-size: 12px;
 	line-height: 14px;

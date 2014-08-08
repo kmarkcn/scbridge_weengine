@@ -357,3 +357,12 @@ CREATE TABLE IF NOT EXISTS `ims_hotel_booking`(
 `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+/*
+	2014-08-08
+	by terry
+*/
+
+ALTER TABLE `ims_hotel_room` MODIFY min_number int(4) COMMENT '最小人数';
+ALTER TABLE `ims_hotel_room` MODIFY max_number int(4) COMMENT '最小人数';

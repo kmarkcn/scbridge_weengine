@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	background-color: #f2f2f2;
+}
+.sn-content{
+	padding: 60px 0 43px 0;
+	background-color: #f2f2f2;
+}
+.sn-nav{
+	height: 70px;
+	text-align: center;
+	border-top:2px #b4b4b4 solid;
+	border-bottom:2px #b4b4b4 solid;
+	background-size: 15px 20px;
+	background-image: url(../img/store/store-nav_01.png);
+	background-repeat: no-repeat;
+	background-position: 90% 25px;
+
+}
+.sn-h1{
+	text-align: center;
+	height: 40px;
+	line-height: 50px;
+	font-size: 24px;
+	color: #666;
+	
+}
+.sn-p1{
+	margin-top: -5px;
+	font-size: 10px;
+	color: #999;
+	-webkit-transform: scale(0.8);
+	-o-transform: scale(1); 
+}

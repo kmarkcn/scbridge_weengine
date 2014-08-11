@@ -58,19 +58,22 @@ class ScbridgeModule extends WeModule {
 		$hotel=pdo_fetch($sql);
 		switch ($hotel['level']){
 			case 1:
-				$hotel['level']='一星级';
+				$hotel['level']='准4星';
 				break;
 			case 2:
-				$hotel['level']='二星级';
+				$hotel['level']='4星';
 				break;
 			case 3:
-				$hotel['level']='三星级';
+				$hotel['level']='准5星';
 				break;
 			case 4:
-				$hotel['level']='四星级';
+				$hotel['level']='精品';
 				break;
 			case 5:
-				$hotel['level']='五星级';
+				$hotel['level']='5星';
+				break;
+			case 6:
+				$hotel['level']='奢华';
 				break;
 		}
 		$sql_2="SELECT min(price_vip) as pri,max(price_vip) as pr FROM".tablename('hotel_room')."where hotel_id= ".$h_id;
@@ -102,19 +105,22 @@ class ScbridgeModule extends WeModule {
 		$hotel=pdo_fetch($sql);
 		switch ($hotel['level']){
 			case 1:
-				$hotel['level']='一星级';
+				$hotel['level']='准4星';
 				break;
 			case 2:
-				$hotel['level']='二星级';
+				$hotel['level']='4星';
 				break;
 			case 3:
-				$hotel['level']='三星级';
+				$hotel['level']='准5星';
 				break;
 			case 4:
-				$hotel['level']='四星级';
+				$hotel['level']='精品';
 				break;
 			case 5:
-				$hotel['level']='五星级';
+				$hotel['level']='5星';
+				break;
+			case 6:
+				$hotel['level']='奢华';
 				break;
 		}
 		$sql_2="SELECT min(price_vip) as pri,max(price_normal) as pr FROM".tablename('hotel_room')."where hotel_id= ".$h_id ." and is_meeting=1";
@@ -132,15 +138,103 @@ class ScbridgeModule extends WeModule {
 	
 	}
 	
+	//会员注册
 	public function dovip_register(){
+		session_start();
 		global $_W,$_GPC;
-		$h_id=$_GPC['h_id'];
-		$title='会员注册';
-		include $this->template('scbridge:header');
-		include $this->template('scbridge:register');
-		include $this->template('scbridge:footer');
+		$user_id=$_GPC['user_id'];
+		if(empty($user_id)){
+			$h_id=$_GPC['h_id'];
+			//判断是否已经存在此用户
+			$oppenid=$_SESSION['sc_user_oppenid'];
+			$sql="select * from ims_customer where open_id = '{$oppenid}'";
+			$result=pdo_fetch($sql);
+			if(!empty($result)){
+				$img_url=$_SESSION['sc_user_info']->headimgurl;
+				include $this->template('scbridge:member_center');
+				include $this->template('scbridge:footer');
+			}else{
+				$title='会员注册';
+				$reminder='注册';
+				include $this->template('scbridge:header');
+				include $this->template('scbridge:register');
+				include $this->template('scbridge:footer');
+			}
+		}else{
+			//根据这个id选出数据
+			$sql="select * from ims_customer where id = '{$user_id}'";
+			$result=pdo_fetch($sql);
+			$reminder='修改';
+			include $this->template('scbridge:header');
+			include $this->template('scbridge:register');
+			include $this->template('scbridge:footer');
+		}
+		
 	}
 	
+	//会员中心
+	public function domember_center() {
+		session_start();
+		global $_W,$_GPC;
+		$h_id=$_GPC['h_id'];
+		//判断是否已经存在此用户
+		$oppenid=$_SESSION['sc_user_oppenid'];
+		$sql="select * from ims_customer where open_id = '{$oppenid}'";
+		$result=pdo_fetch($sql);
+		if(empty($result)){
+			$title='会员注册';
+			$reminder='注册';
+			include $this->template('scbridge:header');
+			include $this->template('scbridge:register');
+			include $this->template('scbridge:header');
+		}else{
+			$img_url=$_SESSION['sc_user_info']->headimgurl;
+			include $this->template('scbridge:member_center');
+			include $this->template('scbridge:footer');
+		}
+	}
+	
+	//会员注册
+	public function doregisterdo(){
+		session_start();
+		global $_W,$_GPC;
+		//print_r($_POST);
+		$lastupdate=time();
+		$lastupdate=date('y-m-d h:i:s',$lastupdate);
+		$name=$_GPC['user_name'];
+		$user_id=$_GPC['user_id'];
+		$mobile=$_GPC['user_tel'];
+		$open_id=$_SESSION['sc_user_oppenid'];
+		if(empty($name)||empty($mobile)){
+			echo "<script language='javascript'>history.go(-1);alert('信息输入不能为空.');</script>";
+			die();
+		}
+			
+		if(empty($user_id)){
+			$sql="insert into ims_customer(name,mobile,open_id,account_balance,status,lastupdate) values('{$name}','{$mobile}','{$open_id}','0','0','{$lastupdate}')";
+			if(pdo_query($sql)){
+				session_start();
+				$oppenid=$_SESSION['sc_user_oppenid'];
+				$sql="select * from ims_customer where open_id = '{$oppenid}'";
+				$result=pdo_fetch($sql);
+				$img_url=$_SESSION['sc_user_info']->headimgurl;
+				include $this->template('scbridge:member_center');
+			}
+		}else{
+			//这里是更新
+			$sql="update ims_customer set name='{$name}',mobile='{$mobile}',lastupdate='{$lastupdate}'  where id= '{$user_id}'";
+			if(pdo_query($sql)){
+				$sql="select * from ims_customer where id= '{$user_id}'";
+				$result=pdo_fetch($sql);
+				$img_url=$_SESSION['sc_user_info']->headimgurl;
+				include $this->template('scbridge:member_center');
+			}
+				
+		}	
+			
+		
+		
+	}
 	public function domeeting_center(){
 		global $_W,$_GPC;
 		//这里要选出哪些酒店有会议室，然后列出来
@@ -177,27 +271,42 @@ class ScbridgeModule extends WeModule {
 	
 	
 	
-	public function domember_center() {
-		global $_W, $_GPC;
-		//$from_user是进入页面后自己做匹配
-		$from_user=1;
-		if(empty($from_user)){
-			$title='会员注册';
-			include $this->template('scbridge:header');
-			include $this->template('scbridge:register');
-			include $this->template('scbridge:header');
-		}else{
-			include $this->template('scbridge:member_center');
-			include $this->template('scbridge:footer');
-		}
-	}
+
 	
 	public function domember_charge(){
 		global $_W, $_GPC;
-		include $this->template('scbridge:member-pay');
-		
+		$user_id=$_GPC['user_id'];
+		if(!empty($user_id)){
+			$sql="select * from ims_customer where id= '{$user_id}'";
+			$result=pdo_fetch($sql);
+			$reminder='充值';
+			$img_url=$_SESSION['sc_user_info']->headimgurl;
+			include $this->template('scbridge:member-pay');
+		}
 	}
 	
+	
+	public function dopaydo(){
+		global $_W, $_GPC;
+		$user_id=$_GPC['user_id'];
+		$acc_number=$_POST['acc_number']*10000;
+		//还是先查出来数据
+		$sql="select * from ims_customer where id= '{$user_id}'";
+		$re=pdo_fetch($sql);
+		$acc_be=($re['account_balance']);
+		$acc_ag=$acc_be+$acc_number;
+		//现在插入数据
+		$sql="update ims_customer set account_balance='{$acc_ag}',status='1'  where id= '{$user_id}'";
+		if(pdo_query($sql)){
+			$sql="select * from ims_customer where id= '{$user_id}'";
+			$result=pdo_fetch($sql);
+			$img_url=$_SESSION['sc_user_info']->headimgurl;
+			include $this->template('scbridge:member_center');
+			include $this->template('scbridge:footer');
+		}
+			
+		
+	}
 	
 	//商城导航
 	public function doshop_center(){
@@ -230,7 +339,7 @@ class ScbridgeModule extends WeModule {
 				$title='酒水饮品';
 				break;
 			case 6:
-				$title='其他产品';
+				$title='其它产品';
 				break;
 		}
 		include $this->template('scbridge:store');
@@ -260,7 +369,7 @@ class ScbridgeModule extends WeModule {
 				$title='酒水饮品';
 				break;
 			case 6:
-				$title='其他产品';
+				$title='其它产品';
 				break;
 		}
 		include $this->template('scbridge:store-goods');

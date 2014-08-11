@@ -27,31 +27,37 @@
 										selected='selected'
 									{else}
 									{/if}
-								>1星级</option>
+								>准4星</option>
 								<option value='2'
 									{if $hotel['level']=='2'}
 										selected='selected'
 									{else}
 									{/if}
-								>2星级</option>
+								>4星</option>
 								<option value='3'
 									{if $hotel['level']=='3'}
 										selected='selected'
 									{else}
 									{/if}
-								>3星级</option>
+								>准5星</option>
 								<option value='4'
 									{if $hotel['level']=='4'}
 										selected='selected'
 									{else}
 									{/if}
-								>4星级</option>
+								>精品</option>
 								<option value='5'
 									{if $hotel['level']=='5'}
 										selected='selected'
 									{else}
 									{/if}
-								>5星级</option>
+								>5星</option>
+								<option value='6'
+									{if $hotel['level']=='6'}
+										selected='selected'
+									{else}
+									{/if}
+								>奢华</option>
 							</select>
 						<br/><br/>
 						国家&nbsp;&nbsp;<input type="text" name="nation" class="" value="{$hotel['nation']}" autofocus="autofocus" required="required" style='width:80px;'/>

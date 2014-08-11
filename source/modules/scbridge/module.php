@@ -215,22 +215,22 @@ class ScbridgeModule extends WeModule {
 		$goods=pdo_fetchall($sql);
 		switch ($good_type){
 			case 1:
-				$title='产品1';
+				$title='奢侈品';
 				break;
 			case 2:
-				$title='产品2';
+				$title='贵金属';
 				break;
 			case 3:
-				$title='产品3';
+				$title='当季水果';
 				break;
 			case 4:
-				$title='产品4';
+				$title='生活用品';
 				break;
 			case 5:
-				$title='产品5';
+				$title='酒水饮品';
 				break;
 			case 6:
-				$title='产品6';
+				$title='其他产品';
 				break;
 		}
 		include $this->template('scbridge:store');
@@ -245,22 +245,22 @@ class ScbridgeModule extends WeModule {
 		$good=pdo_fetch($sql);
 		switch ($good_type){
 			case 1:
-				$title='产品1';
+				$title='奢侈品';
 				break;
 			case 2:
-				$title='产品2';
+				$title='贵金属';
 				break;
 			case 3:
-				$title='产品3';
+				$title='当季水果';
 				break;
 			case 4:
-				$title='产品4';
+				$title='生活用品';
 				break;
 			case 5:
-				$title='产品5';
+				$title='酒水饮品';
 				break;
 			case 6:
-				$title='产品6';
+				$title='其他产品';
 				break;
 		}
 		include $this->template('scbridge:store-goods');

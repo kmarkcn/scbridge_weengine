@@ -15,22 +15,26 @@
     	
         <!--以下是中间内容-->
         <div class="ma-content">
+        	<form class="uk-form uk-form-horizontal" method="post" id="applyform" action="./index.php?act=module&name=scbridge&do=registerdo">
             <table class="ma-table" cellpadding="0" cellspacing="0">
             	<tr>
-                	<td class="ma-td2"><img style="width:46%;" src="./resource/scbridge/img/register/register_01.png"></td>
+                	<td class="ma-td2"><img style="width:46%;" src="./resource/scbridge/img/register/register_01.png">
+                		<input type='hidden' name='user_id' value="{$result['id']}">
+                	</td>
                 </tr>
                 <tr>
-                	<td class="ma-td1" style="padding-top:12%;">手机号 : <input class="ma-input" type="telephone"></td>
+                	<td class="ma-td1" style="padding-top:12%;">手机号 : <input class="ma-input" type="telephone" name='user_tel' value="{$result['mobile']}"></td>
                 </tr>
                 <tr>
-                    <td class="ma-td1">姓&#12288;名 : <input class="ma-input /*ma-input-false*/" type="text"></td>
+                    <td class="ma-td1">姓&#12288;名 : <input class="ma-input /*ma-input-false*/" type="text" name='user_name' value="{$result['name']}"></td>
                 </tr>
                 <tr>
                     <td class="ma-td1">
-                    	<img style="width:57%; margin:10% 0 0 0;" src="./resource/scbridge/img/register/register_02.png" onclick="alert('成功!')">
+                   			<button  id="submitBtn" type="submit" style='width:50%;height:35px;font-size:16px;color:#fff;background:#ff9c00;border:0px;border-radius:3px;margin-top:5px;'>{$reminder}</button> 	
                     </td>
                 </tr>
             </table>
+            </form>
          </div>
         
         <!--以上是中间内容-->

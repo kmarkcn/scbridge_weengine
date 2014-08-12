@@ -1,0 +1,66 @@
+{template 'common/header'}
+	<div id="main-column" class="container-12 clearfix member-center">
+		<div class="column2 grid-3 alpha omega">
+			{template 'customer/nav'}
+		</div>
+		<div class="column1 grid-10 alpha omega">
+			<div class="form">
+				<div class="form_h">
+				
+				<h6>修改会员资料</h6>
+				
+				
+				</div>
+				<form action="" method="post" onsubmit="return formcheck(this)">
+				<input type="hidden" name="id" value="{$customer['id']}" />
+				<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+					<th>会员信息</th>
+					<td>
+						<div style='border:1px solid #ddd;width:80%;padding:5px;font-size:13px;color:#888;'>
+						姓名&nbsp;&nbsp;<input type="text" name="name" class="txt" value="{$customer['name']}" autofocus="autofocus" required="required"/>
+						<br/><br/>
+						电话&nbsp;&nbsp;<input type="text" name="mobile" class="txt" value="{$customer['mobile']}" autofocus="autofocus" required="required"/>
+						<br/><br/>
+						余额&nbsp;&nbsp;<input type="text" name="account_balance" class="txt" value="{$customer['account_balance']}" autofocus="autofocus" required="required"/>(元)
+						<br/><br/>
+						状态&nbsp;&nbsp;
+							<select name='status' style='clear:center;'>
+								<option value='0'
+									{if $customer['status']=='0'}
+										selected='selected'
+									{else}
+									{/if}"
+								>未充值</option>
+								<option value='1'
+									{if $customer['status']=='1'}
+										selected='selected'
+									{else}
+									{/if}"
+								>已充值</option>
+								<option value='-1'
+									{if $customer['status']=='-1'}
+										selected='selected'
+									{else}
+									{/if}"
+								>错误</option>
+							</select>
+						
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<th></th>
+					<td>
+						<input name="submit" type="submit" value="提交" class="mt10 btn grid-2 alpha" />
+						<input type="hidden" name="token" value="{$_W['token']}" />
+					</td>
+				</tr>
+				</table>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+{template 'common/footer'}

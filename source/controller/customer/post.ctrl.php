@@ -13,29 +13,20 @@ if (checksubmit('submit')) {
 
 $data=array(
 		'name'=>$_GPC['name'],
-		'icon'=>(!empty($_GPC['picture'])) ? $_GPC['picture'] : NULL,
-		'good_type'=>$_GPC['good_type'],
-		'price'=>$_GPC['price'],
-		'brief_intro'=>$_GPC['brief_intro'],
-		'detailed_intro'=>$_GPC['detailed_intro'],
-		'good_stock'=>$_GPC['good_stock'],
-		'remarks'=>$_GPC['remarks'],
+		'mobile'=>$_GPC['mobile'],
+		'status'=>$_GPC['status'],
+		'account_balance'=>$_GPC['account_balance'],
 		'lastupdate'=>$lastupdate,
 	);
 	
 	if(!empty($id)) {
-		if (pdo_update('goods', $data, array('id' => $id))) {
-			message('更新商品成功！', create_url('goods/display'));
-		}
-	}else{
-		if(pdo_insert('goods', $data)) {
-			message('添加商品成功！', create_url('goods/display'));
+		if (pdo_update('customer', $data, array('id' => $id))) {
+			message('更新资料成功！', create_url('customer/display'));
 		}
 	}
-	
 } else {
 	if (!empty($id)) {
-		$goods = pdo_fetch("SELECT * FROM ".tablename('goods')." WHERE id = '$id'");
+		$customer = pdo_fetch("SELECT * FROM ".tablename('customer')." WHERE id = '$id'");
 	}
-	template('goods/post');
+	template('customer/post');
 }

@@ -27,37 +27,37 @@
 										selected='selected'
 									{else}
 									{/if}"
-								>产品1</option>
+								>奢侈品</option>
 								<option value='2'
 									{if $goods['good_type']=='2'}
 										selected='selected'
 									{else}
 									{/if}"
-								>产品2</option>
+								>贵金属</option>
 								<option value='3'
 									{if $goods['good_type']=='3'}
 										selected='selected'
 									{else}
 									{/if}"
-								>产品3</option>
+								>当季水果</option>
 								<option value='4'
 									{if $goods['good_type']=='4'}
 										selected='selected'
 									{else}
 									{/if}"
-								>产品4</option>
+								>生活用品</option>
 								<option value='5'
 									{if $goods['good_type']=='5'}
 										selected='selected'
 									{else}
 									{/if}"
-								>产品5</option>
+								>酒水饮品</option>
 								<option value='6'
 									{if $goods['good_type']=='6'}
 										selected='selected'
 									{else}
 									{/if}"
-								>产品6</option>
+								>其他产品</option>
 							</select>
 						<br/><br/>
 						库存&nbsp;&nbsp;<input type="text" name="good_stock" class="" value="{$goods['good_stock']}" autofocus="autofocus" required="required" style='width:60px;'/>
@@ -90,7 +90,7 @@
 				</tr>
 				
 				<tr>
-					<th>商品简叙</th>
+					<th>商品简述</th>
 					<td>
 						<textarea name="brief_intro"  class="txt grid-5 alpha pin" style="height:50px; width:470px;">{$goods['brief_intro']}</textarea>
 					</td>

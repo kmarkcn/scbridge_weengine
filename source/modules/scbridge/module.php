@@ -58,19 +58,22 @@ class ScbridgeModule extends WeModule {
 		$hotel=pdo_fetch($sql);
 		switch ($hotel['level']){
 			case 1:
-				$hotel['level']='一星级';
+				$hotel['level']='准4星';
 				break;
 			case 2:
-				$hotel['level']='二星级';
+				$hotel['level']='4星';
 				break;
 			case 3:
-				$hotel['level']='三星级';
+				$hotel['level']='准5星';
 				break;
 			case 4:
-				$hotel['level']='四星级';
+				$hotel['level']='精品';
 				break;
 			case 5:
-				$hotel['level']='五星级';
+				$hotel['level']='5星';
+				break;
+			case 6:
+				$hotel['level']='奢华';
 				break;
 		}
 		$sql_2="SELECT min(price_vip) as pri,max(price_vip) as pr FROM".tablename('hotel_room')."where hotel_id= ".$h_id;
@@ -102,19 +105,22 @@ class ScbridgeModule extends WeModule {
 		$hotel=pdo_fetch($sql);
 		switch ($hotel['level']){
 			case 1:
-				$hotel['level']='一星级';
+				$hotel['level']='准4星';
 				break;
 			case 2:
-				$hotel['level']='二星级';
+				$hotel['level']='4星';
 				break;
 			case 3:
-				$hotel['level']='三星级';
+				$hotel['level']='准5星';
 				break;
 			case 4:
-				$hotel['level']='四星级';
+				$hotel['level']='精品';
 				break;
 			case 5:
-				$hotel['level']='五星级';
+				$hotel['level']='5星';
+				break;
+			case 6:
+				$hotel['level']='奢华';
 				break;
 		}
 		$sql_2="SELECT min(price_vip) as pri,max(price_normal) as pr FROM".tablename('hotel_room')."where hotel_id= ".$h_id ." and is_meeting=1";
@@ -302,6 +308,28 @@ class ScbridgeModule extends WeModule {
 		
 	}
 	
+	public function dopaydo(){
+		global $_W, $_GPC;
+		$user_id=$_GPC['user_id'];
+		$acc_number=$_POST['acc_number']*10000;
+		//还是先查出来数据
+		$sql="select * from ims_customer where id= '{$user_id}'";
+		$re=pdo_fetch($sql);
+		$acc_be=($re['account_balance']);
+		$acc_ag=$acc_be+$acc_number;
+		//现在插入数据
+		$sql="update ims_customer set account_balance='{$acc_ag}',status='1'  where id= '{$user_id}'";
+		if(pdo_query($sql)){
+			$sql="select * from ims_customer where id= '{$user_id}'";
+			$result=pdo_fetch($sql);
+			$img_url=$_SESSION['sc_user_info']->headimgurl;
+			include $this->template('scbridge:member_center');
+			include $this->template('scbridge:footer');
+		}
+			
+		
+	}
+	
 	//商城导航
 	public function doshop_center(){
 		global $_W,$_GPC;
@@ -318,22 +346,22 @@ class ScbridgeModule extends WeModule {
 		$goods=pdo_fetchall($sql);
 		switch ($good_type){
 			case 1:
-				$title='产品1';
+				$title='奢侈品';
 				break;
 			case 2:
-				$title='产品2';
+				$title='贵金属';
 				break;
 			case 3:
-				$title='产品3';
+				$title='当季水果';
 				break;
 			case 4:
-				$title='产品4';
+				$title='生活用品';
 				break;
 			case 5:
-				$title='产品5';
+				$title='酒水饮品';
 				break;
 			case 6:
-				$title='产品6';
+				$title='其它产品';
 				break;
 		}
 		include $this->template('scbridge:store');
@@ -348,22 +376,22 @@ class ScbridgeModule extends WeModule {
 		$good=pdo_fetch($sql);
 		switch ($good_type){
 			case 1:
-				$title='产品1';
+				$title='奢侈品';
 				break;
 			case 2:
-				$title='产品2';
+				$title='贵金属';
 				break;
 			case 3:
-				$title='产品3';
+				$title='当季水果';
 				break;
 			case 4:
-				$title='产品4';
+				$title='生活用品';
 				break;
 			case 5:
-				$title='产品5';
+				$title='酒水饮品';
 				break;
 			case 6:
-				$title='产品6';
+				$title='其它产品';
 				break;
 		}
 		include $this->template('scbridge:store-goods');

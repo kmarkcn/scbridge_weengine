@@ -22,7 +22,7 @@
 												<tr>
 													<th>姓名</th>
 													<th>电话</th>
-													<th style='width:150px;'>余额(元)</th>
+													<th style='width:180px;'>账户余额(元)</th>
 													<th>状态</th>
 													<th>操作</th>
 													
@@ -36,11 +36,11 @@
 													<td>{$re['account_balance']}</td>
 													<td>
 														{if $re['status']=='0'}
-															未充值
+															VIP 未充值
 														{else if $re['status']=='1'}
-															已充值
+															VIP 已充值
 														{else}
-															错误
+															状态异常
 														{/if}
 													</td>
 													<td>

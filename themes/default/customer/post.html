@@ -22,7 +22,7 @@
 						<br/><br/>
 						电话&nbsp;&nbsp;<input type="text" name="mobile" class="txt" value="{$customer['mobile']}" autofocus="autofocus" required="required"/>
 						<br/><br/>
-						余额&nbsp;&nbsp;<input type="text" name="account_balance" class="txt" value="{$customer['account_balance']}" autofocus="autofocus" required="required"/>(元)
+						账户余额&nbsp;&nbsp;<input type="text" name="account_balance" class="txt" value="{$customer['account_balance']}" autofocus="autofocus" required="required"/>(元)
 						<br/><br/>
 						状态&nbsp;&nbsp;
 							<select name='status' style='clear:center;'>
@@ -31,19 +31,19 @@
 										selected='selected'
 									{else}
 									{/if}"
-								>未充值</option>
+								>VIP 未充值</option>
 								<option value='1'
 									{if $customer['status']=='1'}
 										selected='selected'
 									{else}
 									{/if}"
-								>已充值</option>
+								>VIP 已充值</option>
 								<option value='-1'
 									{if $customer['status']=='-1'}
 										selected='selected'
 									{else}
 									{/if}"
-								>错误</option>
+								>异常</option>
 							</select>
 						
 					</td>

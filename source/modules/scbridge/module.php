@@ -27,11 +27,14 @@ class ScbridgeModule extends WeModule {
 
 	}
 
+	//主页的调用
 	public function doindex() {
 		global $_W, $_GPC;
 		include $this->template('scbridge:homepage');
 	
 	}
+	
+	//酒店预订中心页面加载
 	public function dohotel_center(){
 		global $_W, $_GPC;
 		//读取数据
@@ -44,13 +47,14 @@ class ScbridgeModule extends WeModule {
 			$hotels[$i]['price_vip']=$pr['pri'];
 			$hotels[$i]['price_normal']=$pr['price_normal'];
 		}
-		//print_r($hotels);
 		$title='酒店预订';
 		include $this->template('scbridge:header');
 		include $this->template('scbridge:member_product');
 		include $this->template('scbridge:footer');
 	}
 	
+	
+	//酒店详细内容页面加载
 	public function dohotel_content(){
 		global $_W,$_GPC;
 		$h_id=$_GPC['h_id'];
@@ -86,18 +90,21 @@ class ScbridgeModule extends WeModule {
 		include $this->template('scbridge:footer');
 		
 	}
-	
+	//酒店预订信息填写页面加载
 	public function dohotel_booking(){
 		global $_W,$_GPC;
 		$h_id=$_GPC['id'];
 		include $this->template('scbridge:room-reserve');
 	}
 	
+	//会议预定信息填写页面加载
 	public function domeeting_booking(){
 		global $_W,$_GPC;
 		$h_id=$_GPC['id'];
 		include $this->template('scbridge:meeting-reserve-write');
 	}	
+	
+	//会议预定详细页面加载
 	public function dohotel_contents(){
 		global $_W,$_GPC;
 		$h_id=$_GPC['h_id'];
@@ -138,7 +145,7 @@ class ScbridgeModule extends WeModule {
 	
 	}
 	
-	//会员注册
+	//会员注册页面加载
 	public function dovip_register(){
 		session_start();
 		global $_W,$_GPC;
@@ -172,7 +179,7 @@ class ScbridgeModule extends WeModule {
 		
 	}
 	
-	//会员中心
+	//会员中心页面加载
 	public function domember_center() {
 		session_start();
 		global $_W,$_GPC;
@@ -194,7 +201,7 @@ class ScbridgeModule extends WeModule {
 		}
 	}
 	
-	//会员注册
+	//会员注册动作实现
 	public function doregisterdo(){
 		session_start();
 		global $_W,$_GPC;
@@ -231,10 +238,9 @@ class ScbridgeModule extends WeModule {
 			}
 				
 		}	
-			
-		
-		
 	}
+	
+	//会议中心页面加载
 	public function domeeting_center(){
 		global $_W,$_GPC;
 		//这里要选出哪些酒店有会议室，然后列出来
@@ -247,20 +253,23 @@ class ScbridgeModule extends WeModule {
 			$hotels[$i]['max_num']=$re['max_num'];
 			switch ($hotels[$i]['level']){
 				case 1:
-					$hotels[$i]['level']='一星级';
-					break;
-				case 2:
-					$hotels[$i]['level']='二星级';
-					break;
-				case 3:
-					$hotels[$i]['level']='三星级';
-					break;
-				case 4:
-					$hotels[$i]['level']='四星级';
-					break;
-				case 5:
-					$hotels[$i]['level']='五星级';
-					break;
+				$hotel[$i]['level']='准4星';
+				break;
+			case 2:
+				$hotel[$i]['level']='4星';
+				break;
+			case 3:
+				$hotel[$i]['level']='准5星';
+				break;
+			case 4:
+				$hotel[$i]['level']='精品';
+				break;
+			case 5:
+				$hotel[$i]['level']='5星';
+				break;
+			case 6:
+				$hotel[$i]['level']='奢华';
+				break;
 			}
 		}
 		$title='会议预定';
@@ -272,7 +281,7 @@ class ScbridgeModule extends WeModule {
 	
 	
 
-	
+	//加载充值页面
 	public function domember_charge(){
 		global $_W, $_GPC;
 		$user_id=$_GPC['user_id'];
@@ -285,7 +294,7 @@ class ScbridgeModule extends WeModule {
 		}
 	}
 	
-	
+	//充值动作执行
 	public function dopaydo(){
 		global $_W, $_GPC;
 		$user_id=$_GPC['user_id'];
@@ -308,29 +317,9 @@ class ScbridgeModule extends WeModule {
 		
 	}
 	
-	public function dopaydo(){
-		global $_W, $_GPC;
-		$user_id=$_GPC['user_id'];
-		$acc_number=$_POST['acc_number']*10000;
-		//还是先查出来数据
-		$sql="select * from ims_customer where id= '{$user_id}'";
-		$re=pdo_fetch($sql);
-		$acc_be=($re['account_balance']);
-		$acc_ag=$acc_be+$acc_number;
-		//现在插入数据
-		$sql="update ims_customer set account_balance='{$acc_ag}',status='1'  where id= '{$user_id}'";
-		if(pdo_query($sql)){
-			$sql="select * from ims_customer where id= '{$user_id}'";
-			$result=pdo_fetch($sql);
-			$img_url=$_SESSION['sc_user_info']->headimgurl;
-			include $this->template('scbridge:member_center');
-			include $this->template('scbridge:footer');
-		}
-			
-		
-	}
 	
-	//商城导航
+	
+	//商城导航页面加载
 	public function doshop_center(){
 		global $_W,$_GPC;
 		$title='商城';
@@ -339,6 +328,8 @@ class ScbridgeModule extends WeModule {
 		include $this->template('scbridge:footer');
 	}
 	
+	
+	//商品s展示页面加载
 	public function doshop_list(){
 		global $_W,$_GPC;
 		$good_type=$_GPC['good_type'];
@@ -368,6 +359,8 @@ class ScbridgeModule extends WeModule {
 		include $this->template('scbridge:footer');
 	}
 	
+	
+	//商品详细页面加载
 	public function dogoods_content(){
 		global $_W,$_GPC;
 		$good_id=$_GPC['good_id'];

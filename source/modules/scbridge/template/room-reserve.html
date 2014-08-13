@@ -33,7 +33,7 @@
             <div class="rr-goods">
             	<table class="rr-table" cellpadding="0" cellspacing="0">
                 	<tr>
-                    	<td class="rr-td-01">入住日期</td>
+                    	<td class="rr-td-01">入住日期<input type='hidden' value='{$h_id}'></td>
                         <td><input class="rr-input-01" id="cal3"/></td>
                     </tr>
                     <tr>
@@ -43,21 +43,21 @@
                     <tr>
                     	<td class="rr-td-01">房间类型</td>
                         <td>
-                        	<ul class="rr-select  rr-input-01 textfocus">
-                            	<li>111听</li>
-                                <li>222听</li>
-                                <li>333听</li>
-                            </ul>
+                        	<select class="rr-select  rr-input-01 textfocus" style='background:#fff;'>
+                            	{loop $roomType $re}
+                            		<option value="{$re['name']}">{$re['name']}</option>
+                            	{/loop}
+                            </select>
                         </td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01">姓<span style="color:transparent;">备注</span>名</td>
-                        <td><input class="rr-input-01"/></td>
+                        <td><input class="rr-input-01" value="{$result['name']}"/></td>
                     </tr>
                     
                     <tr>
                     	<td class="rr-td-01">手<span style="color:transparent;">备注</span>机</td>
-                        <td><input class="rr-input-01"/></td>
+                        <td><input class="rr-input-01" value="{$result['mobile']}"/></td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01">备<span style="color:transparent;">备注</span>注</td>
@@ -65,7 +65,7 @@
                     </tr>
                     <tr>
                     	<td class="rr-td-01"></td>
-                        <td style="height:80px;"><a href="register.html"><img class="public-btn-reserve" style="position:relative; left:0; top:0;" src="./resource/scbridge/img/hotel-reserve_03.png"></a></td>
+                        <td style="height:80px;"><img class="public-btn-reserve" style="position:relative; left:0; top:0;" src="./resource/scbridge/img/hotel-reserve_03.png" onclick='alert(11)'></td>
                     </tr>
                 </table>
             </div>

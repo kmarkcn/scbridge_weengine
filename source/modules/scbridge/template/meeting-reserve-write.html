@@ -44,30 +44,45 @@
                     <tr>
                     	<td class="rr-td-01">议厅名称</td>
                         <td>
-                        	<ul class="rr-select  rr-input-01 textfocus">
-                            	<li>111听</li>
-                                <li>222听</li>
-                                <li>333听</li>
-                            </ul>
+                        	<select class="rr-input-01 textfocus" name='meetingName' id='selectRoom'>
+                            	{loop $meetingType $re}
+                            		<option value="{$re['name']}" class="meetingRoom_{$re['id']}">{$re['name']}</option>
+                            	{/loop}
+                            </select>
                         	
                         </td>
                     </tr>
+                    
                     <tr>
                     	<td class="rr-td-01" style="color:red; height:20px;"></td>
                         <td class="rr-td-02" style="color:red; height:20px;">
-                        	<span>(该厅可容纳<span>200</span>人)</span>
-                            <span>(该厅可容纳<span>300</span>人)</span>
-                            <span>(该厅可容纳<span>400</span>人)</span>
+                        	{loop $meetingType $re}
+                            		<span id="meetingRoom_{$re['id']}" class='meetingRoom'>(该厅最大容纳{$re['max_number']}人)</span>
+                            {/loop}
                             
                         </td>
                     </tr>
+                    <script>
+                    	$(function(){
+                    		function conRoom(){
+                    			$('.meetingRoom').hide();
+                    			var meetingClassName=$('select[name=meetingName]').find("option:selected").attr('class');
+                    			$("#"+meetingClassName).show();
+                    		}
+                    		conRoom();
+                    		$('#selectRoom').change(function(){
+                    			conRoom();
+                    		})
+                    		
+                    	})
+                    </script>
                     <tr>
                     	<td class="rr-td-01">姓<span style="color:transparent;">备注</span>名</td>
-                        <td><input class="rr-input-01"/></td>
+                        <td><input class="rr-input-01" value="{$result['name']}"/></td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01">手<span style="color:transparent;">备注</span>机</td>
-                        <td><input class="rr-input-01"/></td>
+                        <td><input class="rr-input-01" value="{$result['mobile']}"/></td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01">备<span style="color:transparent;">备注</span>注</td>

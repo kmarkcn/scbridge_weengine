@@ -93,15 +93,42 @@ class ScbridgeModule extends WeModule {
 	//酒店预订信息填写页面加载
 	public function dohotel_booking(){
 		global $_W,$_GPC;
-		$h_id=$_GPC['id'];
-		include $this->template('scbridge:room-reserve');
+		//判断你是否已经是会员
+		$oppenid=$_SESSION['sc_user_oppenid'];
+		$sql="select * from ims_customer where open_id = '{$oppenid}'";
+		$result=pdo_fetch($sql);
+		if(!empty($result)){
+			$h_id=$_GPC['h_id'];
+			$sql="select name from ims_hotel_room where hotel_id='{$h_id}' and is_meeting='0'";
+			$roomType=pdo_fetchall($sql);
+			include $this->template('scbridge:room-reserve');
+		}else{
+			$title='会员注册';
+			$reminder='注册';
+			include $this->template('scbridge:header');
+			include $this->template('scbridge:register');
+			include $this->template('scbridge:footer');
+		}
 	}
 	
 	//会议预定信息填写页面加载
 	public function domeeting_booking(){
 		global $_W,$_GPC;
-		$h_id=$_GPC['id'];
-		include $this->template('scbridge:meeting-reserve-write');
+		$oppenid=$_SESSION['sc_user_oppenid'];
+		$sql="select * from ims_customer where open_id = '{$oppenid}'";
+		$result=pdo_fetch($sql);
+		if(!empty($result)){
+			$h_id=$_GPC['h_id'];
+			$sql="select name,min_number,max_number,id from ims_hotel_room where hotel_id='{$h_id}' and is_meeting='1'";
+			$meetingType=pdo_fetchall($sql);
+			include $this->template('scbridge:meeting-reserve-write');
+		}else{
+			$title='会员注册';
+			$reminder='注册';
+			include $this->template('scbridge:header');
+			include $this->template('scbridge:register');
+			include $this->template('scbridge:footer');
+		}
 	}	
 	
 	//会议预定详细页面加载

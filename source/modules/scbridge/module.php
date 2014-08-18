@@ -3,29 +3,12 @@
  * by Terry 2014-08-04
  */
 defined('IN_IA') or exit('Access Denied');
-
 class ScbridgeModule extends WeModule {
-	
-	
-	public function fieldsFormDisplay($rid = 0) {
-		
-	}
-
-	public function fieldsFormValidate($rid = 0) {
-		return true;
-	}
-
-	public function fieldsFormSubmit($rid = 0) {
-		
-	}
-
-	public function ruleDeleted($rid = 0) {
-		
-	}
-
-	public function doFormDisplay() {
-
-	}
+	public function fieldsFormDisplay($rid = 0) {}
+	public function fieldsFormValidate($rid = 0) {return true;}
+	public function fieldsFormSubmit($rid = 0) {}
+	public function ruleDeleted($rid = 0) {}
+	public function doFormDisplay() {}
 
 	//主页的调用
 	public function doindex() {
@@ -343,7 +326,6 @@ class ScbridgeModule extends WeModule {
 			
 		
 	}
-	
 	
 	
 	//商城导航页面加载

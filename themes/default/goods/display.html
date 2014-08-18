@@ -1,103 +1,37 @@
 {template 'common/header'}
-	<script type="text/javascript" src="./resource/script/jquery.zclip.min.js"></script>
+	<link type='text/css' rel='stylesheet' href="./resource/scbridge/css/goods/display.css">
 	<div id="main-column" class="container-12 clearfix member-center">
 		<div class="column2 grid-3 alpha omega">
 			{template 'goods/nav'}
 		</div>
-		
-		
 		<div class="column1 grid-10 alpha omega">
 			<!--遍历查询出来的数组-->
 			<div class="list">
-			
 				{loop $goods $re}
-				<div class='ho_con'>
+				<div class='ho_con' id='ho_con' >
 					<div class='ho_con_top'>
-					<h5>
+						<h5>
 							<a href="{php echo create_url('goods/post', array('id' => $re['id']))}">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
 							<a onclick="return confirm('删除商品将不可恢复，确认吗？');return false;" href="{php echo create_url('goods/delete', array('id' => $re['id']))}" style='margin-right:40px;'>删除</a>
-					</h5>
+						</h5>
 						<span class='ho_con_img'>
 							<img  src="{$_W['attachurl']}{$re['icon']}" width='40' height='40'>
 						</span>
 						<div class='ho_info'>
-						<a><b>名称</b>：{$re['name']}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<a><b>类型</b>：{$re['good_type']}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<a><b>库存</b>：{$re['good_stock']}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<a><b>价格</b>：{$re['price']}</a>
+							<a><b>名称</b>：{$re['name']}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a><b>类型</b>：{$re['good_type']}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a><b>库存</b>：{$re['good_stock']}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a><b>价格</b>：{$re['price']}</a>
 						</div>
 					</div>
-					
 				</div>
-				
 				{/loop}
 				<h6>
-							<a href='{php echo create_url('goods/display', array('page' => $page_pro))}'>上一页</a>
-								<a style='color:red;'>{$page}</a>/{$page_total}
-							<a href='{php echo create_url('goods/display', array('page' => $page_next))}'>下一页</a>
+					<a href='{php echo create_url('goods/display', array('page' => $page_pro))}'>上一页</a>
+					<a style='color:red;'>{$page}</a>/{$page_total}
+					<a href='{php echo create_url('goods/display', array('page' => $page_next))}'>下一页</a>
 				</h6>
 			</div>
-			
-			
-			
-			
-			
 		</div>
 	</div>
 {template 'common/footer'}
-<style type='text/css'>
-	.ho_con{
-		border:1px solid #f2f2f2;
-		width:90%;
-		margin:auto;
-		margin-bottom:30px;
-	}
-	.ho_con_top{
-		height:80px;
-	}
-	.ho_con_img{
-		height:150px;
-		width:150px;
-		display:inline-block;
-		position:relative;
-		left:30px;
-	}
-	
-	.ho_con .ho_info{
-		position:relative;
-		top:-150px;
-		left:160px;
-		width:70%;
-	}
-	.ho_con h5{
-		font-size:12px;
-		text-align:right;
-		font-weigth:100;
-		background:#ddd;
-		height:23px;
-		padding-top:5px;
-		
-	}
-	.ho_con h5 a{
-		padding:4px;
-		color:#7599DB;
-		
-	}
-	.ho_con .ho_info a{
-		line-height:35px;
-	}
-	.ho_des{
-		border:1px solid #eee;
-		position:relative;
-		top:-50px;
-		width:80%;
-		margin:auto;
-		text-align:left;
-		margin-left:30px;
-		padding:20px;
-	}
-	.list h6{
-		text-align:center;
-		font-size:14px;
-	}
-</style>

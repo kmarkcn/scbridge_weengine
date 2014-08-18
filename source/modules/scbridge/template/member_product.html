@@ -6,18 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <link rel="stylesheet" type="text/css" href="./resource/scbridge/css/public.css" />
 <link rel="stylesheet" type="text/css" href="./resource/scbridge/css/member-product.css"/>
-<script type="text/javascript" src="./resource/scbridge/js/jquery.min.js"></script>
-<title>homepage</title>
 </head>
 
 <body>
   <div class="ma" style="height:100%">
-    	
     <div class="toubu" style="padding-top:60px;">
       <img src="./resource/scbridge/img/member-product/member- product_01.png"width="100%">
     </div>
-        <!--以上是头部-->
-        <!--以下是中间内容-->
+       
    
     
     {loop $hotels $re}
@@ -31,21 +27,17 @@
         	<span class="mp-span-01">预订价&yen;<span>{$re['price_normal']}</span></span>
             <p class="mp-p1">
             	<span class="mp-span-bold">&yen;</span><span class="mp-span-01">{$re['price_vip']}</span><br>
-                会员价
+                	会员价
             </p>
             <a href="./index.php?act=module&name=scbridge&do=hotel_content&h_id={$re['id']}"><img class="mp-img" style="width:80px;" src="./resource/scbridge/img/member-product/member- product_04.png"></a>
         </div>
       </div>
     </div>
-    
     {/loop}
     
     
-    
-    	<div style="height:43px;"></div>
-        <!--以上是中间内容-->
-        
-     
+   
+       
         
 </div>
 </body>

@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+	.ho_con{
+		border:1px solid #f2f2f2;
+		width:90%;
+		margin:auto;
+		margin-bottom:30px;
+	}
+	.ho_con_top{
+		height:80px;
+	}
+	.ho_con_img{
+		height:150px;
+		width:150px;
+		display:inline-block;
+		position:relative;
+		left:30px;
+	}
+	#dt_basic{
+		width:100%;
+		margin-top:20px;
+	}
+	#dt_basic td{
+		border:1px solid #ccc;
+		text-align:center;
+	}
+	#dt_basic th{
+		border:1px solid #ccc;
+		text-align:center;
+		font-weight:bold;
+		height:30px;
+		line-height:30px;
+		background:#f5f5f5 ;
+	}
+	
+	.row ul{
+		float:right;
+	}
+	.row ul li{
+		float:left;
+		margin:0px 10px;
+	}
+	select{
+		float:right;margin-right:0px;
+	}
+

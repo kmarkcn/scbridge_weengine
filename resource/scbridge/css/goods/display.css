@@ -1,0 +1,54 @@
+	.ho_con{
+		border:1px solid #f2f2f2;
+		width:90%;
+		margin:auto;
+		margin-bottom:30px;
+	}
+	.ho_con_top{
+		height:80px;
+	}
+	.ho_con_img{
+		height:150px;
+		width:150px;
+		display:inline-block;
+		position:relative;
+		left:30px;
+	}
+	
+	.ho_con .ho_info{
+		position:relative;
+		top:-150px;
+		left:160px;
+		width:70%;
+	}
+	.ho_con h5{
+		font-size:12px;
+		text-align:right;
+		font-weigth:100;
+		background:#ddd;
+		height:23px;
+		padding-top:5px;
+		
+	}
+	.ho_con h5 a{
+		padding:4px;
+		color:#7599DB;
+		
+	}
+	.ho_con .ho_info a{
+		line-height:35px;
+	}
+	.ho_des{
+		border:1px solid #eee;
+		position:relative;
+		top:-50px;
+		width:80%;
+		margin:auto;
+		text-align:left;
+		margin-left:30px;
+		padding:20px;
+	}
+	.list h6{
+		text-align:center;
+		font-size:14px;
+	}

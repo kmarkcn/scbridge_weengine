@@ -754,3 +754,78 @@ function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
 	}
 
 }
+
+
+/*  author:terry
+ *  time:2014-08-18
+ *  content:对modulel里面switch重复使用的问题进行封装,对数组的一个键值判断可以直接变成自己所需要的结果.
+ *  variable $compareVar:要赋值的变量名;
+ *  array $array:要遍历的键值对数组
+ */
+
+function pe_switchArr($compareVar,$arr){
+	$msg=0;
+	foreach ($arr as $key => $val){
+		if($compareVar==$key){
+			$msg=1;
+			$compareVar=$val;
+			break;
+		}
+	}
+	if($msg){
+		return $compareVar;
+	}else{
+		die('Sorry,this arr have no match to this avariable');
+	}
+	
+}
+
+/* author:terry
+ * time:2014-08-18
+ * content:直接从一个表中选出数据,返回结果集
+ */
+
+function pe_fetchAll($table){
+	$table=tablename($table);
+	$sql="select * from {$table} ";
+	$results=pdo_fetchall($sql);
+	return $results;
+	
+}
+
+/* @author 	terry
+ * time    	2014-08-18
+ * content 	实现指定表中指定一句选择一条数据
+ */
+
+function pe_fetchOneByField($table,$str,$field_1,$fieldVal_1,$field_2,$fieldVal_2){
+	$table=tablename($table);
+	if(empty($field_2)){
+		$sql="select ".$str." from ".$table." where ".$field_1." = ".$fieldVal_1;
+	}else{
+		$sql="select ".$str." from ".$table." where ".$field_1." = ".$fieldVal_1." and ".$field_2." = ".$fieldVal_2;
+	}
+	$result=pdo_fetch($sql);
+	return $result;
+	
+}
+
+/* @author 	terry
+ * time    	2014-08-18
+* content 	实现指定表中指定一句选择所有数据
+*/
+
+function pe_fetchAllByField($table,$str,$field_1,$fieldVal_1,$field_2,$fieldVal_2){
+	$table=tablename($table);
+	if(empty($field_2)){
+		$sql="select ".$str." from ".$table." where ".$field_1." = ".$fieldVal_1;
+	}else{
+		$sql="select ".$str." from ".$table." where ".$field_1." = ".$fieldVal_1." and ".$field_2." = ".$fieldVal_2;
+	}
+	$result=pdo_fetchall($sql);
+	return $result;
+	
+}
+
+
+

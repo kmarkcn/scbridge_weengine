@@ -1,0 +1,153 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	margin:64px 0 43px 0 !important;
+	background-color: #f5f5f5;
+}
+body,html{
+	height: auto !important;
+	
+}
+.mca-content{
+	
+	position: relative;
+	
+	
+}
+.mca-img{
+	text-align: center;
+}
+.mca-write{
+	position:absolute;
+	left: 26.5%;
+	top: 83%;
+	width: 45%;
+	height: 60px;
+	font-size: 1em;
+	line-height: 1em;
+	color: #999;
+	border:1px solid transparent;
+	background-color: white;
+	resize: none;
+	
+}
+
+.mca-table{
+	position: absolute;
+	left: 0;
+	top: 60%;
+	width: 100%;
+	
+}
+.mca-table td{
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+}
+.mca-span-01{
+	font-size: 1.2em;
+}
+.mca-table-02{
+	width: 100%;
+}
+.mca-table-02 td{
+	padding-top: 5%;
+	text-align: center;
+	
+}
+
+
+/*新添*/
+.sp_content{
+	position: relative;
+	margin: 35% auto 0 auto; ;
+	padding: 3%;
+	width: 70%;
+	border: 1px solid #666;
+	font-family: "微软雅黑";
+}
+.sp_c_bg{
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+}
+.sp_content>div{ text-align: center;}
+.sp_div_01{ line-height: 6rem; margin-bottom: -2rem;}
+.sp_span_01
+,.sp_span_02
+,.sp_span_04{
+		color: #ef6d6d;
+}
+.sp_span_01{ font-size: 3rem;}
+.sp_span_02{ font-size: 4.5rem;}
+.sp_span_03
+,.sp_div_02{
+	font-size: 1rem;
+	line-height: 1.5rem;
+	color: #999;
+}
+.sp_div_03{
+	margin-bottom: 0.5rem;
+	font-size: 1.5rem;
+	line-height: 1.5rem;
+	font-weight: bold;
+	color: transparent;
+}
+.sp_content .sp_div_true{ color:#666}
+.sp_img_01{
+	width: 20%;
+	cursor: pointer;
+}
+.sp_div_05{
+	font-size: 0.8rem;
+	line-height: 1.5rem;
+	color: #666;
+}
+.sp_span_04{ font-size: 1.2rem;}
+.sp_img_02{ width: 100%;}
+.sp_div_sure{ 
+	margin-top: 4%;
+	padding-bottom: 4%;
+	text-align: center;
+}
+.sp_btn_sure{
+	width: 40%;
+	cursor: pointer;
+}
+
+/*确认充值*/
+.sp_pay{
+	position: fixed;
+	top: 50%;
+	left: 0;
+	z-index: 9999;
+	width: 100%;
+	background-color: #ef6d6d;
+	box-shaodw: 0 0 6px #ccc;
+}
+.sp_pay_ul li{
+	font-family: "微软雅黑";
+	text-align: center;
+	color: white;
+	
+}
+.p_pay_li_01{
+	padding-top: 15%;
+	font-size: 1.8rem;
+	line-height: 3rem;
+}
+.p_pay_li_02{
+	padding-bottom: 8%;
+	font-size: 1.4rem;
+	line-height: 2rem;
+}
+.p_pay_li_03{
+	padding-bottom: 2%;
+}
+.sp_btn_pay{
+	width: 25%;
+}

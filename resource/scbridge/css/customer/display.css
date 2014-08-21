@@ -15,15 +15,15 @@
 		position:relative;
 		left:30px;
 	}
-	#dt_basic{
+	#dt_basic,#dt_basic1{
 		width:100%;
 		margin-top:20px;
 	}
-	#dt_basic td{
+	#dt_basic td,#dt_basic1 td{
 		border:1px solid #ccc;
 		text-align:center;
 	}
-	#dt_basic th{
+	#dt_basic th,#dt_basic1 th{
 		border:1px solid #ccc;
 		text-align:center;
 		font-weight:bold;

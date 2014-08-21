@@ -1,0 +1,90 @@
+<!DOCTYPE HTML> 
+<html lang="en-us">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<link rel="stylesheet" type="text/css" href="./resource/scbridge/css/public.css" />
+<link rel="stylesheet" type="text/css" href="./resource/scbridge/css/store-reserve-write.css" />
+<script type="text/javascript" src="./resource/scbridge/js/jquery.min.js"></script>
+
+<title>商品预定填写</title>
+
+</head>
+
+<body>
+	<div class="srw">
+    	<!--以下是头部-->
+        <div class="public-head-father" style="position:relative; left:0; top:0;">
+            <div class="public-head">
+                <a onclick='window.history.back(-1);'><img class="public-left"  src="./resource/scbridge/img/header-left.png"></a>
+                商品预定填写
+            </div>
+        </div>
+        <!--以上是头部-->
+        
+        
+        <!--以下是中间内容-->
+        <div class="srw-content" style="padding:20px 0;">
+        	
+            <div class="srw-goods">
+             <form class="uk-form uk-form-horizontal" method="post" id="applyform" action="./index.php?act=module&name=scbridge&do=reserveDo">
+    			<table class="srw-table" cellpadding="0" cellspacing="0">
+    				<input type="hidden" name="reserveType" value="goodsRes">
+                	<input type="hidden" name="goodsId" value="{$g_id}">
+                    <tr>
+                    	<td class="srw-td-01">购买数量</td>
+                        <td>
+                            <select class="srw-select  srw-input-01 textfocus" name="goodsNumber">
+                            	<option value="1" >1</option>
+                                <option value="2" >2</option>
+                                <option value="3" >3</option>
+                                <option value="4" >4</option>
+                                <option value="5" >5</option>
+                                <option value="6" >6</option>
+                                <option value="7" >7</option>
+                                <option value="8" >8</option>
+                                <option value="9" >9</option>
+                                <option value="10">10</option>
+                            </select>
+                        	
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td class="srw-td-01">姓<span style="color:transparent;">备注</span>名</td>
+                        <td><input class="srw-input-01" value="{$result['name']}" name="customerName"/></td>
+                    </tr>
+                    <tr>
+                    	<td class="srw-td-01">手<span style="color:transparent;">备注</span>机</td>
+                        <td><input class="srw-input-01" value="{$result['mobile']}" name="customerTel"/></td>
+                    </tr>
+                    <tr>
+                    	<td class="srw-td-01">地<span style="color:transparent;">备注</span>址</td>
+                        <td><textarea class="srw-area textfocus" name="address"></textarea></td>
+                    </tr>
+                    <tr>
+                    	<td class="srw-td-01"></td>
+                         <td style="height:80px;">
+                        		<button  id="submitBtn" type="submit" style='width:50%;height:35px;font-size:16px;color:#fff;background:#ff9c00;border:0px;border-radius:3px;margin-top:5px;'>预订</button> 	
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+            
+            
+        </div>
+        
+        <!--以上是中间内容-->
+        
+        
+        
+        <!--以下是预定-->
+        <!--以上是预定-->
+        
+        
+     
+        
+</div>
+</body>
+</html>

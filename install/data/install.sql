@@ -349,8 +349,8 @@ CREATE TABLE IF NOT EXISTS `ims_hotel_booking`(
 `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
 `customer_id` int(10) unsigned NOT NULL COMMENT '用户ID',
 `room_id` int(10) unsigned NOT NULL COMMENT '房间ID',
-`start_date` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '入住日期',
-`end_date` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '退房日期',
+`start_date` varchar(50) unsigned NOT NULL DEFAULT '0' COMMENT '入住日期',
+`end_date` varchar(50) unsigned NOT NULL DEFAULT '0' COMMENT '退房日期',
 `total_price` decimal(10,2) NOT NULL COMMENT '期间总价',
 `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '预定状态，0为正常，-1为已取消',
 `remarks` varchar(2000) NOT NULL COMMENT '备注信息',
@@ -365,4 +365,23 @@ CREATE TABLE IF NOT EXISTS `ims_hotel_booking`(
 */
 
 ALTER TABLE `ims_hotel_room` MODIFY min_number int(4) COMMENT '最小人数';
-ALTER TABLE `ims_hotel_room` MODIFY max_number int(4) COMMENT '最小人数';
+ALTER TABLE `ims_hotel_room` MODIFY max_number int(4) COMMENT '最大人数';
+
+
+/*
+	2014-08-21
+	by terry
+	增加商品订单表
+*/
+
+CREATE TABLE IF NOT EXISTS `ims_goods_booking`(
+`id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
+`customer_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+`goods_id` int(10) unsigned NOT NULL COMMENT '商品ID',
+`goods_number` int(2) NOT NULL COMMENT '商品数量',
+`total_price` decimal(10,2) NOT NULL COMMENT '商品总价',
+`status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '预定状态，0为正常，-1为已取消',
+`address` varchar(2000) NOT NULL COMMENT '地址信息',
+`lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

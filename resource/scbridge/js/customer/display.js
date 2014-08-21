@@ -8,12 +8,46 @@ $(document).ready(function() {
 			 * BASIC
 			 */
 			$('#dt_basic').dataTable({
-				"sPaginationType" : "bootstrap_full"
+				"sPaginationType" : "bootstrap_full",
+				"oLanguage": {
+					"sZeroRecords": "抱歉， 没有找到",
+					"sInfo": "共 _TOTAL_ 条数据",
+					"sInfoEmpty": "没有数据",
+					"sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+					"oPaginate": {
+					"sFirst": "首页",
+					"sPrevious": "前一页",
+					"sNext": "后一页",
+					"sLast": "尾页"
+					},
+					"sZeroRecords": "没有检索到数据",
+					"sProcessing": "<img src='./loading.gif' />"
+					}
+
+			});
+			$('#dt_basic1').dataTable({
+				"sPaginationType" : "bootstrap_full",
+				"oLanguage": {
+					"sZeroRecords": "抱歉， 没有找到",
+					"sInfo": "共 _TOTAL_ 条数据",
+					"sInfoEmpty": "没有数据",
+					"sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+					"oPaginate": {
+					"sFirst": "首页",
+					"sPrevious": "前一页",
+					"sNext": "后一页",
+					"sLast": "尾页"
+					},
+					"sZeroRecords": "没有检索到数据",
+					"sProcessing": "<img src='./loading.gif' />"
+					}
+
 			});
 	
 			/* END BASIC */
 	
 			/* Add the events etc before DataTables hides a column */
+			/*
 			$("#datatable_fixed_column thead input").keyup(function() {
 				oTable.fnFilter(this.value, oTable.oApi._fnVisibleToColumnIndex(oTable.fnSettings(), $("thead input").index(this)));
 			});
@@ -43,39 +77,10 @@ $(document).ready(function() {
 				},
 				"bSortCellsTop" : true
 			});		
+			*/
+	
+	
 			
-	
-	
-			/*
-			 * COL ORDER
-			 */
-			$('#datatable_col_reorder').dataTable({
-				"sPaginationType" : "bootstrap",
-				"sDom" : "R<'dt-top-row'Clf>r<'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
-				"fnInitComplete" : function(oSettings, json) {
-					$('.ColVis_Button').addClass('btn btn-default btn-sm').html('Columns <i class="icon-arrow-down"></i>');
-				}
-			});
-			
-			/* END COL ORDER */
-	
-			/* TABLE TOOLS */
-			$('#datatable_tabletools').dataTable({
-				"sDom" : "<'dt-top-row'Tlf>r<'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
-				"oTableTools" : {
-					"aButtons" : ["copy", "print", {
-						"sExtends" : "collection",
-						"sButtonText" : 'Save <span class="caret" />',
-						"aButtons" : ["csv", "xls", "pdf"]
-					}],
-					"sSwfPath" : "js/plugin/datatables/media/swf/copy_csv_xls_pdf.swf"
-				},
-				"fnInitComplete" : function(oSettings, json) {
-					$(this).closest('#dt_table_tools_wrapper').find('.DTTT.btn-group').addClass('table_tools_group').children('a.btn').each(function() {
-						$(this).addClass('btn-sm btn-default');
-					});
-				}
-			});
 		
 		/* END TABLE TOOLS */
 		})

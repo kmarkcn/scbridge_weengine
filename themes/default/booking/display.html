@@ -1,0 +1,131 @@
+{template 'common/header'}
+	<link rel='stylesheet' type='text/css' href='./resource/scbridge/css/customer/display.css'>
+	<script type="text/javascript" src="./resource/script/jquery.zclip.min.js"></script>
+	<script data-pace-options='{ "restartOnRequestAfter": true }' src="./resource/scbridge/js/plugin/pace/pace.min.js"></script>
+	<script src="./resource/scbridge/js/bootstrap/bootstrap.min.js"></script>
+	<!-- MAIN APP JS FILE -->
+	<script src="./resource/scbridge/js/app.js"></script>
+	<!-- PAGE RELATED PLUGIN(S) -->
+	<script src="./resource/scbridge/js/plugin/datatables/jquery.dataTables-cust.min.js"></script>
+	<script src="./resource/scbridge/js/plugin/datatables/ColReorder.min.js"></script>
+	<script src="./resource/scbridge/js/plugin/datatables/FixedColumns.min.js"></script>
+	<script src="./resource/scbridge/js/plugin/datatables/ColVis.min.js"></script>
+	<script src="./resource/scbridge/js/plugin/datatables/ZeroClipboard.js"></script>
+	<script src="./resource/scbridge/js/plugin/datatables/media/js/TableTools.min.js"></script>
+	<script src="./resource/scbridge/js/plugin/datatables/DT_bootstrap.js"></script>
+	
+	<!--  引进自己的js -->
+	<script src='./resource/scbridge/js/customer/display.js'></script>
+	
+	<!-- 表格插件 -->
+	<div id="main-column" class="container-12 clearfix member-center">
+		<div class="column2 grid-3 alpha omega">
+			{template 'booking/nav'}
+		</div>
+		<div class="column1 grid-10 alpha omega">
+		
+			<!--表格展示-->
+			<div class="row" id="table_1">
+					<div  id="wid-id-0" data-widget-editbutton="false" style='border-top:1px solid #ddd;width:90%;padding:40px 10px;margin:auto;margin-top:30px;'> 
+							<select name="bookingType1" id="bookingType1">
+								<option value="0">	
+									酒店订单
+								</option>
+								<option value="1">
+									商品订单
+								</option>
+							</select>
+							<script>
+								$(function(){
+									$('#bookingType1').change(function(){
+										var bookingtype = $('#bookingType1').val();
+										if(bookingtype==0)
+										{
+											$("#table_1").show();
+											$("#table_2").css("display","none");
+										}
+										else if(bookingtype==1)
+										{
+											$("#table_1").show();
+											$("#table_2").show();
+										}
+										
+										
+									})
+								})
+							</script>
+						<table id="dt_basic" style="font-size:8px;">
+					
+								<thead>
+									<tr>
+										<th>姓名</th>
+										<th>电话</th>
+										<th>酒店</th>
+										<th>时间</th>
+										<!-- <th>价格(元)</th> <th>备注</th>-->
+										
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									{loop $hotels $re}
+										<tr>
+											<td>{$re['name']}</td>
+											<td>{$re['tel']}</td>
+											<td>{$re['hotel']}/{$re['room']}</td>
+											<td>{$re['start_date']}至{$re['end_date']}</td>
+											<!-- <td>{$re['total_price']}</td> <td>{$re['remarks']}</td>-->
+											
+											<td>
+												<a onclick="return confirm('删除用户将不可恢复，确认吗？');return false;" href="{php echo create_url('booking/delete', array('id' => $re['id'],'type'=>'hotel'))}" >删除</a>
+											</th>
+										</tr>
+									{/loop}
+								</tbody>
+							</table>
+			</div>
+			
+			
+			
+			
+			<!--表格展示-->
+			<div class="row" id="table_2" style="display:none;">
+					<div  id="wid-id-0" data-widget-editbutton="false" style='border-top:1px solid #ddd;width:90%;padding:40px 10px;margin:auto;margin-top:30px;'> 
+							
+						<table id="dt_basic1" style="font-size:8px;">
+					
+								<thead>
+									<tr>
+										<th>姓名</th>
+										<th>电话</th>
+										<th>商品</th>
+										<th>数量</th>
+										<th>地址</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									{loop $goods $re}
+										<tr>
+											<td>{$re['cus']}</td>
+											<td>{$re['tel']}</td>
+											<td>{$re['name']}</td>
+											<td>{$re['goods_number']}</td>
+											
+											<td>{$re['address']}</td>
+											
+											<td>
+												<a onclick="return confirm('删除用户将不可恢复，确认吗？');return false;" href="{php echo create_url('booking/delete', array('id' => $re['id'],'type'=>'goods'))}" >删除</a>
+											</th>
+										</tr>
+									{/loop}
+								</tbody>
+							</table>
+			</div>
+	</div>
+{template 'common/footer'}
+
+
+
+		
+

@@ -17,14 +17,17 @@
    
     
     {loop $hotels $re}
-    <div class="zhongjian" >
-      <div class="fangjian"><a href="#"><img style=" width:100%; height:100%;" src="{$_W['attachurl']}{$re['icon']}" ></a></div>
+   
+     <div class="zhongjian" >
+      <a href="./index.php?act=module&name=scbridge&do=hotel_content&h_id={$re['id']}">
+      <div class="fangjian"><img style=" width:100%; height:100%;" src="{$_W['attachurl']}{$re['icon']}" ></div>
       <div class="wenbeng"><h3 style='margin-bottom:5px;'>{$re['name']}</h3>
       	{php print_r($re['description'])}
       </div>
+      </a>
       <div class="mp-foot-father">
       	<div class="mp-foot">
-        	<span class="mp-span-01">预订价&yen;<span>{$re['price_normal']}</span></span>
+        	<span class="mp-span-01">h预订价&yen;<span>{$re['price_normal']}</span></span>
             <p class="mp-p1">
             	<span class="mp-span-bold">&yen;</span><span class="mp-span-01">{$re['price_vip']}</span><br>
                 	会员价
@@ -33,6 +36,7 @@
         </div>
       </div>
     </div>
+   
     {/loop}
     
     

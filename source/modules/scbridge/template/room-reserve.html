@@ -29,43 +29,49 @@
         <div class="rr-content" style="padding:20px 0;">
         	<!--<img style="width:100%;" src="./resource/scbridge/img/hotel-reserve/hotel-reserve_01.png">-->
             <div class="rr-goods">
+            	<form class="uk-form uk-form-horizontal" method="post" id="applyform" action="./index.php?act=module&name=scbridge&do=reserveDo">
             	<table class="rr-table" cellpadding="0" cellspacing="0">
+                	<input type="hidden" name="reserveType" value="normalRoom">
+                	<input type="hidden" name="hotelId" value="{$h_id}">
                 	<tr>
                     	<td class="rr-td-01">入住日期<input type='hidden' value='{$h_id}'></td>
-                        <td><input class="rr-input-01" id="cal3"/></td>
+                        <td><input class="rr-input-01" id="cal3" name="startDate"/></td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01">结束日期</td>
-                        <td><input class="rr-input-01" id="cal4"/></td>
+                        <td><input class="rr-input-01" id="cal4" name="endDate"/></td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01">房间类型</td>
                         <td>
-                        	<select class="rr-select  rr-input-01 textfocus" style='background:#fff;'>
+                        	<select class="rr-select  rr-input-01 textfocus" style='background:#fff;' name="roomType">
                             	{loop $roomType $re}
-                            		<option value="{$re['name']}">{$re['name']}</option>
+                            		<option value="{$re['id']}">{$re['name']}</option>
                             	{/loop}
                             </select>
                         </td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01">姓<span style="color:transparent;">备注</span>名</td>
-                        <td><input class="rr-input-01" value="{$result['name']}"/></td>
+                        <td><input class="rr-input-01" value="{$result['name']}" name="customerName"/></td>
                     </tr>
                     
                     <tr>
                     	<td class="rr-td-01">手<span style="color:transparent;">备注</span>机</td>
-                        <td><input class="rr-input-01" value="{$result['mobile']}"/></td>
+                        <td><input class="rr-input-01" value="{$result['mobile']}" name="customerTel"/></td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01">备<span style="color:transparent;">备注</span>注</td>
-                        <td><textarea class="rr-area textfocus">选填项</textarea></td>
+                        <td><textarea class="rr-area textfocus" name="remark"></textarea></td>
                     </tr>
                     <tr>
                     	<td class="rr-td-01"></td>
-                        <td style="height:80px;"><img class="public-btn-reserve" style="position:relative; left:0; top:0;" src="./resource/scbridge/img/hotel-reserve_03.png" onclick='alert(11)'></td>
+                        <td style="height:80px;">
+                        		<button  id="submitBtn" type="submit" style='width:50%;height:35px;font-size:16px;color:#fff;background:#ff9c00;border:0px;border-radius:3px;margin-top:5px;'>预订</button> 	
+                        </td>
                     </tr>
                 </table>
+                </form>
             </div>
             
             
@@ -82,7 +88,7 @@
         
        <!--以下是浮动的底部-->
        <div class="public-foot"  style="position:relative; left:0; top:0;">
-       		<a href="tel:18628019101"><img class="public-foot-01" src="./resource/scbridge/img/member-center_16.png"></a>
+       		<a href="tel:13982054177"><img class="public-foot-01" src="./resource/scbridge/img/member-center_16.png"></a>
             <img class="public-foot-02" src="./resource/scbridge/img/member-center_17.png">
             <img class="public-foot-03" src="./resource/scbridge/img/member-center_18.png" onclick="javascript:window.location='./index.php?act=module&name=scbridge&do=index'">
        </div>

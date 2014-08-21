@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>核实信息</title>
+</head>
+<body>
+	<form class="uk-form uk-form-horizontal" method="post" id="applyform" action="./index.php?act=module&name=scbridge&do=customerPay">
+        <p>需支付：{$needMoney}</p>
+		<p>余额:{$balanceMoney}</p>
+		<input type="hidden" name="needMoney" value="{$mMoney}">
+		<input type="hidden" name="balanceMoney" value="{$bMoney}">
+		<input type="hidden" name="customerId" value="{$customerId}">
+		<input type="hidden" name="hotel_id" value="{$hotel_id}">
+		<input type="hidden" name="roomId" value="{$roomId}">
+		<input type="hidden" name="startDate" value="{$startDate}">
+		<input type="hidden" name="endDate" value="{$endDate}">
+		<input type="hidden" name="customerName" value="{$customerName}">
+		<input type="hidden" name="customerTel" value="{$customerTel}">
+		<input type="hidden" name="remark" value="{$remark}">
+		<input type="submit" value="支付">
+	</form>
+</body>
+</html>

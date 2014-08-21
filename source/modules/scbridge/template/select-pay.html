@@ -1,0 +1,77 @@
+<!DOCTYPE HTML> 
+<html lang="en-us">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<link rel="stylesheet" type="text/css" href="./resource/scbridge/css/select-pay.css" />
+<link rel="stylesheet" type="text/css" href="./resource/scbridge/css/public.css" />
+<script type="text/javascript" src="./resource/scbridge/js/jquery.min.js"></script>
+<title>选择支付方式</title>
+</head>
+
+<body>
+	<div class="sp">
+    	<!--以下是头部-->
+        <div class="public-head-father">
+        	<div class="public-head">
+                <a href="member-center.html"><img class="public-left"  src="./resource/scbridge/img/header-left.png"></a>
+                选择支付方式
+            </div>
+        </div>
+        <div class="mp-head" style="margin-top:-4px;display:none;">
+        	<a href="member-center.html"><img class="mp-h-img" src="./resource/scbridge/img/member-center_103.png"></a>
+            <p class="mp-h-p">
+            	<span class="mp-name">{$customerName}</span>
+                <span class="mp-h-div">VIP 会员</span>
+            </p>
+        </div>
+        <!--以上是头部-->
+        <!--以下是中间内容-->
+        <div class="sp_content">
+        	<img class="sp_c_bg" src="./resource/scbridge/img/select-pay/select-pay_04.png">
+        	<div class="sp_div_01">
+            	<span class="sp_span_01">&yen;</span><span class="sp_span_02">{$needMoney}</span><span class="sp_span_03">元</span>
+            </div>
+            <div class="sp_div_02">应付金额</div>
+            <div class="sp_div_03">||</div>
+            <div class="sp_div_04"><a href="#"><img class="sp_img_01" src="./resource/scbridge/img/select-pay/select-pay_03.png"></a></div>
+            <div class="sp_div_05">当前余额<span class="sp_span_04">
+            	{if empty($balanceMoney)}
+            		0
+            	{else}
+            		{$balanceMoney}
+            	{/if}
+            </span>元</div>
+        	<div class="sp_div_06"><img class="sp_img_02" src="./resource/scbridge/img/select-pay/select-pay_02.png"></div>
+        </div>
+        
+        <div class="sp_div_sure">
+          
+	       <form class="uk-form uk-form-horizontal" method="post" id="applyform" action="./index.php?act=module&name=scbridge&do=customerPay"> 
+	       		<input type="hidden" name="payThing" value="{$payThing}">
+		        <input type="hidden" name="needMoney" value="{$mMoney}">
+				<input type="hidden" name="balanceMoney" value="{$bMoney}">
+				<input type="hidden" name="customerId" value="{$customerId}">
+				<input type="hidden" name="hotel_id" value="{$hotel_id}">
+				<input type="hidden" name="roomId" value="{$roomId}">
+				<input type="hidden" name="startDate" value="{$startDate}">
+				<input type="hidden" name="endDate" value="{$endDate}">
+				<input type="hidden" name="customerName" value="{$customerName}">
+				<input type="hidden" name="customerTel" value="{$customerTel}">
+				<input type="hidden" name="remark" value="{$remark}">
+				<input type="hidden" name="goods_id" value="{$goods_id}">
+				<input type="hidden" name="goodsNumber" value="{$goodsNumber}">
+				<input type="hidden" name="address" value="{$address}">
+		        <a>
+		        	<button  id="submitBtn" type="submit" style='width:50%;height:35px;font-size:16px;color:#fff;background:#ff9c00;border:0px;border-radius:3px;margin-top:5px;'>确定</button> 	
+		        </a>
+	        </form>
+        </div>
+      
+        
+      
+        
+</div>
+</body>
+</html>

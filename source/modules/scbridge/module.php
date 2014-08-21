@@ -66,7 +66,7 @@ class ScbridgeModule extends WeModule {
 		$oppenid=$_SESSION['sc_user_oppenid'];
 		$result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
 		if(!empty($result)){
-			$roomType=pe_fetchAllByField('hotel_room','name','hotel_id',$h_id,'is_meeting','0');
+			$roomType=pe_fetchAllByField('hotel_room','id,name','hotel_id',$h_id,'is_meeting','0');
 			include $this->template('scbridge:room-reserve');
 		}else{
 			$title='会员注册';
@@ -296,7 +296,7 @@ class ScbridgeModule extends WeModule {
 	}
 	
 	
-	//商品s展示页面加载
+	//商品展示页面加载
 	public function doshop_list(){
 		global $_W,$_GPC;
 		$good_type=$_GPC['good_type'];
@@ -318,5 +318,248 @@ class ScbridgeModule extends WeModule {
 		include $this->template('scbridge:store-goods');
 		include $this->template('scbridge:footer');
 	}
+	
+	//商品购买信息填写页面
+	public function dogoods_booking()
+	{
+	    global $_W,$_GPC;
+	    $g_id=$_GPC['g_id'];
+	    $oppenid=$_SESSION['sc_user_oppenid'];
+	    $result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
+	    if(!empty($result)){
+            include $this->template('scbridge:store-reserve-write');
+	    }else{
+	        $title='会员注册';
+	        $reminder='注册';
+	        include $this->template('scbridge:header');
+	        include $this->template('scbridge:register');
+	        include $this->template('scbridge:footer');
+	    }
+	}
+	
+	
+	//酒店确定支付信息函数
+	public function doreserveDo()
+	{
+		global $_W,$_GPC;
+		$open_id = $_SESSION['sc_user_oppenid'];
+		$hotel_id = $_POST["hotelId"];
+		$roomId = $_POST["roomType"];
+		$startDate = $_POST["startDate"];
+		$endDate = $_POST["endDate"];
+		$customerName = $_POST['customerName'];
+		$customerTel = $_POST["customerTel"];
+		$remark = $_POST['remark'];
+		$reserveType = $_POST['reserveType'];
+		$goods_id = $_POST["goodsId"];
+		$goodsNumber = $_POST["goodsNumber"];
+		$address = $_POST["address"];
+		
+		if($reserveType == "normalRoom")
+		{
+		    //先判断是否为空
+		    if(empty($startDate)||empty($endDate)||empty($customerName)||empty($customerTel))
+		    {
+		        echo "<script>alert('信息输入不完整');window.history.back(-1);</script>";
+		    }
+		    else
+		    {
+		        //先根据数据选出支付的钱和会员余额
+		        $customerMsg = pe_fetchOneByField("customer","*","open_id",$open_id,"","");
+		        $balanceMoney = $customerMsg['account_balance'];
+		        $customerId = $customerMsg['id'];
+		        $roomMsg = pe_fetchOneByField("hotel_room","*","id",$roomId,"","");
+		        $needMoney = $roomMsg['price_vip'];
+		        $mMoney = md5($needMoney);
+		        $_SESSION["sc_customer_need_money"] = $needMoney;
+		        $bMoney = md5($balanceMoney);
+		        $_SESSION["sc_customer_balance_money"] = $balanceMoney;
+		        $payThing = "room";
+		        include $this->template("scbridge:select-pay");
+		    }
+		}
+		else if($reserveType == "meetingRoom")
+		{
+		    //print_r($_POST);
+		    //先判断是否为空
+		    if(empty($startDate)||empty($endDate)||empty($customerName)||empty($customerTel))
+		    {
+		        echo "<script>alert('信息输入不完整');window.history.back(-1);</script>";
+		    }
+		    else
+		    {
+		        //先根据数据选出支付的钱和会员余额
+		        $customerMsg = pe_fetchOneByField("customer","*","open_id",$open_id,"","");
+		        $balanceMoney = $customerMsg['account_balance'];
+		        $customerId = $customerMsg['id'];
+		        $roomMsg = pe_fetchOneByField("hotel_room","*","id",$roomId,"","");
+		        $needMoney = $roomMsg['price_vip'];
+		        $mMoney = md5($needMoney);
+		        $_SESSION["sc_customer_need_money"] = $needMoney;
+		        $bMoney = md5($balanceMoney);
+		        $_SESSION["sc_customer_balance_money"] = $balanceMoney;
+		        $payThing = "room";
+		        include $this->template("scbridge:select-pay");
+		    }
+		}else if($reserveType == "goodsRes")
+		{
+			//先判断是否为空
+		//先判断是否为空
+		    if(empty($address)||empty($customerName)||empty($customerTel))
+		    {
+		        echo "<script>alert('信息输入不完整');window.history.back(-1);</script>";
+		    }
+		    else
+		    {
+		    	//加载确定支付页面
+		        //先根据数据选出支付的钱和会员余额
+		        $customerMsg = pe_fetchOneByField("customer","*","open_id",$open_id,"","");
+		        $balanceMoney = $customerMsg['account_balance'];
+		        $customerId = $customerMsg['id'];
+		        $goodsMsg = pe_fetchOneByField("goods","*","id",$goods_id,"","");
+		        $needMoney = $goodsMsg['price'];
+		        $mMoney = md5($needMoney);
+		        $_SESSION["sc_customer_need_money"] = $needMoney;
+		        $bMoney = md5($balanceMoney);
+		        $_SESSION["sc_customer_balance_money"] = $balanceMoney;
+		        $payThing = "goods";
+		        include $this->template("scbridge:select-pay");
+		    }
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
+	//支付函数
+	public function docustomerPay()
+	{
+	    global $_W,$_GPC;
+	    $hotel_id = $_POST["hotelId"];
+	    $roomId = $_POST["roomId"];
+	    $startDate = $_POST["startDate"];
+	    $endDate = $_POST["endDate"];
+	    $customerName = $_POST['customerName'];
+	    $customerTel = $_POST["customerTel"];
+	    $needMoney = $_POST['needMoney'];
+	    $balanceMoney = $_POST['balanceMoney'];
+	    $customerId = $_POST['customerId'];
+	    $remark = $_POST['remark'];
+	    $payTh = $_POST["payThing"];
+	    $goods_id = $_POST["goods_id"];
+	    $goodsNumber = $_POST["goodsNumber"];
+	    $address = $_POST["address"];
+	   
+	    if($payTh == 'room')
+	    {
+	        //判断金额是否正确
+	        if(($needMoney == md5($_SESSION["sc_customer_need_money"])) &&
+	                ($balanceMoney == md5($_SESSION["sc_customer_balance_money"])))
+	        {
+	            //判断余额是否充足
+	            if($_SESSION["sc_customer_need_money"] <= $_SESSION["sc_customer_balance_money"])
+	            {
+	                //写入数据库
+	                $lastupdate=time();
+	                $lastupdate=date('y-m-d h:i:s',$lastupdate);
+	                $data = array(
+	                        "customer_id" => $customerId,
+	                        "room_id" =>  $roomId,
+	                        "start_date" => $startDate,
+	                        "end_date" => $endDate,
+	                        "total_price"=>$_SESSION["sc_customer_need_money"],
+	                        "remarks"=>$remark,
+	                        "status" =>"0",
+	                        'lastupdate'=>$lastupdate
+	                );
+	                if(pdo_insert('hotel_booking',$data))
+	                {
+	                    //余额减少
+	                    $acc_ag = $_SESSION["sc_customer_balance_money"]
+	                    - $_SESSION["sc_customer_need_money"];
+	                    $data=array(
+	                            'account_balance'=>$acc_ag,
+	                            'status'=>'1'
+	                    );
+	                    pdo_update('customer',$data, array('id' =>$customerId));
+	                    include $this->template("scbridge:success-reserve");
+	                }
+	                else
+	                {
+	                    include $this->template("scbridge:failure-pay");
+	                }
+	                 
+	            }
+	            else
+	            {
+	                include $this->template("scbridge:failure-money");
+	            }
+	        }
+	        else
+	        {
+	            include $this->template("scbridge:failure-pay");
+	    
+	        }
+	    }
+	    else if($payTh == "goods")
+	    {
+	     	//这里是商品预订流程
+	       //判断金额是否正确
+    	    if(($needMoney == md5($_SESSION["sc_customer_need_money"])) && 
+    	              ($balanceMoney == md5($_SESSION["sc_customer_balance_money"])))
+    	    {
+    	     	//判断余额是否充足
+    	     	 if($_SESSION["sc_customer_need_money"] <= $_SESSION["sc_customer_balance_money"])
+    	     	 {
+    	     	     //写入数据库
+    	     	     $lastupdate=time();
+    	     	     $lastupdate=date('y-m-d h:i:s',$lastupdate);
+    	     	     $data = array(
+    	     	     	"customer_id" => $customerId,
+    	     	        "goods_number" => $goodsNumber ,
+    	     	        "goods_id"=>$goods_id,
+    	     	        "total_price"=>$_SESSION["sc_customer_need_money"],    
+    	     	        "status" =>"0",
+    	     	        "address" => $address,    
+    	     	        'lastupdate'=>$lastupdate   
+    	     	     );
+    	     	     if(pdo_insert('goods_booking',$data))
+    	     	     {
+    	     	         //余额减少
+    	     	         $acc_ag = $_SESSION["sc_customer_balance_money"]
+    	     	                 - $_SESSION["sc_customer_need_money"];
+    	     	         $data=array(
+    	     	                 'account_balance'=>$acc_ag,
+    	     	                 'status'=>'1'
+    	     	         );
+    	     	         pdo_update('customer',$data, array('id' =>$customerId));
+    	     	         include $this->template("scbridge:success-reserve");  
+    	     	     }
+    	     	     else
+    	     	     {
+    	     	         include $this->template("scbridge:failure-pay");
+    	     	     }
+    	     	    
+    	     	 }
+    	     	 else
+    	     	 {
+    	     	    include $this->template("scbridge:failure-money");
+    	     	 } 
+    	    }
+    	    else 
+    	    {
+    	    	include $this->template("scbridge:failure-pay");
+    	    }    
+    	        
+	        
+	    }
+	}
+	
+	
+	
+	
 	
 }

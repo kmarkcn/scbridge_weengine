@@ -7,8 +7,8 @@
 require './source/bootstrap.inc.php';
 checklogin();
 checkaccount();
-$actions = array('display','delete','post');
+$actions = array('display','delete');
 $action = in_array($_GPC['act'], $actions) ? $_GPC['act'] : 'display';
-$controller = 'customer';
+$controller = 'booking';
 $nav[$action] = ' class="current"';
 require router($controller, $action);

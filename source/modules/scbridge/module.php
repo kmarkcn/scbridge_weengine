@@ -64,7 +64,8 @@ class ScbridgeModule extends WeModule {
 		global $_W,$_GPC;
 		$h_id=$_GPC['h_id'];
 		$oppenid=$_SESSION['sc_user_oppenid'];
-		$result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
+		$sql="select * from ims_customer where open_id = '{$oppenid}'";
+		$result=pdo_fetch($sql);
 		if(!empty($result)){
 			$roomType=pe_fetchAllByField('hotel_room','id,name','hotel_id',$h_id,'is_meeting','0');
 			include $this->template('scbridge:room-reserve');
@@ -106,7 +107,8 @@ class ScbridgeModule extends WeModule {
 		global $_W,$_GPC;
 		$h_id=$_GPC['h_id'];
 		$oppenid=$_SESSION['sc_user_oppenid'];
-		$result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
+		$sql ="select * from ims_customer where open_id = '{$oppenid}'";
+		$result = pdo_fetch($sql);
 		if(!empty($result)){
 			$meetingType=pe_fetchAllByField('hotel_room','name,min_number,max_number,id','hotel_id',$h_id,'is_meeting','1');
 			include $this->template('scbridge:meeting-reserve-write');
@@ -153,7 +155,6 @@ class ScbridgeModule extends WeModule {
 			//判断是否已经存在此用户
 			$sql="select * from ims_customer where open_id = '{$oppenid}'";
 			$result=pdo_fetch($sql);
-			$result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
 			if(!empty($result)){
 				$img_url=$_SESSION['sc_user_info']->headimgurl;
 				include $this->template('scbridge:member_center');
@@ -167,7 +168,8 @@ class ScbridgeModule extends WeModule {
 			}
 		}else{
 			//根据这个id选出数据
-			$result=pe_fetchOneByField('customer',"*",'id',$user_id,'','');
+			$sql ="select * from ims_customer where open_id = '{$oppenid}'";
+		    $result = pdo_fetch($sql);
 			$reminder='修改';
 			include $this->template('scbridge:header');
 			include $this->template('scbridge:register');
@@ -183,7 +185,9 @@ class ScbridgeModule extends WeModule {
 		$h_id=$_GPC['h_id'];
 		//判断是否已经存在此用户
 		$oppenid=$_SESSION['sc_user_oppenid'];
-		$result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
+		$sql ="select * from ims_customer where open_id = '{$oppenid}'";
+		$result = pdo_fetch($sql);
+		
 		if(empty($result)){
 			$title='会员注册';
 			$reminder='注册';
@@ -223,9 +227,10 @@ class ScbridgeModule extends WeModule {
 				'status'=>'0',
 				'lastupdate'=>$lastupdate
 			);
-			if(pdo_insert('hotel', $data)){
+			if(pdo_insert('customer', $data)){
 				session_start();
-				$result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
+				$sql ="select * from ims_customer where id = '{$user_id}'";
+			    $result = pdo_fetch($sql);
 				$img_url=$_SESSION['sc_user_info']->headimgurl;
 				include $this->template('scbridge:member_center');
 			}
@@ -236,8 +241,9 @@ class ScbridgeModule extends WeModule {
 					'mobile'=>$mobile,
 					'lastupdate'=>$lastupdate
 			);
-			if(pdo_update('hotel', $data, array('id' =>$user_id))){
-				$result=pe_fetchOneByField('customer',"*",'id',$user_id,'','');
+			if(pdo_update('customer', $data, array('id' =>$user_id))){
+			    $sql ="select * from ims_customer where id = '{$user_id}'";
+			    $result = pdo_fetch($sql);
 				$img_url=$_SESSION['sc_user_info']->headimgurl;
 				include $this->template('scbridge:member_center');
 			}
@@ -253,7 +259,8 @@ class ScbridgeModule extends WeModule {
 		global $_W, $_GPC;
 		$user_id=$_GPC['user_id'];
 		if(!empty($user_id)){
-			$result=pe_fetchOneByField('customer',"*",'id',$user_id,'','');
+		    $sql ="select * from ims_customer where id = '{$user_id}'";
+		    $result = pdo_fetch($sql);
 			$reminder='充值';
 			$img_url=$_SESSION['sc_user_info']->headimgurl;
 			include $this->template('scbridge:member-pay');
@@ -325,7 +332,8 @@ class ScbridgeModule extends WeModule {
 	    global $_W,$_GPC;
 	    $g_id=$_GPC['g_id'];
 	    $oppenid=$_SESSION['sc_user_oppenid'];
-	    $result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
+	    $sql ="select * from ims_customer where open_id = '{$oppenid}'";
+	    $result = pdo_fetch($sql);
 	    if(!empty($result)){
             include $this->template('scbridge:store-reserve-write');
 	    }else{
@@ -365,7 +373,9 @@ class ScbridgeModule extends WeModule {
 		    else
 		    {
 		        //先根据数据选出支付的钱和会员余额
-		        $customerMsg = pe_fetchOneByField("customer","*","open_id",$open_id,"","");
+		        $sql ="select * from ims_customer where open_id = '{$open_id}'";
+		        $customerMsg = pdo_fetch($sql);
+		        //print_r($customerMsg);
 		        $balanceMoney = $customerMsg['account_balance'];
 		        $customerId = $customerMsg['id'];
 		        $roomMsg = pe_fetchOneByField("hotel_room","*","id",$roomId,"","");
@@ -389,7 +399,8 @@ class ScbridgeModule extends WeModule {
 		    else
 		    {
 		        //先根据数据选出支付的钱和会员余额
-		        $customerMsg = pe_fetchOneByField("customer","*","open_id",$open_id,"","");
+		        $sql ="select * from ims_customer where open_id = '{$open_id}'";
+		        $customerMsg = pdo_fetch($sql);
 		        $balanceMoney = $customerMsg['account_balance'];
 		        $customerId = $customerMsg['id'];
 		        $roomMsg = pe_fetchOneByField("hotel_room","*","id",$roomId,"","");
@@ -413,7 +424,8 @@ class ScbridgeModule extends WeModule {
 		    {
 		    	//加载确定支付页面
 		        //先根据数据选出支付的钱和会员余额
-		        $customerMsg = pe_fetchOneByField("customer","*","open_id",$open_id,"","");
+		        $sql ="select * from ims_customer where open_id = '{$open_id}'";
+		        $customerMsg = pdo_fetch($sql);
 		        $balanceMoney = $customerMsg['account_balance'];
 		        $customerId = $customerMsg['id'];
 		        $goodsMsg = pe_fetchOneByField("goods","*","id",$goods_id,"","");

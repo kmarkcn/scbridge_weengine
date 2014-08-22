@@ -13,10 +13,11 @@ body, html{
 	/*width:93%;
 	height: 28%;*/
 	height: 150px;
-	width: 320px;
-            
-			margin:auto;
-			padding-top:15px;}
+	width: 320px;  
+	margin:auto;
+	padding-top:15px;
+}
+
 .fangjian{ 
 	/*width: 35%;*/
 	height: 54%;

@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <link rel="stylesheet" type="text/css" href="./resource/scbridge/css/member-center.css" />
 <link rel="stylesheet" type="text/css" href="./resource/scbridge/css/public.css" />
+<script type="text/javascript" src="./resource/scbridge/js/jquery.min.js"></script>
+<script type="text/javascript" src="./resource/scbridge/js/member_center.js"></script>
 </head>
 
 <body>
@@ -48,16 +50,21 @@
         
         <div class="mc-content">
         	<div class="mc-c-top">
-            	<span style="margin-left:10%;">历史消费</span>
-                <span style="position:absolute; right:10%; top:0;">共有<span style="color:red;">17</span>笔消费</span>
+            	<span style="margin-left:10%;font-size:16px;">历史消费</span>
+            	<select style="margin-left:45%;height:30px;border:0px solid #999;" id="select_record">
+            		<option value='1'>酒店记录</option>
+            		<option value='2'>商品记录</option>
+            	</select>
             </div>
             
+            <div id="hotel_record">
+            {loop $booking1 $br}
             <div class="mc-goods">
             	<ul class="mc-ul-03">
-                	<li class="mc-li-01"><a><img class="mc-goods-img" src="./resource/scbridge/img/member-center/member-center_07.png"></a></li>
+                	<li class="mc-li-01"><a href="./index.php?act=module&name=scbridge&do=hotel_content&h_id={$br['hotel']}"><img class="mc-goods-img" src="{$_W['attachurl']}{$br['img']}"></a></li>
                     <li class="mc-li-02">
                     	<ul class="mc-ul-04">
-                        	<li><a class="mc-goods-name" href="#">商务标准间</a></li>
+                        	<li><a class="mc-goods-name" href="#">{$br['name']}</a></li>
                             <li class="mc-li-04">
                             	<img src="./resource/scbridge/img/member-center/member-center_08.png"/>
                                 <img src="./resource/scbridge/img/member-center/member-center_09.png"/>
@@ -71,45 +78,44 @@
                     <li class="mc-li-03">
                     	<ul>
                         	<li>
-                            	<span class="mc-span" ><span class="mc-16">298</span>&yen;</span>
+                            	<span class="mc-span" ><span class="mc-16">{$br['total_price']}</span>&yen;</span>
                             	<img style="width:16px; height:16px; float:right;" src="./resource/scbridge/img/member-center/member-center_13.jpg">    
                             </li>
                             <li></li>
-                            <li><a href="#"><img style=" margin-top:5px; float:right; width:50px; height:17px;" src="./resource/scbridge/img/member-center/member-center_15.png"></a></li>
+                            <li><a href="./index.php?act=module&name=scbridge&do=room_cancel&bookingid={$br['id']}&type=hotel"><img style=" margin-top:5px; float:right; width:50px; height:17px;" src="./resource/scbridge/img/member-center/member-center_15.png"></a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
+            {/loop}
+            </div>
             
             
+            <div id="goods_record" style="display:none;">
+             {loop $booking2 $br}
             <div class="mc-goods">
             	<ul class="mc-ul-03">
-                	<li class="mc-li-01"><a><img class="mc-goods-img" src="./resource/scbridge/img/member-center/member-center_07.png"></a></li>
+                	<li class="mc-li-01"><a href="./index.php?act=module&name=scbridge&do=shop_center"><img class="mc-goods-img" src="{$_W['attachurl']}{$br['img']}"></a></li>
                     <li class="mc-li-02">
                     	<ul class="mc-ul-04">
-                        	<li><a class="mc-goods-name" href="#">商务标准间</a></li>
-                            <li class="mc-li-04">
-                            	<img src="./resource/scbridge/img/member-center/member-center_08.png"/>
-                                <img src="./resource/scbridge/img/member-center/member-center_09.png"/>
-                                <img src="./resource/scbridge/img/member-center/member-center_10.png"/>
-                                <img src="./resource/scbridge/img/member-center/member-center_11.png"/>
-                                <img src="./resource/scbridge/img/member-center/member-center_12.png"/>                                
-                            </li>
-                            <li class="mc-li-05"> 宽带|国际长途|24小时热水|服务</li>
+                        	<li><a class="mc-goods-name" href="#">{$br['name']}</a></li>
+                            <li class="mc-li-05" style="line-height:12px;width:90%;">{$br['dis']}</li>
                         </ul>
                     </li>
                     <li class="mc-li-03">
                     	<ul>
                         	<li>
-                            	<span class="mc-span" ><span class="mc-16">298</span>&yen;</span>
+                            	<span class="mc-span" ><span class="mc-16">{$br['total_price']}</span>&yen;</span>
                             	<img style="width:16px; height:16px; float:right;" src="./resource/scbridge/img/member-center/member-center_13.jpg">    
                             </li>
                             <li></li>
-                            <li><a href="#"><img style=" margin-top:5px; float:right; width:50px; height:17px;" src="./resource/scbridge/img/member-center/member-center_15.png"></a></li>
+                            <li><a href=""><img style=" margin-top:5px; float:right; width:50px; height:17px;" src="./resource/scbridge/img/member-center/member-center_15.png"></a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
+            {/loop}
+           </div>
             
            
             

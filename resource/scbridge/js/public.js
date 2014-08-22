@@ -4,10 +4,10 @@
 //日期插件的调用
 J(function(){
 	
-	J('#cal1').calendar({ format:'yyyy年MM月dd日' });
-	J('#cal2').calendar({ format:'yyyy年MM月dd日' });
-	J('#cal3').calendar({ format:'yyyy年MM月dd日' });
-	J('#cal4').calendar({ format:'yyyy年MM月dd日' });
+	J('#cal1').calendar({ format:'yyyy-MM-dd' });
+	J('#cal2').calendar({ format:'yyyy-MM-dd' });
+	J('#cal3').calendar({ format:'yyyy-MM-dd' });
+	J('#cal4').calendar({ format:'yyyy-MM-dd' });
 });
 
 $(function(){

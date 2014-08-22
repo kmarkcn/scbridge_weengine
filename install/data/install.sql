@@ -349,6 +349,7 @@ CREATE TABLE IF NOT EXISTS `ims_hotel_booking`(
 `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '编号',
 `customer_id` int(10) unsigned NOT NULL COMMENT '用户ID',
 `room_id` int(10) unsigned NOT NULL COMMENT '房间ID',
+`hotels_account` int(2) NOT NULL COMMENT '房间数量',
 `start_date` varchar(50) unsigned NOT NULL DEFAULT '0' COMMENT '入住日期',
 `end_date` varchar(50) unsigned NOT NULL DEFAULT '0' COMMENT '退房日期',
 `total_price` decimal(10,2) NOT NULL COMMENT '期间总价',

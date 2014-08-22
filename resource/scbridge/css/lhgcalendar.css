@@ -38,7 +38,7 @@
 
 .lhgcal_head_year{float:left;padding:4px 3px 3px 8px;}
 .lhgcal_head_month{float:left;padding:4px 3px 3px 0px;}
-.lhgcal_head_year input,.lhgcal_head_month input{border:1px solid #fff;text-align:center;height:13px;font:11px Verdana,Arial,sans-serif;cursor:pointer;}
+.lhgcal_head_year input,.lhgcal_head_month input{border:1px solid #fff;text-align:center;font:11px Verdana,Arial,sans-serif;cursor:pointer;}
 .lhgcal_head_year input{width:32px;}
 .lhgcal_head_month input{width:15px;}
 
@@ -50,4 +50,4 @@
 .lhgcal_foot_button a{display:block;border:1px solid #e3e3e3;padding:2px 7px;color:#000;text-decoration:none;background-color:#f7f7f7;font-family:Tahoma;}
 .lhgcal_foot_button a:hover{border:1px solid #0a246a;background-color:#c2cbe0;}
 .lhgcal_foot_date{float:right;padding:4px 2px 0 0;font:11px Verdana,Arial,sans-serif;color:#039;_padding-top:3px;}
-.lhgcal_foot_date input{border:1px solid #ccc; padding:0; margin:0; width:17px;height:13px;font:11px Verdana,Arial,sans-serif;text-align:center;background-color:#f7f7f7;}
+.lhgcal_foot_date input{border:1px solid #ccc; padding:0; margin:0; width:17px;font:11px Verdana,Arial,sans-serif;text-align:center;background-color:#f7f7f7;}

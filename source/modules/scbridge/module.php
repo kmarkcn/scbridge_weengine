@@ -149,16 +149,37 @@ class ScbridgeModule extends WeModule {
 		session_start();
 		global $_W,$_GPC;
 		$h_id=$_GPC['h_id'];
-		$user_id=$_GPC['user_id'];
-		$oppenid=$_SESSION['sc_user_oppenid'];
-		if(empty($user_id)){
 			//判断是否已经存在此用户
-			$sql="select * from ims_customer where open_id = {$oppenid}";
-			$result=pdo_fetch($sql);
+			$oppenid=$_SESSION['sc_user_oppenid'];
+		    $sql="select * from ims_customer where open_id = '{$oppenid}'";
+		    $result=pdo_fetch($sql);
 			if(!empty($result)){
-				$img_url=$_SESSION['sc_user_info']->headimgurl;
-				include $this->template('scbridge:member_center');
-				include $this->template('scbridge:footer');
+				 //根据会员选择订单
+		    $sql = "select * from ims_hotel_booking where customer_id = {$result['id']}";
+		    $booking1 = pdo_fetchall($sql);
+		    foreach ($booking1 as $key => $val)
+		    {
+		    	$sql =" select * from ims_hotel_room where id = {$val['room_id']}";
+		    	$roomMsg = pdo_fetch($sql);
+		    	$booking1[$key]['name'] = $roomMsg['name'];
+		    	$booking1[$key]['img'] = $roomMsg['icon'];
+		    	$booking1[$key]['hotel'] = $roomMsg['hotel_id'];
+		    }
+		    $sql ="select * from ims_goods_booking where customer_id = {$result['id']}";
+		    $booking2 = pdo_fetchall($sql);
+		    foreach ($booking2 as $key => $val)
+		    {
+		        $sql =" select * from ims_goods where id = {$val['goods_id']}";
+		        $goodsMsg = pdo_fetch($sql);
+		        $booking2[$key]['name'] = $goodsMsg['name'];
+		        $booking2[$key]['img'] = $goodsMsg['icon'];
+		        $booking2[$key]['goods'] = $goodsMsg['id'];
+		        $booking2[$key]['dis'] = $goodsMsg['brief_intro'];
+		    }
+		    $img_url=$_SESSION['sc_user_info']->headimgurl;
+		    //print_r($booking2);
+			include $this->template('scbridge:member_center');
+			include $this->template('scbridge:footer');
 			}else{
 				$title='会员注册';
 				$reminder='注册';
@@ -166,15 +187,7 @@ class ScbridgeModule extends WeModule {
 				include $this->template('scbridge:register');
 				include $this->template('scbridge:footer');
 			}
-		}else{
-			//根据这个id选出数据
-			$sql ="select * from ims_customer where open_id = '{$oppenid}'";
-		    $result = pdo_fetch($sql);
-			$reminder='修改';
-			include $this->template('scbridge:header');
-			include $this->template('scbridge:register');
-			include $this->template('scbridge:footer');
-		}
+		
 		
 	}
 	
@@ -187,10 +200,10 @@ class ScbridgeModule extends WeModule {
 		$h_id=$_GPC['h_id'];
 		//判断是否已经存在此用户
 		$oppenid=$_SESSION['sc_user_oppenid'];
-		//echo($oppenid);
-		$sql ="select * from ims_customer where open_id = {$oppenid}";
-		$result = pdo_fetch($sql);
-	   if(empty($result)){
+		$sql="select * from ims_customer where open_id = '{$oppenid}'";
+		$result=pdo_fetch($sql);
+		//print_r($oppenid);
+	  if(empty($result)){
 			$title='会员注册';
 			$reminder='注册';
 			include $this->template('scbridge:header');
@@ -224,6 +237,7 @@ class ScbridgeModule extends WeModule {
 			include $this->template('scbridge:member_center');
 			include $this->template('scbridge:footer');
 		}
+		
 	}
 	
 	

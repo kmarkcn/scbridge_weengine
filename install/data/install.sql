@@ -386,3 +386,12 @@ CREATE TABLE IF NOT EXISTS `ims_goods_booking`(
 `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+/*
+	2014-08-22
+	by terry
+	增加酒店订单表数量字段
+*/
+ALTER TABLE `ims_hotel_booking` ADD hotels_account int(2) COMMENT '预订房间数量';
+ALTER TABLE `ims_hotel_room` MODIFY start_date varchar(20) COMMENT '预订开始时间';
+ALTER TABLE `ims_hotel_room` MODIFY end_date varchar(20) COMMENT '预订结束时间';

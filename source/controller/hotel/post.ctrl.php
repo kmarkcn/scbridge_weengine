@@ -14,7 +14,7 @@ if (checksubmit('submit')) {
 $data=array(
 		'name'=>$_GPC['name'],
 		'icon'=>(!empty($_GPC['picture'])) ? $_GPC['picture'] : NULL,
-		'nation'=>$_GPC['nation'],
+		'region'=>$_GPC['region'],
 		'city'=>$_GPC['city'],
 		'address'=>$_GPC['address'],
 		'level'=>$_GPC['level'],

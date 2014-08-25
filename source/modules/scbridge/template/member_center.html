@@ -39,7 +39,7 @@
                 <li style="border:none;">
                 	<ul class="mc-ul-02">
                     	<li>修改信息</li>
-                        <li><a href="./index.php?act=module&name=scbridge&do=vip_register&user_id={$result['id']}"><img src="./resource/scbridge/img/member-center/member-center_05.png"></a></li>
+                        <li><a href="./index.php?act=module&name=scbridge&do=reset_msg&user_id={$result['id']}"><img src="./resource/scbridge/img/member-center/member-center_05.png"></a></li>
                     </ul>
                 </li>
             </ul>
@@ -64,7 +64,7 @@
                 	<li class="mc-li-01"><a href="./index.php?act=module&name=scbridge&do=hotel_content&h_id={$br['hotel']}"><img class="mc-goods-img" src="{$_W['attachurl']}{$br['img']}"></a></li>
                     <li class="mc-li-02">
                     	<ul class="mc-ul-04">
-                        	<li><a class="mc-goods-name" href="#">{$br['name']}</a></li>
+                        	<li>{$br['name']}<a style="font-size:8px;line-height:10px;">({$br['lastupdate']})</a></li>
                             <li class="mc-li-04">
                             	<img src="./resource/scbridge/img/member-center/member-center_08.png"/>
                                 <img src="./resource/scbridge/img/member-center/member-center_09.png"/>
@@ -73,6 +73,7 @@
                                 <img src="./resource/scbridge/img/member-center/member-center_12.png"/>                                
                             </li>
                             <li class="mc-li-05"> 宽带|国际长途|24小时热水|服务</li>
+                           
                         </ul>
                     </li>
                     <li class="mc-li-03">
@@ -98,8 +99,8 @@
                 	<li class="mc-li-01"><a href="./index.php?act=module&name=scbridge&do=shop_center"><img class="mc-goods-img" src="{$_W['attachurl']}{$br['img']}"></a></li>
                     <li class="mc-li-02">
                     	<ul class="mc-ul-04">
-                        	<li><a class="mc-goods-name" href="#">{$br['name']}</a></li>
-                            <li class="mc-li-05" style="line-height:12px;width:90%;">{$br['dis']}</li>
+                        	<li>{$br['name']}<a style="font-size:8px;line-height:10px;">({php echo(substr($br['lastupdate'],0,9))})</a></li>
+                            <li class="mc-li-05" style="line-height:12px;width:90%;">{php echo(mb_substr($br['dis'],0,50,'utf-8'))}</li>
                         </ul>
                     </li>
                     <li class="mc-li-03">
@@ -109,7 +110,9 @@
                             	<img style="width:16px; height:16px; float:right;" src="./resource/scbridge/img/member-center/member-center_13.jpg">    
                             </li>
                             <li></li>
-                            <li><a href=""><img style=" margin-top:5px; float:right; width:50px; height:17px;" src="./resource/scbridge/img/member-center/member-center_15.png"></a></li>
+                             
+                            	<li><img style=" margin-top:5px; float:right; width:50px; height:17px;" src="./resource/scbridge/img/member-center/success_pay.jpg"></li>
+                            
                         </ul>
                     </li>
                 </ul>

@@ -395,3 +395,12 @@ CREATE TABLE IF NOT EXISTS `ims_goods_booking`(
 ALTER TABLE `ims_hotel_booking` ADD hotels_account int(2) COMMENT '预订房间数量';
 ALTER TABLE `ims_hotel_room` MODIFY start_date varchar(20) COMMENT '预订开始时间';
 ALTER TABLE `ims_hotel_room` MODIFY end_date varchar(20) COMMENT '预订结束时间';
+
+
+/*
+	2014-08-25
+	by terry
+	增加酒店表字段地址
+*/
+
+ALTER TABLE `ims_hotel` CHANGE  nation  region  tinyint(2) COMMENT '酒店地区';

@@ -60,7 +60,51 @@
 								>奢华</option>
 							</select>
 						<br/><br/>
-						国家&nbsp;&nbsp;<input type="text" name="nation" class="" value="{$hotel['nation']}" autofocus="autofocus" required="required" style='width:80px;'/>
+						地区&nbsp;&nbsp;
+						<select name='region'>
+								<option value='1' 
+									{if $hotel['region']=='1'}
+										selected='selected'
+									{else}
+									{/if}
+								>金牛区</option>
+								<option value='2'
+									{if $hotel['region']=='2'}
+										selected='selected'
+									{else}
+									{/if}
+								>锦江区</option>
+								<option value='3'
+									{if $hotel['region']=='3'}
+										selected='selected'
+									{else}
+									{/if}
+								>青羊区</option>
+								<option value='4'
+									{if $hotel['region']=='4'}
+										selected='selected'
+									{else}
+									{/if}
+								>成华区</option>
+								<option value='5'
+									{if $hotel['region']=='5'}
+										selected='selected'
+									{else}
+									{/if}
+								>高新区</option>
+								<option value='6'
+									{if $hotel['region']=='6'}
+										selected='selected'
+									{else}
+									{/if}
+								>武侯区</option>
+								<option value='7'
+									{if $hotel['region']=='7'}
+										selected='selected'
+									{else}
+									{/if}
+								>其他区</option>
+							</select>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						城市&nbsp;&nbsp;<input type='text' style='width:80px;' name='city' autofocus="autofocus" required="required" value='{$hotel['city']}'>
 						<br/><br/>

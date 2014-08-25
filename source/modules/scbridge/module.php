@@ -121,6 +121,7 @@ class ScbridgeModule extends WeModule {
 		}
 	}	
 	
+	
 	//会议预定详细页面加载
 	public function dohotel_contents(){
 		global $_W,$_GPC;
@@ -193,6 +194,21 @@ class ScbridgeModule extends WeModule {
 	
 	
 	
+	//会员修改信息页面加载
+	public function doreset_msg()
+	{
+		session_start();
+		global $_W,$_GPC;
+		$u_id=$_GPC['user_id'];
+		$sql="select * from ims_customer where id = {$u_id}";
+		$result = pdo_fetch($sql);
+		$title='会员注册';
+		$reminder='修改';
+		include $this->template('scbridge:header');
+		include $this->template('scbridge:register');
+		include $this->template('scbridge:footer');
+	}
+	
 	//会员中心页面加载
 	public function domember_center() {
 		session_start();
@@ -211,7 +227,7 @@ class ScbridgeModule extends WeModule {
 			include $this->template('scbridge:header');
 		}else{
 		    //根据会员选择订单
-		    $sql = "select * from ims_hotel_booking where customer_id = {$result['id']}";
+		    $sql = "select * from ims_hotel_booking where customer_id = {$result['id']} order by id desc";
 		    $booking1 = pdo_fetchall($sql);
 		    foreach ($booking1 as $key => $val)
 		    {
@@ -274,23 +290,52 @@ class ScbridgeModule extends WeModule {
 				include $this->template('scbridge:member_center');
 			}
 		}else{
-			//这里是更新
-			$data=array(
-					'name'=>$name,
-					'mobile'=>$mobile,
-					'lastupdate'=>$lastupdate
-			);
-			if(pdo_update('customer', $data, array('id' =>$user_id))){
-			    $sql ="select * from ims_customer where id = '{$user_id}'";
-			    $result = pdo_fetch($sql);
-				$img_url=$_SESSION['sc_user_info']->headimgurl;
-				include $this->template('scbridge:member_center');
-			}
+				
+				
+				//这里是更新
+				$data=array(
+						'name'=>$name,
+						'mobile'=>$mobile,
+						'lastupdate'=>$lastupdate
+				);
+				if(pdo_update('customer', $data, array('id' =>$user_id))){
+					$oppenid=$_SESSION['sc_user_oppenid'];
+					$sql="select * from ims_customer where open_id = '{$oppenid}'";
+					$result=pdo_fetch($sql);
+				     //根据会员选择订单
+				    $sql = "select * from ims_hotel_booking where customer_id = {$result['id']} order by id desc";
+				    $booking1 = pdo_fetchall($sql);
+				    foreach ($booking1 as $key => $val)
+				    {
+				    	$sql =" select * from ims_hotel_room where id = {$val['room_id']}";
+				    	$roomMsg = pdo_fetch($sql);
+				    	$booking1[$key]['name'] = $roomMsg['name'];
+				    	$booking1[$key]['img'] = $roomMsg['icon'];
+				    	$booking1[$key]['hotel'] = $roomMsg['hotel_id'];
+				    }
+				    $sql ="select * from ims_goods_booking where customer_id = {$result['id']}";
+				    $booking2 = pdo_fetchall($sql);
+				    foreach ($booking2 as $key => $val)
+				    {
+				        $sql =" select * from ims_goods where id = {$val['goods_id']}";
+				        $goodsMsg = pdo_fetch($sql);
+				        $booking2[$key]['name'] = $goodsMsg['name'];
+				        $booking2[$key]['img'] = $goodsMsg['icon'];
+				        $booking2[$key]['goods'] = $goodsMsg['id'];
+				        $booking2[$key]['dis'] = $goodsMsg['brief_intro'];
+				    }
+				    $img_url=$_SESSION['sc_user_info']->headimgurl;
+				    //print_r($booking2);
+					include $this->template('scbridge:member_center');
+					include $this->template('scbridge:footer');
+				}
 			
-			
+				
+				
 		}	
 		
 	}
+	
 	
 
 	//加载充值页面
@@ -324,10 +369,37 @@ class ScbridgeModule extends WeModule {
 			'status'=>'1'
 		);
 		if(pdo_update('customer',$data, array('id' =>$user_id))){
-			$result=pe_fetchOneByField('customer',"*",'open_id',$oppenid,'','');
+			$oppenid=$_SESSION['sc_user_oppenid'];
+			$sql="select * from ims_customer where open_id = '{$oppenid}'";
+			$result=pdo_fetch($sql);
+			
+			//根据会员选择订单
+			$sql = "select * from ims_hotel_booking where customer_id = {$result['id']} order by id desc";
+			$booking1 = pdo_fetchall($sql);
+			foreach ($booking1 as $key => $val)
+			{
+				$sql =" select * from ims_hotel_room where id = {$val['room_id']}";
+				$roomMsg = pdo_fetch($sql);
+				$booking1[$key]['name'] = $roomMsg['name'];
+				$booking1[$key]['img'] = $roomMsg['icon'];
+				$booking1[$key]['hotel'] = $roomMsg['hotel_id'];
+			}
+			$sql ="select * from ims_goods_booking where customer_id = {$result['id']}";
+			$booking2 = pdo_fetchall($sql);
+			foreach ($booking2 as $key => $val)
+			{
+				$sql =" select * from ims_goods where id = {$val['goods_id']}";
+				$goodsMsg = pdo_fetch($sql);
+				$booking2[$key]['name'] = $goodsMsg['name'];
+				$booking2[$key]['img'] = $goodsMsg['icon'];
+				$booking2[$key]['goods'] = $goodsMsg['id'];
+				$booking2[$key]['dis'] = $goodsMsg['brief_intro'];
+			}
 			$img_url=$_SESSION['sc_user_info']->headimgurl;
+			//print_r($booking2);
 			include $this->template('scbridge:member_center');
 			include $this->template('scbridge:footer');
+			
 		}
 
 	}
@@ -414,7 +486,7 @@ class ScbridgeModule extends WeModule {
 		    else
 		    {
 		        
-		        if(strtotime($startDate)<time() || strtotime($endDate)<time() || strtotime($startDate) > strtotime($endDate))
+		        if(strtotime($startDate)<(time()-3600*24) || strtotime($endDate)<(time()-3600*24) || strtotime($startDate) > strtotime($endDate))
 		        {
 		                echo "<script>alert('预订时间不正确');window.history.back(-1);</script>";
 		                die();

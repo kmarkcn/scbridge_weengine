@@ -2,7 +2,9 @@
 /*
  * by Terry 2014-08-04
  */
+
 defined('IN_IA') or exit('Access Denied');
+
 class ScbridgeModule extends WeModule {
 	//定义酒店类型和商品类型
 	public $arrBridge = array('1'=>'准4星','2'=>'4星','3'=>'准5星','4'=>'精品','5'=>'5星','6'=>'奢华',);
@@ -266,6 +268,7 @@ class ScbridgeModule extends WeModule {
 		$name=$_GPC['user_name'];
 		$user_id=$_GPC['user_id'];
 		$mobile=$_GPC['user_tel'];
+		$email=$_GPC['user_email'];
 		$oppenid=$_SESSION['sc_user_oppenid'];
 		
 		if(empty($name)||empty($mobile)){
@@ -277,17 +280,19 @@ class ScbridgeModule extends WeModule {
 			$data=array(
 				'name'=>$name,
 				'mobile'=>$mobile,
+				'email' =>$email,
 				'open_id'=>$oppenid,
 				'account_balance'=>'0',
 				'status'=>'0',
 				'lastupdate'=>$lastupdate
 			);
 			if(pdo_insert('customer', $data)){
-				session_start();
-				$sql ="select * from ims_customer where id = '{$user_id}'";
-			    $result = pdo_fetch($sql);
+				$oppenid=$_SESSION['sc_user_oppenid'];
+				$sql="select * from ims_customer where open_id = '{$oppenid}'";
+				$result=pdo_fetch($sql);
 				$img_url=$_SESSION['sc_user_info']->headimgurl;
 				include $this->template('scbridge:member_center');
+				include $this->template('scbridge:footer');
 			}
 		}else{
 				
@@ -296,6 +301,7 @@ class ScbridgeModule extends WeModule {
 				$data=array(
 						'name'=>$name,
 						'mobile'=>$mobile,
+						'email' =>$email,
 						'lastupdate'=>$lastupdate
 				);
 				if(pdo_update('customer', $data, array('id' =>$user_id))){
@@ -500,7 +506,7 @@ class ScbridgeModule extends WeModule {
 		            $balanceMoney = $customerMsg['account_balance'];
 		            $customerId = $customerMsg['id'];
 		            $roomMsg = pe_fetchOneByField("hotel_room","*","id",$roomId,"","");
-		            $days = ((strtotime($endDate)-strtotime($startDate))/(3600*24))+1;
+		            $days = ((strtotime($endDate)-strtotime($startDate))/(3600*24));
 		            $needMoney = $roomMsg['price_vip'] * $roomsNumber * $days;
 		            $mMoney = md5($needMoney);
 		            $_SESSION["sc_customer_need_money"] = $needMoney;
@@ -536,7 +542,7 @@ class ScbridgeModule extends WeModule {
                     $balanceMoney = $customerMsg['account_balance'];
                     $customerId = $customerMsg['id'];
                     $roomMsg = pe_fetchOneByField("hotel_room","*","id",$roomId,"","");
-                    $days = ((strtotime($endDate)-strtotime($startDate))/(3600*24))+1;
+                    $days = ((strtotime($endDate)-strtotime($startDate))/(3600*24));
                     $needMoney = $roomMsg['price_vip'] * $roomsNumber * $days;
                     $mMoney = md5($needMoney);
                     $_SESSION["sc_customer_need_money"] = $needMoney;
@@ -593,7 +599,7 @@ class ScbridgeModule extends WeModule {
 	
 	//支付函数
 	public function docustomerPay()
-	{
+	{	session_start();
 	    global $_W,$_GPC;
 	    $hotel_id = $_POST["hotelId"];
 	    $roomId = $_POST["roomId"];
@@ -636,15 +642,47 @@ class ScbridgeModule extends WeModule {
 	                );
 	                if(pdo_insert('hotel_booking',$data))
 	                {
-	                    //余额减少
-	                    $acc_ag = $_SESSION["sc_customer_balance_money"]
-	                    - $_SESSION["sc_customer_need_money"];
-	                    $data=array(
-	                            'account_balance'=>$acc_ag,
-	                            'status'=>'1'
-	                    );
-	                    pdo_update('customer',$data, array('id' =>$customerId));
-	                    include $this->template("scbridge:success-reserve");
+	          			          //这里选出数据构造你发邮件所需要的数据
+	                    	//根据房间id选出房间名字，酒店名字，预定时间，酒店地址，客户名字
+	                    		$booking_id = pdo_insertid();
+	                    		//选出订单
+	                    		$sql = 'select * from ims_hotel_booking where id = ';
+	                    		$sql .= $booking_id;
+	                    		$result = pdo_fetch($sql);
+	                    		$data_arr = array(
+	                    			'start_date'=>$result['start_date'],
+	                    			'end_date'=>$result['end_date']
+	                    		);
+	                    		//根据roomid 找房子
+	                    		$sql = "select * from ims_hotel_room where id = ";
+	                    		$sql .=$result['room_id'];
+	                    		$result =pdo_fetch($sql);
+	                    		$data_arr['room'] = $result['name'];
+	                    		$sql = "select * from ims_hotel where id = ";
+	                    		$sql .=$result['hotel_id'];
+	                    		$result =pdo_fetch($sql);
+	                    		$data_arr['hotel'] = $result['name'];
+	                    		$oppenid=$_SESSION['sc_user_oppenid'];
+	                    		$sql ="select * from ims_customer where open_id = '{$oppenid}'";
+	                    		$result = pdo_fetch($sql);
+	                    		$data_arr['customer'] = $result['name'];
+	                    		$data_arr['eamil'] = $result['email'];
+	                    		//print_r($data_arr);
+	                    		//余额减少
+	                    		$acc_ag = $_SESSION["sc_customer_balance_money"]
+	                    		- $_SESSION["sc_customer_need_money"];
+	                    		$data=array(
+	                            	'account_balance'=>$acc_ag,
+	                            	'status'=>'1'
+	                    		);
+	                   			 pdo_update('customer',$data, array('id' =>$customerId));
+		               			//$this->sendMail($data_arr);
+		               			//$this->sendMail($data_arr);
+			
+						
+	                    
+	                    //include $this->template("scbridge:success-reserve");
+	                    
 	                }
 	                else
 	                {
@@ -756,6 +794,39 @@ class ScbridgeModule extends WeModule {
 	            }
 	        }
 	    }
+	}
+	
+	
+	public function sendMail(){
+// 		require  'pm\class.phpmailer.php';
+// 		require  'pm\class.smtp.php';
+		
+		echo(1);/*$mail = new PHPMailer(true);
+		$mail->IsSMTP();
+		$mail->CharSet='UTF-8'; //设置邮件的字符编码，这很重要，不然中文乱码
+		$mail->SMTPAuth   = true;                  //开启认证
+		$mail->Port       = 25;
+		$mail->Host       = "smtp.exmail.qq.com";
+		$mail->Username   = "admin@scbridge.cn";
+		$mail->Password   = "123Nimda";
+		//$mail->IsSendmail(); //如果没有sendmail组件就注释掉，否则出现“Could  not execute: /var/qmail/bin/sendmail ”的错误提示
+		$mail->AddReplyTo("admin@scbridge.cn",'admin');//回复地址
+		$mail->From       = "admin@scbridge.cn";
+		//$mail->FromName   = "www.phpddt.com";
+		$to = $data_arr['email'];
+		$mail->AddAddress($to);
+		$mail->Subject  = "购买通知";
+		$str = "尊敬的" . $data_arr['customer']."(先生/女士)你好：<br/>你已经成功预定".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
+		$str .= $data_arr['start_date'] ."至".$data_arr['end_date'];
+		$str .= ".请你准时入住!如有问题，请致电13982054177!";
+		//$mail->Body = $mail->AltBody    = "数据数据数据"; //当邮件不支持html时备用显示，可以省略
+		//$mail->WordWrap   = 80; // 设置每行字符串的长度
+		//$mail->AddAttachment("f:/test.png");  //可以添加附件
+		//$mail->IsHTML(true);
+		//$mail->Send();
+		print_r($str);
+		*/
+				
 	}
 	
 	

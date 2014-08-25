@@ -350,8 +350,8 @@ CREATE TABLE IF NOT EXISTS `ims_hotel_booking`(
 `customer_id` int(10) unsigned NOT NULL COMMENT '用户ID',
 `room_id` int(10) unsigned NOT NULL COMMENT '房间ID',
 `hotels_account` int(2) NOT NULL COMMENT '房间数量',
-`start_date` varchar(50) unsigned NOT NULL DEFAULT '0' COMMENT '入住日期',
-`end_date` varchar(50) unsigned NOT NULL DEFAULT '0' COMMENT '退房日期',
+`start_date` varchar(50)  NOT NULL DEFAULT '0' COMMENT '入住日期',
+`end_date` varchar(50)  NOT NULL DEFAULT '0' COMMENT '退房日期',
 `total_price` decimal(10,2) NOT NULL COMMENT '期间总价',
 `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '预定状态，0为正常，-1为已取消',
 `remarks` varchar(2000) NOT NULL COMMENT '备注信息',
@@ -393,8 +393,6 @@ CREATE TABLE IF NOT EXISTS `ims_goods_booking`(
 	增加酒店订单表数量字段
 */
 ALTER TABLE `ims_hotel_booking` ADD hotels_account int(2) COMMENT '预订房间数量';
-ALTER TABLE `ims_hotel_room` MODIFY start_date varchar(20) COMMENT '预订开始时间';
-ALTER TABLE `ims_hotel_room` MODIFY end_date varchar(20) COMMENT '预订结束时间';
 
 
 /*

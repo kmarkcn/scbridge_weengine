@@ -10,8 +10,101 @@
 
 <body>
   <div class="ma" style="height:100%">
-    <div class="toubu" style="padding-top:60px;">
-      <img src="./resource/scbridge/img/member-product/member- product_01.png"width="100%">
+    <div class="toubu" style="padding-top:64px;background:#fff;height:20%;text-align:right; display:table; margin-bottom: -10px;">
+    <div style="display:table-cell;height:100%;width:100%; height: 48px; vertical-align: middle;background:#ddd;position:relative;top:-2px;">	
+<form class="uk-form uk-form-horizontal" method="post" id="applyform" action="./index.php?act=module&name=scbridge&do=hotel_center">
+ 	<input type='hidden' name='select_type' value='normalRoom'>
+ 	<select style="height:30px; padding:0 5px; line-height:30px;margin-right:10px;width:80px;border:0px dashed #999;" name='region'>
+      	<option value='0'>	
+      		选择区域
+      	</option>
+      	<option value='1' 
+      				{if $region=='1'}
+						selected='selected'
+					{else}
+					{/if}>金牛区
+		</option>
+		<option value='2' 
+					{if $region=='2'}
+						selected='selected'
+					{else}
+					{/if}>锦江区
+		</option>
+		<option value='3' 
+					{if $region=='3'}
+						selected='selected'
+					{else}
+					{/if}>青羊区
+		</option>
+		<option value='4' 
+					{if $region=='4'}
+						selected='selected'
+					{else}
+					{/if}>成华区
+		</option>
+		<option value='5' 
+					{if $region=='5'}
+						selected='selected'
+					{else}
+					{/if}>高新区
+		</option>
+		<option value='6' 
+					{if $region=='6'}
+						selected='selected'
+					{else}
+					{/if}>武侯区
+		</option>
+		<option value='7' 
+					{if $region=='7'}
+						selected='selected'
+					{else}
+					{/if}>其它区
+		</option>
+      </select>
+      <select style="height:30px; padding:0 5px; line-height:30px; margin-right:10px;width:80px;border:0px dashed #999;" name='level'>
+      	<option value='0'>	
+      		选择星级
+      	</option>
+      	<option value='1' 
+      				{if $level=='1'}
+						selected='selected'
+					{else}
+					{/if}>准4星
+		</option>
+		<option value='2' 
+      				{if $level=='2'}
+						selected='selected'
+					{else}
+					{/if}>4星级
+		</option>
+		<option value='3' 
+      				{if $level=='3'}
+						selected='selected'
+					{else}
+					{/if}>准5星
+		</option>
+		<option value='4' 
+      				{if $level=='4'}
+						selected='selected'
+					{else}
+					{/if}>精品级
+		</option>
+		<option value='5' 
+      				{if $level=='5'}
+						selected='selected'
+					{else}
+					{/if}>5星级
+		</option>
+		<option value='6' 
+      				{if $level=='6'}
+						selected='selected'
+					{else}
+					{/if}>奢华级
+		</option>
+      </select>
+      <input type='submit' style="position:relative; top:-3px;border-radius:5px !important; box-sizing:border-box; height:31px;background:#999;" value='搜索'/">
+</form>
+    </div>
     </div>
        
    

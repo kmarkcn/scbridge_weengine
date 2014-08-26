@@ -27,10 +27,37 @@ class ScbridgeModule extends WeModule {
 	//酒店预订产品页面加载
 	public function dohotel_center(){
 		global $_W, $_GPC;
+		$select_type = $_GPC['select_type'];
+		$region = $_GPC['region'];
+		$level = $_GPC['level'];
+		if(empty($select_type))
+		{
+			//取数据
+			$hotels = pe_fetchAll('hotel');
+			//遍历数组，从数据库中选出此酒店最低的那个产品价格
+		}
+		else if($select_type == 'normalRoom')
+		{
+			if($region > 0 && $level == 0)
+			{
+				$sql = "select * from ims_hotel where region = {$region}";
+				$hotels = pdo_fetchall($sql);
+			}
+			else if($region == 0 && $level > 0)
+			{
+				$sql = "select * from ims_hotel where level = {$level}";
+				$hotels = pdo_fetchall($sql);
+			}
+			else if($region > 0 && $level > 0)
+			{
+				$sql = "select * from ims_hotel where level = {$level} and region = {$region}";
+				$hotels = pdo_fetchall($sql);
+			}else
+			{
+				$hotels = pe_fetchAll('hotel');
+			}
+		}
 		$title='酒店预订';
-		//取数据
-		$hotels = pe_fetchAll('hotel');
-		//遍历数组，从数据库中选出此酒店最低的那个产品价格
 		for($i=0;$i<count($hotels);$i++){
 			$str="min(price_vip) as pri,price_normal";
 			$pr=pe_fetchOneByField('hotel_room',$str,'hotel_id',$hotels[$i]['id'],'','');
@@ -39,7 +66,8 @@ class ScbridgeModule extends WeModule {
 		}
 		include $this->template('scbridge:header');
 		include $this->template('scbridge:member_product');
-		include $this->template('scbridge:footer');
+		include $this->template('scbridge:footer'); 
+		
 	}
 	
 	
@@ -211,6 +239,8 @@ class ScbridgeModule extends WeModule {
 		include $this->template('scbridge:register');
 		include $this->template('scbridge:footer');
 	}
+	
+	
 	
 	//会员中心页面加载
 	public function domember_center() {
@@ -604,9 +634,7 @@ class ScbridgeModule extends WeModule {
 		
 	}
 	
-	
-	
-	
+
 	//支付函数
 	public function docustomerPay()
 	{	session_start();

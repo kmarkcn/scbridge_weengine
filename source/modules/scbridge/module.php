@@ -2,7 +2,8 @@
 /*
  * by Terry 2014-08-04
  */
-
+require  'pm/class.phpmailer.php';
+require  'pm/class.smtp.php';
 defined('IN_IA') or exit('Access Denied');
 
 class ScbridgeModule extends WeModule {
@@ -275,7 +276,19 @@ class ScbridgeModule extends WeModule {
 			echo "<script language='javascript'>history.go(-1);alert('信息输入不能为空.');</script>";
 			die();
 		}
-			
+		//进行正则匹配
+		$rule  = "/^((13[0-9])|147|(15[0-35-9])|180|182|(18[5-9]))[0-9]{8}$/A";
+		if(!preg_match($rule,$mobile)){
+			echo "<script language='javascript'>history.go(-1);alert('手机号码不正确');</script>";
+			die();
+		};
+		
+		$zhengze = '/^[a-zA-Z0-9][a-zA-Z0-9._-]*\@[a-zA-Z0-9]+\.[a-zA-Z0-9\.]+$/A';
+		if(!preg_match($zhengze,$email)){
+			echo "<script language='javascript'>history.go(-1);alert('邮箱格式不正确');</script>";
+			die();
+		}
+	
 		if(empty($user_id)){
 			$data=array(
 				'name'=>$name,
@@ -334,10 +347,7 @@ class ScbridgeModule extends WeModule {
 				    //print_r($booking2);
 					include $this->template('scbridge:member_center');
 					include $this->template('scbridge:footer');
-				}
-			
-				
-				
+				}		
 		}	
 		
 	}
@@ -492,7 +502,7 @@ class ScbridgeModule extends WeModule {
 		    else
 		    {
 		        
-		        if(strtotime($startDate)<(time()-3600*24) || strtotime($endDate)<(time()-3600*24) || strtotime($startDate) > strtotime($endDate))
+		        if(strtotime($startDate)<(time()-3600*24) || strtotime($endDate)<(time()-3600*24) || strtotime($startDate) >= strtotime($endDate))
 		        {
 		                echo "<script>alert('预订时间不正确');window.history.back(-1);</script>";
 		                die();
@@ -529,7 +539,7 @@ class ScbridgeModule extends WeModule {
 		    }
              else 
 		    {
-                if(strtotime($startDate)<time()|| strtotime($endDate)<time() || strtotime($startDate) > strtotime($endDate))
+                if(strtotime($startDate)<(time()-3600*24) || strtotime($endDate)<(time()-3600*24) || strtotime($startDate) >= strtotime($endDate))
                 {
                 	echo "<script>alert('预订时间不正确');window.history.back(-1);</script>";
 		            die();
@@ -651,7 +661,8 @@ class ScbridgeModule extends WeModule {
 	                    		$result = pdo_fetch($sql);
 	                    		$data_arr = array(
 	                    			'start_date'=>$result['start_date'],
-	                    			'end_date'=>$result['end_date']
+	                    			'end_date'=>$result['end_date'],
+	                    			'hotels_account'=>$result['hotels_account']
 	                    		);
 	                    		//根据roomid 找房子
 	                    		$sql = "select * from ims_hotel_room where id = ";
@@ -662,11 +673,16 @@ class ScbridgeModule extends WeModule {
 	                    		$sql .=$result['hotel_id'];
 	                    		$result =pdo_fetch($sql);
 	                    		$data_arr['hotel'] = $result['name'];
+	                    		$str_1 = $result['city'];
+	                    		$str_1 .= $result['region'];
+	                    		$str_1 .= $result['address'];
+	                    		$data_arr['address'] = $str_1;
 	                    		$oppenid=$_SESSION['sc_user_oppenid'];
 	                    		$sql ="select * from ims_customer where open_id = '{$oppenid}'";
 	                    		$result = pdo_fetch($sql);
 	                    		$data_arr['customer'] = $result['name'];
-	                    		$data_arr['eamil'] = $result['email'];
+	                    		$data_arr['email'] = $result['email'];
+	                    		$data_arr['tel'] = $result['mobile'];
 	                    		//print_r($data_arr);
 	                    		//余额减少
 	                    		$acc_ag = $_SESSION["sc_customer_balance_money"]
@@ -675,13 +691,18 @@ class ScbridgeModule extends WeModule {
 	                            	'account_balance'=>$acc_ag,
 	                            	'status'=>'1'
 	                    		);
-	                   			 pdo_update('customer',$data, array('id' =>$customerId));
-		               			//$this->sendMail($data_arr);
-		               			//$this->sendMail($data_arr);
-			
-						
-	                    
-	                    //include $this->template("scbridge:success-reserve");
+	                   			pdo_update('customer',$data, array('id' =>$customerId));
+	                   			$str = "尊敬的" . $data_arr['customer']."(先生/女士)你好：<br/>&nbsp;&nbsp;&nbsp;&nbsp;你已经成功预定".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
+	                   			$str .= $data_arr['start_date'] ."至".$data_arr['end_date'].",预定房间数".$data_arr['hotels_account']."间.".",地点".$data_arr['address'];
+	                   			$str .= ".请您准时入住!<br/>&nbsp;&nbsp;&nbsp;&nbsp;如有问题，请致电13982054177!";
+		               			$str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
+	                   			$str_2 .= $data_arr['start_date'] ."至".$data_arr['end_date'].",预定房间数".$data_arr['hotels_account']."间."."<br/>电话:".$data_arr['tel'];
+	                   			$this->dosendMail($str,$data_arr['email']);
+	                   			$this->dosendMail($str_2,"admin@scbridge.cn");
+	                   			$this->dosendMail($str_2,"leozheng@scbridge.cn");
+	                   			$this->dosendMail($str_2,"arielwoo@scbridge.cn");
+	                   			$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+		             			include $this->template("scbridge:success-reserve");
 	                    
 	                }
 	                else
@@ -725,7 +746,28 @@ class ScbridgeModule extends WeModule {
     	     	     );
     	     	     if(pdo_insert('goods_booking',$data))
     	     	     {
-    	     	         //余额减少
+						//
+    	     	     	$booking_id = pdo_insertid();
+    	     	     	//选出订单
+    	     	     	$sql = 'select * from ims_goods_booking where id = ';
+    	     	     	$sql .= $booking_id;
+    	     	     	$result = pdo_fetch($sql);
+    	     	     	$data_arr = array(
+    	     	     			'number' =>$result['goods_number'],
+    	     	     			'address'=>$result['address']
+    	     	     	);
+    	     	     	//根据roomid 找房子
+    	     	     	$sql = "select * from ims_goods where id = ";
+    	     	     	$sql .=$result['goods_id'];
+    	     	     	$result =pdo_fetch($sql);
+    	     	     	$data_arr['name'] = $result['name'];
+    	     	     	$oppenid=$_SESSION['sc_user_oppenid'];
+    	     	     	$sql ="select * from ims_customer where open_id = '{$oppenid}'";
+    	     	     	$result = pdo_fetch($sql);
+    	     	     	$data_arr['customer'] = $result['name'];
+    	     	     	$data_arr['email'] = $result['email'];
+    	     	     	$data_arr['tel'] = $result['mobile'];
+    	     	       //余额减少
     	     	         $acc_ag = $_SESSION["sc_customer_balance_money"]
     	     	                 - $_SESSION["sc_customer_need_money"];
     	     	         $data=array(
@@ -740,6 +782,17 @@ class ScbridgeModule extends WeModule {
     	     	                 'good_stock'=>$goodsNum
     	     	         );
     	     	         pdo_update('goods',$data, array('id' =>$goods_id));
+    	     	         //发送邮件
+    	     	         $str = "尊敬的" . $data_arr['customer']."(先生/女士)你好：<br/>&nbsp;&nbsp;&nbsp;&nbsp;你已经成功预定";
+    	     	         $str .= $data_arr['name'] .".数量是".$data_arr['number'].",你的地点是".$data_arr['address'];
+    	     	         $str .= ".请您静静等候,我们尽快给您送到.<br/>如有问题，请致电13982054177";
+    	     	         $str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['name'].",数量是".$data_arr['number'].",地点是".$data_arr['address'];
+    	     	         $str_2 .= "<br/>电话:".$data_arr['tel'];
+    	     	         $this->dosendMail($str,$data_arr['email']);
+    	     	         $this->dosendMail($str_2,"admin@scbridge.cn");
+    	     	         $this->dosendMail($str_2,"leozheng@scbridge.cn");
+    	     	         $this->dosendMail($str_2,"arielwoo@scbridge.cn");
+    	     	         $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
     	     	         include $this->template("scbridge:success-reserve");  
     	     	     }
     	     	     else
@@ -763,6 +816,8 @@ class ScbridgeModule extends WeModule {
 	}
 
 	
+	
+	//取消房间预订函数
 	public function doroom_cancel(){
 	    global $_W,$_GPC;
 	    $bookingId = $_GPC['bookingid'];
@@ -790,6 +845,40 @@ class ScbridgeModule extends WeModule {
 	            if(pdo_update('customer',$data, array('open_id' =>$oppenid))){
 	                //删除这条订单
 	                pdo_delete("hotel_booking",array('id'=>$bookingId ));
+	                //实现发送邮件
+	                $data_arr = array(
+	                		'start_date'=>$bookingMsg['start_date'],
+	                		'end_date'=>$bookingMsg['end_date']
+	                );
+	                //根据roomid 找房子
+	                $sql = "select * from ims_hotel_room where id = ";
+	                $sql .=$bookingMsg['room_id'];
+	                $result =pdo_fetch($sql);
+	                $data_arr['room'] = $result['name'];
+	                $sql = "select * from ims_hotel where id = ";
+	                $sql .=$result['hotel_id'];
+	                $result =pdo_fetch($sql);
+	                $data_arr['hotel'] = $result['name'];
+	                $str_1 = $result['city'];
+	                $str_1 .= $result['region'];
+	                $str_1 .= $result['address'];
+	                $data_arr['address'] = $str_1;
+	                $oppenid=$_SESSION['sc_user_oppenid'];
+	                $sql ="select * from ims_customer where open_id = '{$oppenid}'";
+	                $result = pdo_fetch($sql);
+	                $data_arr['customer'] = $result['name'];
+	                $data_arr['email'] = $result['email'];
+	                $data_arr['tel'] = $result['mobile'];
+	                $str = "尊敬的" . $data_arr['customer']."(先生/女士)你好：<br/>&nbsp;&nbsp;&nbsp;&nbsp;你已经成功取消".$data_arr['hotel']."的".$data_arr['room']."的预定";
+	                $str .= ".预定时间是".$data_arr['start_date'] ."至".$data_arr['end_date'];
+	                $str .= "<br/>如有问题，请致电13982054177!";
+		            $str_2 = $data_arr['customer']."(先生/女士)已经取消".$data_arr['hotel']."的".$data_arr['room']."的预定";
+	                $str_2 .= ".预定时间是".$data_arr['start_date'] ."至".$data_arr['end_date']."<br/>电话:".$data_arr['tel'];
+	                $this->dosendMail($str,$data_arr['email']);
+	                $this->dosendMail($str_2,"leozheng@scbridge.cn");
+    	     	    $this->dosendMail($str_2,"arielwoo@scbridge.cn");
+    	     	    $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+    	     	    $this->dosendMail($str_2,"admin@scbridge.cn");
 	                include $this->template("scbridge:success-cancel");
 	            }
 	        }
@@ -797,11 +886,10 @@ class ScbridgeModule extends WeModule {
 	}
 	
 	
-	public function sendMail(){
-// 		require  'pm\class.phpmailer.php';
-// 		require  'pm\class.smtp.php';
-		
-		echo(1);/*$mail = new PHPMailer(true);
+	
+	//发送邮件函数
+	public function dosendMail($str,$email){
+		$mail = new PHPMailer(true);
 		$mail->IsSMTP();
 		$mail->CharSet='UTF-8'; //设置邮件的字符编码，这很重要，不然中文乱码
 		$mail->SMTPAuth   = true;                  //开启认证
@@ -810,23 +898,18 @@ class ScbridgeModule extends WeModule {
 		$mail->Username   = "admin@scbridge.cn";
 		$mail->Password   = "123Nimda";
 		//$mail->IsSendmail(); //如果没有sendmail组件就注释掉，否则出现“Could  not execute: /var/qmail/bin/sendmail ”的错误提示
-		$mail->AddReplyTo("admin@scbridge.cn",'admin');//回复地址
+		$mail->AddReplyTo("admin@scbridge.cn","酒店预订中心");//回复地址
 		$mail->From       = "admin@scbridge.cn";
 		//$mail->FromName   = "www.phpddt.com";
-		$to = $data_arr['email'];
+		$to = $email;
 		$mail->AddAddress($to);
-		$mail->Subject  = "购买通知";
-		$str = "尊敬的" . $data_arr['customer']."(先生/女士)你好：<br/>你已经成功预定".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
-		$str .= $data_arr['start_date'] ."至".$data_arr['end_date'];
-		$str .= ".请你准时入住!如有问题，请致电13982054177!";
-		//$mail->Body = $mail->AltBody    = "数据数据数据"; //当邮件不支持html时备用显示，可以省略
-		//$mail->WordWrap   = 80; // 设置每行字符串的长度
+		$mail->Subject  = "预订通知";
+		$mail->Body = $str;
+		$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; //当邮件不支持html时备用显示，可以省略
+		$mail->WordWrap   = 300; // 设置每行字符串的长度
 		//$mail->AddAttachment("f:/test.png");  //可以添加附件
-		//$mail->IsHTML(true);
-		//$mail->Send();
-		print_r($str);
-		*/
-				
+		$mail->IsHTML(true);
+		$mail->Send();
 	}
 	
 	

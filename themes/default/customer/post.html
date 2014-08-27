@@ -22,7 +22,71 @@
 						<br/><br/>
 						电话&nbsp;&nbsp;<input type="text" name="mobile" class="txt" value="{$customer['mobile']}" autofocus="autofocus" required="required"/>
 						<br/><br/>
-						账户余额&nbsp;&nbsp;<input type="text" name="account_balance" class="txt" value="{$customer['account_balance']}" autofocus="autofocus" required="required"/>(元)
+						账户余额&nbsp;&nbsp;<input type="button" style="height:35px;"  class="txt" value="{$customer['account_balance']}"   />
+						<br/><input  type="button" value="修改" class="mt10 btn grid-2 alpha" id="showDiv"/>
+						<script>
+							$(function(){
+								$('#showDiv').toggle(
+									function(){
+										$('#show_acc').show();
+									},function(){
+										$('#show_acc').hide();
+									}		
+								)
+								
+								//这里是传ajax
+								
+								$('#admin_pwd').focus(function(){
+									$('#admin_reminder').html('');
+								})
+								
+								$('#confirm_admin_pwd').click(function(){
+									//先进行验证
+									var admin_pwd = $('#admin_pwd').val();
+									if( admin_pwd == "")
+									{
+										$('#admin_reminder').html('密码为空');
+									}
+									else
+									{
+										 $.ajax({
+										        url: "http://www.kmark.cn/we_scbridge/confrimPwd.php",
+										      	type:'post',
+										        data:"admin_pwd=" + admin_pwd,
+										        success: function(data) {
+										            //这里是返回来的值
+										           var res = String($.trim(data));
+										            //alert(res);
+										          	if(res == 1){
+										          	$('#show_acc').hide();
+										        	   $('#account_balance').show();
+										           	}
+										           	else{
+										        	   $('#admin_reminder').html('密码错误');
+										           	}
+										           
+										        },
+										        cache: false,
+										        timeout: 5000,
+										        error: function() {
+										            alert("超时");
+										        }
+										    });
+									}
+								})
+							})
+						</script>
+						<div id="show_acc" style="display:none;">
+						<br/><br/><br/>
+						请输入管理员密码:
+						<br/><br/>
+						<input type="password" name="admin_password" class="txt" id="admin_pwd"/><span style="color:red;font-size:12px;" id="admin_reminder"></span>
+						<br/>
+						<input type="button"  value="确定"  class="mt10 btn grid-2 alpha" id="confirm_admin_pwd"/>
+						<br/>
+						</div>
+						<br/><br/><br/>
+						<input type="text"  style="display:none;" name="account_balance" class="txt" value="{$customer['account_balance']}"  required="required" id='account_balance'/>
 						<br/><br/>
 						状态&nbsp;&nbsp;
 							<select name='status' style='clear:center;'>

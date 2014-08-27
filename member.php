@@ -77,8 +77,10 @@ function _login($forward = '') {
 			message('成功注册，现在将以新注册的身份登录！', $forward);
 		} else {
 			message("欢迎回来，{$record['username']}。", $forward);
+			return 1;
 		}
 	} else {
 		message('登录失败，请检查您输入的用户名和密码！');
+		return 0;
 	}
 }

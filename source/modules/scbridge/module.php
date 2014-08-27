@@ -116,17 +116,77 @@ class ScbridgeModule extends WeModule {
 		global $_W,$_GPC;
 		$title='会议预定';
 		//这里要选出哪些酒店有会议室，然后列出来
-		$sql="select h.name,h.level,h.icon,h.address,h.id  from ims_hotel as h";
-		$sql.=" join ims_hotel_room as r on h.id=r.hotel_id where r.is_meeting=1";
-		$hotels=pdo_fetchall($sql);
+		$select_type = $_GPC['select_type'];
+		$region = $_GPC['region'];
+		$min_number = $_GPC['min_number'];
+		if(empty($select_type))
+		{
+			//取数据
+			$sql="select h.name,h.level,h.icon,h.address,h.id  from ims_hotel as h";
+			$sql.=" join ims_hotel_room as r on h.id=r.hotel_id where r.is_meeting=1";
+			$hotels=pdo_fetchall($sql);
+		}
+		else if($select_type == 'meetingRoom')
+		{
+			if($region > 0 && $min_number == 0)
+			{
+				$sql="select h.name,h.level,h.icon,h.address,h.id  from ims_hotel as h";
+				$sql.=" join ims_hotel_room as r on h.id=r.hotel_id where r.is_meeting=1 and h.region = {$region}";
+				$hotels=pdo_fetchall($sql);
+			}
+			else if($region == 0 && $min_number > 0)
+			{
+				$sql="select h.name,h.level,h.icon,h.address,h.id  from ims_hotel as h";
+				$sql.=" join ims_hotel_room as r on h.id=r.hotel_id where r.is_meeting=1";
+				$hotels=pdo_fetchall($sql);
+				//选出所有的酒店的房间的最小容纳人数
+				for($i=0;$i<count($hotels);$i++){
+					$str="min(min_number) as min_num";
+					$re=pe_fetchOneByField('hotel_room',$str,'hotel_id',$hotels[$i]['id'],'is_meeting','1');
+					$hotels[$i]['min_num']=$re['min_num'];
+					$hotels[$i]['level']=pe_switchArr($hotels[$i]['level'],$this->arrBridge);
+					//这里要决定要不要保留这个
+					if($hotels[$i]['min_num'] < $min_number)
+					{
+						unset($hotels[$i]);
+					} 
+				}
+				
+			}
+			else if($region > 0 && $min_number > 0)
+			{
+				$sql="select h.name,h.level,h.icon,h.address,h.id  from ims_hotel as h";
+				$sql.=" join ims_hotel_room as r on h.id=r.hotel_id where r.is_meeting=1 and h.region = {$region} ";
+				$hotels=pdo_fetchall($sql);
+				//选出所有的酒店的房间的最小容纳人数
+				for($i=0;$i<count($hotels);$i++){
+					$str="min(min_number) as min_num";
+					$re=pe_fetchOneByField('hotel_room',$str,'hotel_id',$hotels[$i]['id'],'is_meeting','1');
+					$hotels[$i]['min_num']=$re['min_num'];
+					$hotels[$i]['level']=pe_switchArr($hotels[$i]['level'],$this->arrBridge);
+					//这里要决定要不要保留这个
+					if($hotels[$i]['min_num'] < $min_number)
+					{
+						unset($hotels[$i]);
+					}
+				}
+			}
+			else
+			{
+				$sql="select h.name,h.level,h.icon,h.address,h.id  from ims_hotel as h";
+				$sql.=" join ims_hotel_room as r on h.id=r.hotel_id where r.is_meeting=1";
+				$hotels=pdo_fetchall($sql);
+			}
+		}
+		
+		
 		//循环遍历
 		for($i=0;$i<count($hotels);$i++){
 			$str="max(max_number) as max_num";
-			$re=pe_fetchOneByField('hotel_room',$str,'hotel_id',$hotels[$i]['id'],'is_metting','1');
+			$re=pe_fetchOneByField('hotel_room',$str,'hotel_id',$hotels[$i]['id'],'is_meeting','1');
 			$hotels[$i]['max_num']=$re['max_num'];
 			$hotels[$i]['level']=pe_switchArr($hotels[$i]['level'],$this->arrBridge);
 		}
-		
 		include $this->template('scbridge:header');
 		include $this->template('scbridge:meeting-reserve');
 		include $this->template('scbridge:footer');
@@ -721,7 +781,7 @@ class ScbridgeModule extends WeModule {
 	                    		);
 	                   			pdo_update('customer',$data, array('id' =>$customerId));
 	                   			$str = "尊敬的" . $data_arr['customer']."(先生/女士)你好：<br/>&nbsp;&nbsp;&nbsp;&nbsp;你已经成功预定".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
-	                   			$str .= $data_arr['start_date'] ."至".$data_arr['end_date'].",预定房间数".$data_arr['hotels_account']."间.".",地点".$data_arr['address'];
+	                   			$str .= $data_arr['start_date'] ."至".$data_arr['end_date'].",预定房间数".$data_arr['hotels_account']."间".",地点".$data_arr['address'];
 	                   			$str .= ".请您准时入住!<br/>&nbsp;&nbsp;&nbsp;&nbsp;如有问题，请致电13982054177!";
 		               			$str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
 	                   			$str_2 .= $data_arr['start_date'] ."至".$data_arr['end_date'].",预定房间数".$data_arr['hotels_account']."间."."<br/>电话:".$data_arr['tel'];

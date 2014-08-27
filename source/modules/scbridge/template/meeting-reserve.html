@@ -9,13 +9,113 @@
 <script type="text/javascript" src="./resource/scbridge/js/jquery.min.js"></script>
 </head>
 
-<body>
-	<div class="ma">
+<body style="width:100%;">
+	<div class="ma" style="width:100%;">
     	
         
         <!--以下是中间内容-->
-        <div class="mr-content">
-        	<img width="100%" src="./resource/scbridge/img/member-product/member- product_01.png">
+        <div class="mr-content" style="width:100%;">
+
+<div style="height: 48px; line-height:48px;text-align:right;padding-right:5px;background:#ddd;">	
+<form class="uk-form uk-form-horizontal" method="post" id="applyform" action="./index.php?act=module&name=scbridge&do=meeting_center">
+ 	<input type='hidden' name='select_type' value='meetingRoom'>
+ 	<select style="height:30px; padding:0 5px; line-height:30px;margin-right:10px;width:80px;border:0px dashed #999;" name='region'>
+      	<option value='0'>	
+      		选择区域
+      	</option>
+      	<option value='1' 
+      				{if $region=='1'}
+						selected='selected'
+					{else}
+					{/if}>金牛区
+		</option>
+		<option value='2' 
+					{if $region=='2'}
+						selected='selected'
+					{else}
+					{/if}>锦江区
+		</option>
+		<option value='3' 
+					{if $region=='3'}
+						selected='selected'
+					{else}
+					{/if}>青羊区
+		</option>
+		<option value='4' 
+					{if $region=='4'}
+						selected='selected'
+					{else}
+					{/if}>成华区
+		</option>
+		<option value='5' 
+					{if $region=='5'}
+						selected='selected'
+					{else}
+					{/if}>高新区
+		</option>
+		<option value='6' 
+					{if $region=='6'}
+						selected='selected'
+					{else}
+					{/if}>武侯区
+		</option>
+		<option value='7' 
+					{if $region=='7'}
+						selected='selected'
+					{else}
+					{/if}>其它区
+		</option>
+      </select>
+      <select style="height:30px; padding:0 5px; line-height:30px; margin-right:10px;width:80px;border:0px dashed #999;" name='min_number'>
+      	<option value='0'>	
+      		选择人数
+      	</option>
+      	<option value='100' 
+      				{if $min_number=='100'}
+						selected='selected'
+					{else}
+					{/if}>100人以下
+		</option>
+		<option value='150' 
+      				{if $min_number=='150'}
+						selected='selected'
+					{else}
+					{/if}>100-200
+		</option>
+		<option value='300' 
+      				{if $min_number=='300'}
+						selected='selected'
+					{else}
+					{/if}>200-400
+		</option>
+		<option value='600' 
+      				{if $min_number=='600'}
+						selected='selected'
+					{else}
+					{/if}>400-800
+		</option>
+		<option value='1000' 
+      				{if $min_number=='1000'}
+						selected='selected'
+					{else}
+					{/if}>800-1200
+		</option>
+		<option value='1200' 
+      				{if $min_number=='1200'}
+						selected='selected'
+					{else}
+					{/if}>1200以上
+		</option>
+      </select>
+      <input type='submit' style="position:relative; top:-3px;border-radius:5px !important; box-sizing:border-box; height:31px;background:#999;" value='搜索'/">
+</form>
+    
+    </div>
+        	
+        	
+        	
+        	
+        	
             <div class="mr-c-body">
             	{loop $hotels $re}
             	<a href="./index.php?act=module&name=scbridge&do=hotel_contents&h_id={$re['id']}">	

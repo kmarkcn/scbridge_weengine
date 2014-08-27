@@ -44,7 +44,7 @@
                     <tr>
                     	<td class="rr-td-01">议厅名称</td>
                         <td>
-                        	<select class="rr-input-01 textfocus" name='roomType' id='selectRoom'>
+                        	<select class="rr-input-01 textfocus" name='meetingName' id='selectRoom'>
                             	{loop $meetingType $re}
                             		<option value="{$re['id']}" class="meetingRoom_{$re['id']}">{$re['name']}</option>
                             	{/loop}

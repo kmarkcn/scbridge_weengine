@@ -44,13 +44,36 @@
                     <tr>
                     	<td class="rr-td-01">房间类型</td>
                         <td>
-                        	<select class="rr-select  rr-input-01 textfocus" style='background:#fff;' name="roomType">
+                        	<select class="rr-select  rr-input-01 textfocus" style='background:#fff;' name="roomType"  id='selectRoom'>
                             	{loop $roomType $re}
-                            		<option value="{$re['id']}">{$re['name']}</option>
+                            		<option value="{$re['id']}" class="meetingRoom_{$re['id']}">{$re['name']}</option>
                             	{/loop}
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                    	<td class="rr-td-01" style="color:red; height:20px;"></td>
+                        <td class="rr-td-02" style="color:red; height:20px;">
+                        	{loop $roomType $re}
+                            		<span id="meetingRoom_{$re['id']}" class='meetingRoom'>(单价{$re['price_vip']}元)</span>
+                            {/loop}
+                            
+                        </td>
+                    </tr>
+                     <script>
+                    	$(function(){
+                    		function conRoom(){
+                    			$('.meetingRoom').hide();
+                    			var meetingClassName=$('select[name=roomType]').find("option:selected").attr('class');
+                    			$("#"+meetingClassName).show();
+                    		}
+                    		conRoom();
+                    		$('#selectRoom').change(function(){
+                    			conRoom();
+                    		})
+                    		
+                    	})
+                    </script>
                     <tr>
                     	<td class="rr-td-01">房间数量</td>
                         <td>

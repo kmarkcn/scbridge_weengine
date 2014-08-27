@@ -98,7 +98,8 @@ class ScbridgeModule extends WeModule {
 		$sql="select * from ims_customer where open_id = '{$oppenid}'";
 		$result=pdo_fetch($sql);
 		if(!empty($result)){
-			$roomType=pe_fetchAllByField('hotel_room','id,name','hotel_id',$h_id,'is_meeting','0');
+			$roomType=pe_fetchAllByField('hotel_room','id,name,price_vip','hotel_id',$h_id,'is_meeting','0');
+			//print_r($roomType);
 			include $this->template('scbridge:room-reserve');
 		}else{
 			$title='会员注册';

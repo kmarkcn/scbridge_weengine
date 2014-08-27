@@ -82,6 +82,25 @@
         $('.smlist div[key="' + key + '"]').attr('rid', rid);
         $('.action').dialog('close');
         currentKey = null;
+        
+        alert($('.mlist .hover[key="' + key + '"]').html());
+        alert($('.smlist div[key="' + key + '"]').html());
+    }
+    function selectLink() {
+    	var key = currentKey;
+        if(key == null) return;
+        var link = document.getElementById('kl').value;
+        if(link == "") {
+        	alert("请输入相应链接");
+        	return;
+        }
+        $('.mlist .hover[key="' + key + '"]').attr('link', link);
+        $('.smlist div[key="' + key + '"]').attr('link', link);
+        $('.action').dialog('close');
+        currentKey = null;
+        
+        alert($('.mlist .hover[key="' + key + '"]').html());
+        alert($('.smlist div[key="' + key + '"]').html());
     }
     function saveMenu() {
         var dat = '[';
@@ -164,7 +183,7 @@
                             <div class="smlist" key="{$row['key']}">
                                 {if !empty($row['sub_button'])}
                                 {loop $row['sub_button'] $btn}
-                                <div class="tb106" style="margin-top: 20px; padding-left:80px; background: url('./resource/image/bg_repno.gif') no-repeat -245px -545px;" key="{$btn['key']}" rid="{$btn['rid']}">
+                                <div class="tb106" style="margin-top: 20px; padding-left:80px; background: url('./resource/image/bg_repno.gif') no-repeat -245px -545px;" key="{$btn['key']}" rid="{$btn['rid']}" link="{$btn['link']}">
                                     <input type="text" class="txt grid-3 alpha pin" value="{$btn['name']}">
                                     <a href="javascript:;" onclick="setMenuAction('{$btn['key']}');">设置动作</a> &nbsp;
                                     <a href="javascript:;" onclick="deleteMenu('{$btn['key']}')">删除菜单</a>

@@ -363,7 +363,7 @@ class ScbridgeModule extends WeModule {
 		$email=$_GPC['user_email'];
 		$oppenid=$_SESSION['sc_user_oppenid'];
 		
-		if(empty($name)||empty($mobile)||empty($email)){
+		if(empty($name)||empty($mobile)){
 			echo "<script language='javascript'>history.go(-1);alert('信息输入不能为空.');</script>";
 			die();
 		}
@@ -373,12 +373,14 @@ class ScbridgeModule extends WeModule {
 			echo "<script language='javascript'>history.go(-1);alert('手机号码不正确');</script>";
 			die();
 		};
-		
-		$zhengze = '/^[a-zA-Z0-9][a-zA-Z0-9._-]*\@[a-zA-Z0-9]+\.[a-zA-Z0-9\.]+$/A';
-		if(!preg_match($zhengze,$email)){
-			echo "<script language='javascript'>history.go(-1);alert('邮箱格式不正确');</script>";
-			die();
+		if(!empty($email)){
+			$zhengze = '/^[a-zA-Z0-9][a-zA-Z0-9._-]*\@[a-zA-Z0-9]+\.[a-zA-Z0-9\.]+$/A';
+			if(!preg_match($zhengze,$email)){
+				echo "<script language='javascript'>history.go(-1);alert('邮箱格式不正确');</script>";
+				die();
+			}
 		}
+		
 	
 		if(empty($user_id)){
 			$data=array(
@@ -791,12 +793,13 @@ class ScbridgeModule extends WeModule {
 	                   			$this->dosendMail($str_2,"leozheng@scbridge.cn");
 	                   			$this->dosendMail($str_2,"arielwoo@scbridge.cn");
 	                   			$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
-	                   			if($this->dosendMail($str,$data_arr['email'])){
+	                   			try{
+	                   				$this->dosendMail($str,$data_arr['email']);
 	                   				include $this->template("scbridge:success-reserve");
-	                   			}else{
-    	     	         			//echo "<script>alert('已经成功预定,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
-    	     	         			include $this->template("scbridge:success-cancel");
-    	     	         		}
+	                   			}catch (phpmailerException $e){
+	                   				echo "<script>alert('已经成功预定,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
+    	     	         			include $this->template("scbridge:success-reserve");
+	                   			}
 	                }
 	                else
 	                {
@@ -884,12 +887,14 @@ class ScbridgeModule extends WeModule {
     	     	         $this->dosendMail($str_2,"leozheng@scbridge.cn");
     	     	         $this->dosendMail($str_2,"arielwoo@scbridge.cn");
     	     	         $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
-    	     	         if($this->dosendMail($str,$data_arr['email'])){
-    	     	         	include $this->template("scbridge:success-reserve"); 
-    	     	         }else{
-    	     	         	//echo "<script>alert('已经成功购买,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
-    	     	         	include $this->template("scbridge:success-cancel");
+    	     	         try{
+    	     	         	$this->dosendMail($str,$data_arr['email']);
+    	     	         	include $this->template("scbridge:success-reserve");
+    	     	         }catch (phpmailerException $e){
+    	     	         	echo "<script>alert('已经成功购买,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
+    	     	         	include $this->template("scbridge:success-reserve");
     	     	         }
+    	     	        
     	     	     }
     	     	     else
     	     	     {
@@ -974,13 +979,15 @@ class ScbridgeModule extends WeModule {
 	                $this->dosendMail($str_2,"leozheng@scbridge.cn");
 	                $this->dosendMail($str_2,"arielwoo@scbridge.cn");
 	                $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
-	                if($this->dosendMail($str,$data_arr['email'])){
-	                	//$this->dosendMail($str_2,"admin@scbridge.cn");
+	                try{
+	                	$this->dosendMail($str,$data_arr['email']);
 	                	include $this->template("scbridge:success-cancel");
-	                }else{
-	                	//echo "<script>alert('已经成功取消,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
+	                }catch (phpmailerException $e){
+	                	echo "<script>alert('已经成功取消,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
 	                	include $this->template("scbridge:success-cancel");
 	                }
+	                	//$this->dosendMail($str_2,"admin@scbridge.cn");
+	                
 	                
 	            }
 	        }
@@ -1011,7 +1018,11 @@ class ScbridgeModule extends WeModule {
 		$mail->WordWrap   = 300; // 设置每行字符串的长度
 		//$mail->AddAttachment("f:/test.png");  //可以添加附件
 		$mail->IsHTML(true);
-		return $mail->Send();
+		if($mail->Send()){
+			return 1;
+		}else{
+			return 0;
+		}
 	}
 	
 	

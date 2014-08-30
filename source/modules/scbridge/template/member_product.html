@@ -95,7 +95,9 @@
     </div>
     </div>
        
-   
+   {if count($hotels)<= 0}
+   			对不起，没有该类酒店
+   {else}
     
     {loop $hotels $re}
    
@@ -120,6 +122,8 @@
     </div>
    
     {/loop}
+    {/if}
+    
     <div style="height:60px;"></div>
        
 </div>

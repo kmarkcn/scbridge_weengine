@@ -787,13 +787,16 @@ class ScbridgeModule extends WeModule {
 	                   			$str .= ".请您准时入住!<br/>&nbsp;&nbsp;&nbsp;&nbsp;如有问题，请致电13982054177!";
 		               			$str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
 	                   			$str_2 .= $data_arr['start_date'] ."至".$data_arr['end_date'].",预定房间数".$data_arr['hotels_account']."间."."<br/>电话:".$data_arr['tel'];
-	                   			$this->dosendMail($str,$data_arr['email']);
 	                   			//$this->dosendMail($str_2,"admin@scbridge.cn");
-	                   			//$this->dosendMail($str_2,"leozheng@scbridge.cn");
-	                   			//$this->dosendMail($str_2,"arielwoo@scbridge.cn");
-	                   			//$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
-		             			include $this->template("scbridge:success-reserve");
-	                    
+	                   			$this->dosendMail($str_2,"leozheng@scbridge.cn");
+	                   			$this->dosendMail($str_2,"arielwoo@scbridge.cn");
+	                   			$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+	                   			if($this->dosendMail($str,$data_arr['email'])){
+	                   				include $this->template("scbridge:success-reserve");
+	                   			}else{
+    	     	         			//echo "<script>alert('已经成功预定,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
+    	     	         			include $this->template("scbridge:success-cancel");
+    	     	         		}
 	                }
 	                else
 	                {
@@ -878,12 +881,15 @@ class ScbridgeModule extends WeModule {
     	     	         $str .= ".请您静静等候,我们尽快给您送到.<br/>如有问题，请致电13982054177";
     	     	         $str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['name'].",数量是".$data_arr['number'].",地点是".$data_arr['address'];
     	     	         $str_2 .= "<br/>电话:".$data_arr['tel'];
-    	     	         $this->dosendMail($str,$data_arr['email']);
-    	     	         //$this->dosendMail($str_2,"admin@scbridge.cn");
-    	     	         //$this->dosendMail($str_2,"leozheng@scbridge.cn");
-    	     	         //$this->dosendMail($str_2,"arielwoo@scbridge.cn");
-    	     	         //$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
-    	     	         include $this->template("scbridge:success-reserve");  
+    	     	         $this->dosendMail($str_2,"leozheng@scbridge.cn");
+    	     	         $this->dosendMail($str_2,"arielwoo@scbridge.cn");
+    	     	         $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+    	     	         if($this->dosendMail($str,$data_arr['email'])){
+    	     	         	include $this->template("scbridge:success-reserve"); 
+    	     	         }else{
+    	     	         	//echo "<script>alert('已经成功购买,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
+    	     	         	include $this->template("scbridge:success-cancel");
+    	     	         }
     	     	     }
     	     	     else
     	     	     {
@@ -965,12 +971,17 @@ class ScbridgeModule extends WeModule {
 	                $str .= "<br/>如有问题，请致电13982054177!";
 		            $str_2 = $data_arr['customer']."(先生/女士)已经取消".$data_arr['hotel']."的".$data_arr['room']."的预定";
 	                $str_2 .= ".预定时间是".$data_arr['start_date'] ."至".$data_arr['end_date']."<br/>电话:".$data_arr['tel'];
-	                $this->dosendMail($str,$data_arr['email']);
 	                $this->dosendMail($str_2,"leozheng@scbridge.cn");
-    	     	    $this->dosendMail($str_2,"arielwoo@scbridge.cn");
-    	     	    $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
-    	     	    //$this->dosendMail($str_2,"admin@scbridge.cn");
-	                include $this->template("scbridge:success-cancel");
+	                $this->dosendMail($str_2,"arielwoo@scbridge.cn");
+	                $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+	                if($this->dosendMail($str,$data_arr['email'])){
+	                	//$this->dosendMail($str_2,"admin@scbridge.cn");
+	                	include $this->template("scbridge:success-cancel");
+	                }else{
+	                	//echo "<script>alert('已经成功取消,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
+	                	include $this->template("scbridge:success-cancel");
+	                }
+	                
 	            }
 	        }
 	    }
@@ -1000,7 +1011,7 @@ class ScbridgeModule extends WeModule {
 		$mail->WordWrap   = 300; // 设置每行字符串的长度
 		//$mail->AddAttachment("f:/test.png");  //可以添加附件
 		$mail->IsHTML(true);
-		$mail->Send();
+		return $mail->Send();
 	}
 	
 	

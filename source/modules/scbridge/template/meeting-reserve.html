@@ -117,6 +117,9 @@
         	
         	
             <div class="mr-c-body">
+            	{if count($hotels) <= 0}
+   						对不起，没有该类酒店
+   				{else}
             	{loop $hotels $re}
             	<a href="./index.php?act=module&name=scbridge&do=hotel_contents&h_id={$re['id']}">	
                     <div class="mr-goods">
@@ -131,7 +134,7 @@
                     </div>
                 </a>
                {/loop}
-               
+               {/if}
             </div>
         </div>
         <!--以上是中间内容-->

@@ -44,7 +44,7 @@
                     <tr>
                     	<td class="rr-td-01">议厅名称</td>
                         <td>
-                        	<select class="rr-input-01 textfocus" name='meetingName' id='selectRoom'>
+                        	<select class="rr-input-01 textfocus" name="roomType" id='selectRoom'>
                             	{loop $meetingType $re}
                             		<option value="{$re['id']}" class="meetingRoom_{$re['id']}">{$re['name']}</option>
                             	{/loop}
@@ -83,7 +83,7 @@
                     	$(function(){
                     		function conRoom(){
                     			$('.meetingRoom').hide();
-                    			var meetingClassName=$('select[name=meetingName]').find("option:selected").attr('class');
+                    			var meetingClassName=$('select[name=roomType]').find("option:selected").attr('class');
                     			$("#"+meetingClassName).show();
                     		}
                     		conRoom();

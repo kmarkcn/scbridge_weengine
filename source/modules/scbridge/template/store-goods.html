@@ -56,3 +56,15 @@
 </div>
 </body>
 </html>
+<script>
+$(function(){
+	$('.sg-goods img').each(function(){
+		var hei = $('body').height();
+	    var wid	= $('body').width();
+	    $(this).css({
+	    	'width': wid,
+	    	'height': hei
+	    });
+	})
+})
+</script>

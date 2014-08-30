@@ -27,7 +27,13 @@
             	<li>
                 	<ul class="mc-ul-02">
                     	<li>当前余额</li>
-                        <li><span class="mc-red-16" style='position:relative;top:-3px;'>{$result['account_balance']}</span></li>
+                        <li><span class="mc-red-16" style='position:relative;top:-3px;'>
+                        	{if $result['status']==0}
+                        		<a style="color:red;font-size:8px;">请先充值</a>
+                        	{else}
+                        		 {$result['account_balance']}
+                        	{/if}
+                       </span></li>
                     </ul>
                 </li>
                 <li>

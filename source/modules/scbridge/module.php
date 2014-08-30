@@ -8,7 +8,7 @@ defined('IN_IA') or exit('Access Denied');
 
 class ScbridgeModule extends WeModule {
 	//定义酒店类型和商品类型
-	public $arrBridge = array('1'=>'准4星','2'=>'4星','3'=>'准5星','4'=>'精品','5'=>'5星','6'=>'奢华',);
+	public $arrBridge = array('1'=>'4星','2'=>'精品','3'=>'5星','4'=>'奢华',);
 	public $arrGoods  = array('1'=>'奢侈品','2'=>'贵金属','3'=>'当季水果','4'=>'生活用品','5'=>'酒水饮品','6'=>'其它产品');
 	
 	public function fieldsFormDisplay($rid = 0) {}
@@ -363,7 +363,7 @@ class ScbridgeModule extends WeModule {
 		$email=$_GPC['user_email'];
 		$oppenid=$_SESSION['sc_user_oppenid'];
 		
-		if(empty($name)||empty($mobile)){
+		if(empty($name)||empty($mobile)||empty($email)){
 			echo "<script language='javascript'>history.go(-1);alert('信息输入不能为空.');</script>";
 			die();
 		}
@@ -582,6 +582,7 @@ class ScbridgeModule extends WeModule {
 		$goodsNumber = $_POST["goodsNumber"];
 		$address = $_POST["address"];
 		$roomsNumber =$_POST['roomsNumber'];
+		//$meetingName = $_POST['meetingName'];
 		
 		if($reserveType == "normalRoom")
 		{
@@ -787,10 +788,10 @@ class ScbridgeModule extends WeModule {
 		               			$str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
 	                   			$str_2 .= $data_arr['start_date'] ."至".$data_arr['end_date'].",预定房间数".$data_arr['hotels_account']."间."."<br/>电话:".$data_arr['tel'];
 	                   			$this->dosendMail($str,$data_arr['email']);
-	                   			$this->dosendMail($str_2,"admin@scbridge.cn");
-	                   			$this->dosendMail($str_2,"leozheng@scbridge.cn");
-	                   			$this->dosendMail($str_2,"arielwoo@scbridge.cn");
-	                   			$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+	                   			//$this->dosendMail($str_2,"admin@scbridge.cn");
+	                   			//$this->dosendMail($str_2,"leozheng@scbridge.cn");
+	                   			//$this->dosendMail($str_2,"arielwoo@scbridge.cn");
+	                   			//$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
 		             			include $this->template("scbridge:success-reserve");
 	                    
 	                }
@@ -878,10 +879,10 @@ class ScbridgeModule extends WeModule {
     	     	         $str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['name'].",数量是".$data_arr['number'].",地点是".$data_arr['address'];
     	     	         $str_2 .= "<br/>电话:".$data_arr['tel'];
     	     	         $this->dosendMail($str,$data_arr['email']);
-    	     	         $this->dosendMail($str_2,"admin@scbridge.cn");
-    	     	         $this->dosendMail($str_2,"leozheng@scbridge.cn");
-    	     	         $this->dosendMail($str_2,"arielwoo@scbridge.cn");
-    	     	         $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+    	     	         //$this->dosendMail($str_2,"admin@scbridge.cn");
+    	     	         //$this->dosendMail($str_2,"leozheng@scbridge.cn");
+    	     	         //$this->dosendMail($str_2,"arielwoo@scbridge.cn");
+    	     	         //$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
     	     	         include $this->template("scbridge:success-reserve");  
     	     	     }
     	     	     else
@@ -917,6 +918,12 @@ class ScbridgeModule extends WeModule {
 	        $bookingMsg = pdo_fetch($sql);
 	        if(strtotime($bookingMsg['lastupdate']) < (time()-(2*3600))){
 	            include $this->template("scbridge:failure-cancel");
+	            /* echo($bookingMsg['lastupdate']);
+	            echo("<br/>");
+	            echo(date("Y-m-d h:i:s",time()));
+	            echo("<br/>");
+	            echo((strtotime($bookingMsg['lastupdate']))- (time())); */
+	            
 	        }
 	        else {
 	        	//这里是取消动作执行
@@ -959,7 +966,7 @@ class ScbridgeModule extends WeModule {
 	                $data_arr['email'] = $result['email'];
 	                $data_arr['tel'] = $result['mobile'];
 	                $str = "尊敬的" . $data_arr['customer']."(先生/女士)你好：<br/>&nbsp;&nbsp;&nbsp;&nbsp;你已经成功取消".$data_arr['hotel']."的".$data_arr['room']."的预定";
-	                $str .= ".预定时间是".$data_arr['start_date'] ."至".$data_arr['end_date'];
+	                $str .= ".时间是".$data_arr['start_date'] ."至".$data_arr['end_date'];
 	                $str .= "<br/>如有问题，请致电13982054177!";
 		            $str_2 = $data_arr['customer']."(先生/女士)已经取消".$data_arr['hotel']."的".$data_arr['room']."的预定";
 	                $str_2 .= ".预定时间是".$data_arr['start_date'] ."至".$data_arr['end_date']."<br/>电话:".$data_arr['tel'];
@@ -967,7 +974,7 @@ class ScbridgeModule extends WeModule {
 	                $this->dosendMail($str_2,"leozheng@scbridge.cn");
     	     	    $this->dosendMail($str_2,"arielwoo@scbridge.cn");
     	     	    $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
-    	     	    $this->dosendMail($str_2,"admin@scbridge.cn");
+    	     	    //$this->dosendMail($str_2,"admin@scbridge.cn");
 	                include $this->template("scbridge:success-cancel");
 	            }
 	        }
@@ -992,7 +999,7 @@ class ScbridgeModule extends WeModule {
 		//$mail->FromName   = "www.phpddt.com";
 		$to = $email;
 		$mail->AddAddress($to);
-		$mail->Subject  = "预订通知";
+		$mail->Subject  = "通知";
 		$mail->Body = $str;
 		$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; //当邮件不支持html时备用显示，可以省略
 		$mail->WordWrap   = 300; // 设置每行字符串的长度

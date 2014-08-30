@@ -81,10 +81,10 @@ class ScbridgeModule extends WeModule {
 		$str="min(price_vip) as pri,max(price_vip) as pr";
 		$ho=pe_fetchOneByField('hotel_room', $str, 'hotel_id', $h_id,'','');
 		$hotel['pr_min']=$ho['pri'];
-		$hotel['pr_max']=$ho['pr'];
+		$hotel['pr_max']=$ho['pr']; 
 		include $this->template('scbridge:header');
 		include $this->template('scbridge:hotel-reserve');
-		include $this->template('scbridge:footer');
+		include $this->template('scbridge:footer');  
 		
 	}
 	
@@ -916,14 +916,9 @@ class ScbridgeModule extends WeModule {
 	    	//现在先先判定时间是否过期
 	    	$sql ="select * from ims_hotel_booking where id = {$bookingId}";
 	        $bookingMsg = pdo_fetch($sql);
-	        if(strtotime($bookingMsg['lastupdate']) < (time()-(2*3600))){
-	            include $this->template("scbridge:failure-cancel");
-	            /* echo($bookingMsg['lastupdate']);
-	            echo("<br/>");
-	            echo(date("Y-m-d h:i:s",time()));
-	            echo("<br/>");
-	            echo((strtotime($bookingMsg['lastupdate']))- (time())); */
-	            
+	        
+	        if(strtotime($bookingMsg['lastupdate']) < (strtotime(date("y-m-d h:i:s"))-7200)){
+	            include $this->template("scbridge:failure-cancel");    
 	        }
 	        else {
 	        	//这里是取消动作执行

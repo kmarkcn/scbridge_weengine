@@ -17,6 +17,14 @@
     </div>
 {/if}
 <div class="main">
+	<div class="con">
+        <label for="kl">设置跳转到链接</label> &nbsp; &nbsp; &nbsp; 
+        <input type="text" id="kl" class="txt grid-2 alpha pin" style="width: 305px;" value="{$_GPC['keylink']}">
+        <div class="fr">
+            <a href="javascript:;" onclick="selectLink();">设置此链接</a>
+        </div>
+    </div>
+    <br>
     <div class="con">
         <label for="kw">按名称查找规则</label> &nbsp; &nbsp; &nbsp; 
         <input type="text" id="kw" class="txt grid-2 alpha pin" style="width: 305px;" value="{$_GPC['keyword']}">

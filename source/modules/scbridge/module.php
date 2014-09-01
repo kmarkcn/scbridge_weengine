@@ -603,22 +603,32 @@ class ScbridgeModule extends WeModule {
 		        }
 		        else
 		        {
-		            //先根据数据选出支付的钱和会员余额
-		            $sql ="select * from ims_customer where open_id = '{$open_id}'";
-		            $customerMsg = pdo_fetch($sql);
-		            //print_r($customerMsg);
-		            $balanceMoney = $customerMsg['account_balance'];
-		            $customerId = $customerMsg['id'];
-		            $roomMsg = pe_fetchOneByField("hotel_room","*","id",$roomId,"","");
-		            $days = ((strtotime($endDate)-strtotime($startDate))/(3600*24));
-		            $needMoney = $roomMsg['price_vip'] * $roomsNumber * $days;
-		            $mMoney = md5($needMoney);
-		            $_SESSION["sc_customer_need_money"] = $needMoney;
-		            $bMoney = md5($balanceMoney);
-		            $_SESSION["sc_customer_balance_money"] = $balanceMoney;
-		            $_SESSION["sc_customer_hotels_number"] =  $roomsNumber;
-		            $payThing = "room";
-		            include $this->template("scbridge:select-pay");
+		        	$timeNowHour = date("H",time());
+		        	$dateNow = date("Y-m-d",time());
+		        	if(($timeNowHour == "23") && ($dateNow == $startDate))
+		        	{
+		        		echo "<script>alert('今天太晚,只能预定明天的房间哟...');window.history.back(-1);</script>";
+		        		die();
+		        	}else
+		        	{
+		        		//先根据数据选出支付的钱和会员余额
+		        		$sql ="select * from ims_customer where open_id = '{$open_id}'";
+		        		$customerMsg = pdo_fetch($sql);
+		        		//print_r($customerMsg);
+		        		$balanceMoney = $customerMsg['account_balance'];
+		        		$customerId = $customerMsg['id'];
+		        		$roomMsg = pe_fetchOneByField("hotel_room","*","id",$roomId,"","");
+		        		$days = ((strtotime($endDate)-strtotime($startDate))/(3600*24));
+		        		$needMoney = $roomMsg['price_vip'] * $roomsNumber * $days;
+		        		$mMoney = md5($needMoney);
+		        		$_SESSION["sc_customer_need_money"] = $needMoney;
+		        		$bMoney = md5($balanceMoney);
+		        		$_SESSION["sc_customer_balance_money"] = $balanceMoney;
+		        		$_SESSION["sc_customer_hotels_number"] =  $roomsNumber;
+		        		$payThing = "room";
+		        		include $this->template("scbridge:select-pay"); 
+		        	}
+		           
 		        }
 		    }
 		}
@@ -635,12 +645,16 @@ class ScbridgeModule extends WeModule {
 		    {
                 if(strtotime($startDate)<(time()-3600*24) || strtotime($endDate)<(time()-3600*24) || strtotime($startDate) >= strtotime($endDate))
                 {
+                	
                 	echo "<script>alert('预订时间不正确');window.history.back(-1);</script>";
 		            die();
+		            
                 }
-                else
+              	 else
                 {
-                    //先根据数据选出支付的钱和会员余额
+                   
+                    
+                  //先根据数据选出支付的钱和会员余额
                     $sql ="select * from ims_customer where open_id = '{$open_id}'";
                     $customerMsg = pdo_fetch($sql);
                     $balanceMoney = $customerMsg['account_balance'];
@@ -654,7 +668,7 @@ class ScbridgeModule extends WeModule {
                     $_SESSION["sc_customer_balance_money"] = $balanceMoney;
                     $_SESSION["sc_customer_hotels_number"] =  $roomsNumber;
                     $payThing = "room";
-                    include $this->template("scbridge:select-pay");
+                    include $this->template("scbridge:select-pay"); 
                 }
 		    }
 		}else if($reserveType == "goodsRes")

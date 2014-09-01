@@ -1,0 +1,52 @@
+{template 'common/header'}
+	<link rel='stylesheet' type='text/css' href='./resource/scbridge/css/customer/display.css'>
+	<link rel='stylesheet' type='text/css' href='./resource/scbridge/css/detail.css'>
+
+
+	<!-- 表格插件 -->
+	<div id="main-column" class="container-12 clearfix member-center">
+		<div class="column2 grid-3 alpha omega">
+			{template 'booking/nav'}
+		</div>
+		<div class="column1 grid-10 alpha omega">
+		
+			<!--表格展示-->
+			<div class="row" id="table_1" style="padding:70px;">
+				<a style="font-size:14px;font-weight:bold;">订单详情</a>
+				<hr/>
+				<div style="padding-left:30px;">
+					<table style="width:450px;text-align:center;" id="mytable ">
+						<tr style="text-align:center;">
+							<td>姓名</td>
+							<td>{$goods['cus']}</td>
+						</tr>
+						<tr style="text-align:center;">
+							<td>电话</td>
+							<td>{$goods['tel']}</td>
+						</tr style="text-align:center;">
+						
+						<tr style="text-align:center;">
+							<td>商品</td>
+							<td>{$goods['name']}</td>
+						</tr>
+						<tr style="text-align:center;">
+							<td>数量</td>
+							<td>{$goods['goods_number']}</td>
+						</tr>
+						<tr style="text-align:center;">
+							<td>地址</td>
+							<td>{$goods['address']}</td>
+						</tr>
+					</table>
+				<a onclick="javascript:window.history.back(-1);">返回</a>
+				</div>
+						
+			</div>
+		</div>
+	</div>
+{template 'common/footer'}
+
+
+
+		
+

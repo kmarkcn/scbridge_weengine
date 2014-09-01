@@ -7,7 +7,7 @@
 require './source/bootstrap.inc.php';
 checklogin();
 checkaccount();
-$actions = array('display','delete');
+$actions = array('display','delete','detail','goods');
 $action = in_array($_GPC['act'], $actions) ? $_GPC['act'] : 'display';
 $controller = 'booking';
 $nav[$action] = ' class="current"';

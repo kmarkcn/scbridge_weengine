@@ -804,9 +804,9 @@ class ScbridgeModule extends WeModule {
 		               			$str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['hotel']."的".$data_arr['room'].",预定时间是";
 	                   			$str_2 .= $data_arr['start_date'] ."至".$data_arr['end_date'].",预定房间数".$data_arr['hotels_account']."间."."<br/>电话:".$data_arr['tel'];
 	                   			//$this->dosendMail($str_2,"admin@scbridge.cn");
-	                   			//$this->dosendMail($str_2,"leozheng@scbridge.cn");
-	                   			//$this->dosendMail($str_2,"arielwoo@scbridge.cn");
-	                   			//$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+	                   			$this->dosendMail($str_2,"leozheng@scbridge.cn");
+	                   			$this->dosendMail($str_2,"arielwoo@scbridge.cn");
+	                   			$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
 	                   			try{
 	                   				$this->dosendMail($str,$data_arr['email']);
 	                   				include $this->template("scbridge:success-reserve");
@@ -898,9 +898,9 @@ class ScbridgeModule extends WeModule {
     	     	         $str .= ".请您静静等候,我们尽快给您送到.<br/>如有问题，请致电13982054177";
     	     	         $str_2 = $data_arr['customer']."(先生/女士)已经预订".$data_arr['name'].",数量是".$data_arr['number'].",地点是".$data_arr['address'];
     	     	         $str_2 .= "<br/>电话:".$data_arr['tel'];
-    	     	         //$this->dosendMail($str_2,"leozheng@scbridge.cn");
-    	     	         //$this->dosendMail($str_2,"arielwoo@scbridge.cn");
-    	     	         //$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+    	     	         $this->dosendMail($str_2,"leozheng@scbridge.cn");
+    	     	         $this->dosendMail($str_2,"arielwoo@scbridge.cn");
+    	     	         $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
     	     	         try{
     	     	         	$this->dosendMail($str,$data_arr['email']);
     	     	         	include $this->template("scbridge:success-reserve");
@@ -990,9 +990,9 @@ class ScbridgeModule extends WeModule {
 	                $str .= "<br/>如有问题，请致电13982054177!";
 		            $str_2 = $data_arr['customer']."(先生/女士)已经取消".$data_arr['hotel']."的".$data_arr['room']."的预定";
 	                $str_2 .= ".预定时间是".$data_arr['start_date'] ."至".$data_arr['end_date']."<br/>电话:".$data_arr['tel'];
-	                //$this->dosendMail($str_2,"leozheng@scbridge.cn");
-	                //$this->dosendMail($str_2,"arielwoo@scbridge.cn");
-	                //$this->dosendMail($str_2,"cyndiliu@scbridge.cn");
+	                $this->dosendMail($str_2,"leozheng@scbridge.cn");
+	                $this->dosendMail($str_2,"arielwoo@scbridge.cn");
+	                $this->dosendMail($str_2,"cyndiliu@scbridge.cn");
 	                try{
 	                	$this->dosendMail($str,$data_arr['email']);
 	                	include $this->template("scbridge:success-cancel");

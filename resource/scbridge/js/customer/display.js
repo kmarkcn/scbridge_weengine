@@ -47,7 +47,7 @@ $(document).ready(function() {
 			/* END BASIC */
 	
 			/* Add the events etc before DataTables hides a column */
-			/*
+			
 			$("#datatable_fixed_column thead input").keyup(function() {
 				oTable.fnFilter(this.value, oTable.oApi._fnVisibleToColumnIndex(oTable.fnSettings(), $("thead input").index(this)));
 			});
@@ -77,7 +77,7 @@ $(document).ready(function() {
 				},
 				"bSortCellsTop" : true
 			});		
-			*/
+			
 	
 	
 			

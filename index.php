@@ -8,7 +8,7 @@ $action = $_GPC['act'];
 $action = in_array($action, $actions) ? $action : '';
 $controller = 'home';
 if (empty($action)) {
-	header('Location: '.create_url('menu/display'));
+	header('Location: '.create_url('hotel/display'));
 } else {
 	require router($controller, $action);
 }

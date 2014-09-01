@@ -7,7 +7,7 @@ global $_W;
 
 
 
-	$sql_1 = "SELECT * FROM " . tablename("hotel_booking");
+	$sql_1 = "SELECT * FROM ims_hotel_booking order by id desc";
     $hotels = pdo_fetchall($sql_1);
     foreach ($hotels  as $key =>$val)
     {
@@ -20,7 +20,7 @@ global $_W;
     	$hotels[$key]['hotel'] =$hotelMsgs['name'];
     }
 
-    $sql_2 = "SELECT * FROM " . tablename("goods_booking");
+    $sql_2 = "SELECT * FROM ims_goods_booking order by id desc";
     $goods = pdo_fetchall($sql_2);
     foreach ($goods  as $key =>$val)
     {

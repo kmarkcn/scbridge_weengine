@@ -23,11 +23,7 @@
 			{template 'booking/nav'}
 		</div>
 		<div class="column1 grid-10 alpha omega">
-		
-			<!--表格展示-->
-			<div class="row" id="table_1">
-					<div  id="wid-id-0" data-widget-editbutton="false" style='border-top:1px solid #ddd;width:95%;padding:40px 10px;margin:auto;margin-top:30px;'> 
-							<select name="bookingType1" id="bookingType1">
+			<select name="bookingType1" id="bookingType1" style="position:relative;top:40px;right:50px;">
 								<option value="0">	
 									酒店订单
 								</option>
@@ -46,25 +42,32 @@
 										}
 										else if(bookingtype==1)
 										{
-											$("#table_1").show();
+											$("#table_1").css("display","none");
 											$("#table_2").show();
 										}
 										
 										
 									})
 								})
-							</script>
-						<table id="dt_basic" style="font-size:7px;">
+							</script> 
+			<!--表格展示-->
+			<div class="row" >
+					<div  id="wid-id-0" data-widget-editbutton="false" style='width:95%;padding:40px 10px;margin:auto;margin-top:30px;'>
+						
+						<div id="table_1">
+									<table id="dt_basic" style="font-size:7px;" >
 					
 								<thead>
 									<tr>
 										<th>姓名</th>
 										<th>电话</th>
 										<th>酒店</th>
-										<th>数量</th>
+										<th>房间</th>
+										<!-- <th>数量</th>
 										<th>时间</th>
-										<!-- <th>价格(元)</th> <th>备注</th>-->
-										<th>备注</th>
+										<!-- <th>价格(元)</th> <th>备注</th>
+										<th>备注</th> -->
+										<th>查看</th>
 										<th>操作</th>
 									</tr>
 								</thead>
@@ -73,36 +76,45 @@
 										<tr style="text-align:center;">
 											<td>{$re['name']}</td>
 											<td>{$re['tel']}</td>
-											<td>{$re['hotel']}/{$re['room']}</td>
-											<td>{$re['hotels_account']}</td>
+											<td>{$re['hotel']}</td>
+											<td>{$re['room']}</td>
+											<!--<td>{$re['hotels_account']}</td>
 											<td>{$re['start_date']}至{$re['end_date']}</td>
-											<!-- <td>{$re['total_price']}</td> <td>{$re['remarks']}</td>-->
-											<td style="width:120px;font-size:6px;text-align:left;">{$re['remarks']}</td>
+											<!-- <td>{$re['total_price']}</td> <td>{$re['remarks']}</td>
+											<td style="width:120px;font-size:6px;text-align:left;">{$re['remarks']}</td> -->
+											<td>
+												<a  href="{php echo create_url('booking/detail', array('id' => $re['id']))}" >详情</a>
+											</td>
 											<td>
 												<a onclick="return confirm('删除用户将不可恢复，确认吗？');return false;" href="{php echo create_url('booking/delete', array('id' => $re['id'],'type'=>'hotel'))}" >删除</a>
-											</th>
+											</td>
 										</tr>
 									{/loop}
 								</tbody>
 							</table>
+						</div>
+						
+			</div>
 			</div>
 			
 			
 			
-			
 			<!--表格展示-->
-			<div class="row" id="table_2" style="display:none;">
-					<div  id="wid-id-0" data-widget-editbutton="false" style='border-top:1px solid #ddd;width:90%;padding:40px 10px;margin:auto;margin-top:30px;'> 
-							
-						<table id="dt_basic1" style="font-size:8px;">
-					
+			<div class="row"  >
+					<div  id="wid-id-0" data-widget-editbutton="false" style='width:95%;padding:40px 10px;margin:auto;margin-top:-80px;'> 
+						
+						<div id="table_2" style="display:none;">
+						<table id="dt_basic1" style="font-size:8px;" >
 								<thead>
 									<tr>
 										<th>姓名</th>
 										<th>电话</th>
 										<th>商品</th>
-										<th>数量</th>
-										<th>地址</th>
+										<!-- 
+											<th>数量</th>
+											<th>地址</th>
+										 -->
+										<th>查看</th>
 										<th>操作</th>
 									</tr>
 								</thead>
@@ -112,10 +124,13 @@
 											<td>{$re['cus']}</td>
 											<td>{$re['tel']}</td>
 											<td>{$re['name']}</td>
-											<td>{$re['goods_number']}</td>
-											
-											<td style="width:120px;font-size:6px;text-align:left;">{$re['address']}</td>
-											
+											<!-- 
+												<td>{$re['goods_number']}</td>
+												<td style="width:120px;font-size:6px;text-align:left;">{$re['address']}</td>
+											-->
+											<td>
+												<a  href="{php echo create_url('booking/goods', array('id' => $re['id']))}" >详情</a>
+											</td>
 											<td>
 												<a onclick="return confirm('删除用户将不可恢复，确认吗？');return false;" href="{php echo create_url('booking/delete', array('id' => $re['id'],'type'=>'goods'))}" >删除</a>
 											</th>
@@ -123,8 +138,14 @@
 									{/loop}
 								</tbody>
 							</table>
+							</div>
+				</div>
 			</div>
-	</div>
+			
+			
+			
+			</div>
+			</div>
 {template 'common/footer'}
 
 

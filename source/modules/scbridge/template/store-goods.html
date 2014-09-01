@@ -38,9 +38,9 @@
         <!--以上是头部-->
         <!--以下是中间内容-->
         <div class="sg-content">
-        	<div class="sg-goods">
+        	<div class="sg-goods" style=" overflow-x:hidden;">
             	<h1 class="sg-h1">{$good['name']}<p class="sg-p">单价&nbsp;: <span>{$good['price']}</span>&nbsp;&yen;</p></h1>
-                <div style='padding:5px;'>
+                <div style='padding:5px;text-align:center;'>
                 	{$good['detailed_intro']}
                 </div>
             </div>
@@ -62,8 +62,8 @@ $(function(){
 		var hei = $('body').height();
 	    var wid	= $('body').width();
 	    $(this).css({
-	    	'width': wid,
-	    	'height': hei
+	    	'width': "300",
+	    	'height': "240"
 	    });
 	})
 })

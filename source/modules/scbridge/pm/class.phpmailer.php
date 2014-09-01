@@ -87,7 +87,7 @@ class PHPMailer {
    * Sets the From name of the message.
    * @var string
    */
-  public $FromName          = '酒店通知';
+  public $FromName          = '通知';
 
   /**
    * Sets the Sender email (Return-Path) of the message.  If not empty,

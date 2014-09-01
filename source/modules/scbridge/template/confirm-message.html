@@ -18,7 +18,7 @@
 		<input type="hidden" name="customerName" value="{$customerName}">
 		<input type="hidden" name="customerTel" value="{$customerTel}">
 		<input type="hidden" name="remark" value="{$remark}">
-		<input type="submit" value="支付">
+		<input type="submit" value="支付" onclick="return confirm('信息核实正确,进入下一步？');return false;">
 	</form>
 </body>
 </html>

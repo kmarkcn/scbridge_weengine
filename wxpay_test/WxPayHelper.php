@@ -202,6 +202,17 @@ class WxPayHelper
 		}		
 
 	}
+	
+	//得到access_token函数
+	function notice_deliver_before(){
+		$str = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.APPID.'&secret='.APPSERCERT;
+		print_r(file_get_contents($str));
+	}
+	
+	//得到微信支付结果通知
+	function get_result_from_server(){
+		print_r($GLOBALS["HTTP_RAW_POST_DATA"]);
+	}
 
 }
 

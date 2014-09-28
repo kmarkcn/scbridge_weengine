@@ -450,34 +450,26 @@ class ScbridgeModule extends WeModule
         if (! empty($user_id)) {
             $sql = "select * from ims_customer where id = '{$user_id}'";
             $result = pdo_fetch($sql);
-            $reminder = '充值';
+            $reminder = '确定';
             //这里是添加支付内容
-            $commonUtil = new CommonUtil();
-            $wxPayHelper = new WxPayHelper();
-            $wxPayHelper->setParameter("bank_type", "WX");
-            $wxPayHelper->setParameter("body", "会员充值");
-            $wxPayHelper->setParameter("partner", "1220727201");
-            $wxPayHelper->setParameter("out_trade_no", $commonUtil->create_noncestr());
-            $wxPayHelper->setParameter("total_fee", "1000000");
-            $wxPayHelper->setParameter("fee_type", "1");
-            $wxPayHelper->setParameter("notify_url", "http://www.kmark.cn/we_scbridge/wxpay_test/notify.php");
-            $wxPayHelper->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);
-            $wxPayHelper->setParameter("input_charset", "GBK");
-            $str1 = $wxPayHelper->create_biz_package();
-			
             $img_url = $_SESSION['sc_user_info']->headimgurl;
             include $this->template('scbridge:member-pay');
         }
     }
     
+    public function dopayresult(){
+    	$this->dopaydo($_SESSION['sc_acc_number']);
+    }
+    
     // 充值动作执行
-    public function dopaydo()
+    public function dopaydo($acc_number)
     {
+    	global $_W, $_GPC;
+    	$acc_number = $acc_number;
     	$oppenid = $_SESSION['sc_user_oppenid'];
     	$sql = "select * from ims_customer where open_id = '{$oppenid}'";
     	$result = pdo_fetch($sql);
         $user_id = $result['id'];
-        $acc_number = 10000;
         $oppenid = $_SESSION['sc_user_oppenid'];
         // 还是先查出来数据
         $sql = "select * from ims_customer where id= '{$user_id}'";
@@ -518,9 +510,37 @@ class ScbridgeModule extends WeModule
             }
             $img_url = $_SESSION['sc_user_info']->headimgurl;
             // print_r($booking2);
-            include $this->template('scbridge:member_center');
+            include $this->template('scbridge:success-pay');
             include $this->template('scbridge:footer');
         }
+    }
+    
+    public function dopaytrue(){
+    	session_start();
+    	global $_W,$_GPC;
+    	$user_id = $_GPC['user_id'];
+    	if (! empty($user_id)) {
+    		$sql = "select * from ims_customer where id = '{$user_id}'";
+    		$result = pdo_fetch($sql);
+    		$img_url = $_SESSION['sc_user_info']->headimgurl;
+    		$acc_number = $_GPC['acc_number'] * 0.01;
+    		$_SESSION['sc_acc_number'] = $acc_number;
+    		$acc_new = $_GPC['acc_number'];
+    		$commonUtil = new CommonUtil();
+    		$wxPayHelper = new WxPayHelper();
+    		$wxPayHelper->setParameter("bank_type", "WX");
+    		$wxPayHelper->setParameter("body", "会员充值");
+    		$wxPayHelper->setParameter("partner", "1220727201");
+    		$wxPayHelper->setParameter("out_trade_no", $commonUtil->create_noncestr());
+    		$wxPayHelper->setParameter('total_fee', "{$acc_new}");
+    		$wxPayHelper->setParameter("fee_type", "1");
+    		$wxPayHelper->setParameter("notify_url", "http://www.kmark.cn/we_scbridge/wxpay_test/notify.php");
+    		$wxPayHelper->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);
+    		$wxPayHelper->setParameter("input_charset", "GBK");
+    		$str1 = $wxPayHelper->create_biz_package();
+    		include $this->template('scbridge:pay_true');
+    	}
+    	//include $this->template('scbridge:store-nav');
     }
     
     // 商城导航页面加载

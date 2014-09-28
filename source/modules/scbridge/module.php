@@ -458,7 +458,13 @@ class ScbridgeModule extends WeModule
     }
     
     public function dopayresult(){
-    	$this->dopaydo($_SESSION['sc_acc_number']);
+    	if(!empty($_GET['payway'])){
+    		if($_GET['payway']=='yue'){
+    			$this->dopaydo($_SESSION['sc_acc_number']);
+    		}else if($_GET['payway']=='weixin'){
+    			$this->dopaydo1();
+    		}
+    	}
     }
     
     // 充值动作执行
@@ -488,32 +494,216 @@ class ScbridgeModule extends WeModule
             $sql = "select * from ims_customer where open_id = '{$oppenid}'";
             $result = pdo_fetch($sql);
             
-            // 根据会员选择订单
-            $sql = "select * from ims_hotel_booking where customer_id = {$result['id']} order by id desc";
-            $booking1 = pdo_fetchall($sql);
-            foreach ($booking1 as $key => $val) {
-                $sql = " select * from ims_hotel_room where id = {$val['room_id']}";
-                $roomMsg = pdo_fetch($sql);
-                $booking1[$key]['name'] = $roomMsg['name'];
-                $booking1[$key]['img'] = $roomMsg['icon'];
-                $booking1[$key]['hotel'] = $roomMsg['hotel_id'];
-            }
-            $sql = "select * from ims_goods_booking where customer_id = {$result['id']}";
-            $booking2 = pdo_fetchall($sql);
-            foreach ($booking2 as $key => $val) {
-                $sql = " select * from ims_goods where id = {$val['goods_id']}";
-                $goodsMsg = pdo_fetch($sql);
-                $booking2[$key]['name'] = $goodsMsg['name'];
-                $booking2[$key]['img'] = $goodsMsg['icon'];
-                $booking2[$key]['goods'] = $goodsMsg['id'];
-                $booking2[$key]['dis'] = $goodsMsg['brief_intro'];
-            }
-            $img_url = $_SESSION['sc_user_info']->headimgurl;
             // print_r($booking2);
             include $this->template('scbridge:success-pay');
             include $this->template('scbridge:footer');
         }
     }
+    
+    
+    // 主要水写入预定数据库
+    public function dopaydo1()
+    {
+    	session_start();
+    	global $_W, $_GPC;
+    	$hotel_id = $_SESSION["hotelId"];
+    	$roomId = $_SESSION["roomId"];
+    	$startDate = $_SESSION["startDate"];
+    	$endDate = $_SESSION["endDate"];
+    	$customerName = $_SESSION['customerName'];
+    	$customerTel = $_SESSION["customerTel"];
+    	$needMoney = $_SESSION['needMoney'];
+    	$balanceMoney = $_SESSION['balanceMoney'];
+    	$customerId = $_SESSION['customerId'];
+    	$remark = $_SESSION['remark'];
+    	$payTh = $_SESSION["payThing"];
+    	$goods_id = $_SESSION["goods_id"];
+    	$goodsNumber = $_SESSION["sc_customer_goods_number"];
+    	$address = $_SESSION["address"];
+    	$roomsNumber = $_SESSION["sc_customer_hotels_number"];
+    	//修改订单表，还有进行发送邮件
+    	global $_W, $_GPC;
+    	$oppenid = $_SESSION['sc_user_oppenid'];
+    	$sql = "select * from ims_customer where open_id = '{$oppenid}'";
+    	$result = pdo_fetch($sql);
+    	$user_id = $result['id'];
+    	if ($payTh == 'room') {
+            // 判断金额是否正确
+            if (($needMoney == md5($_SESSION["sc_customer_need_money"])) && ($balanceMoney == md5($_SESSION["sc_customer_balance_money"]))) {
+                // 判断余额是否充足
+                if ($_SESSION["sc_customer_need_money"] <= $_SESSION["sc_customer_balance_money"]) {
+                    // 写入数据库
+                    $lastupdate = time();
+                    $lastupdate = date('y-m-d h:i:s', $lastupdate);
+                    $data = array(
+                        "customer_id" => $customerId,
+                        "room_id" => $roomId,
+                        "start_date" => $startDate,
+                        "end_date" => $endDate,
+                        "total_price" => $_SESSION["sc_customer_need_money"],
+                        "remarks" => $remark,
+                        "status" => "0",
+                        'lastupdate' => $lastupdate,
+                        "hotels_account" => $roomsNumber
+                    );
+                    if (pdo_insert('hotel_booking', $data)) {
+                        // 这里选出数据构造你发邮件所需要的数据
+                        // 根据房间id选出房间名字，酒店名字，预定时间，酒店地址，客户名字
+                        $booking_id = pdo_insertid();
+                        // 选出订单
+                        $sql = 'select * from ims_hotel_booking where id = ';
+                        $sql .= $booking_id;
+                        $result = pdo_fetch($sql);
+                        $data_arr = array(
+                            'start_date' => $result['start_date'],
+                            'end_date' => $result['end_date'],
+                            'hotels_account' => $result['hotels_account']
+                        );
+                        // 根据roomid 找房子
+                        $sql = "select * from ims_hotel_room where id = ";
+                        $sql .= $result['room_id'];
+                        $result = pdo_fetch($sql);
+                        $data_arr['room'] = $result['name'];
+                        $sql = "select * from ims_hotel where id = ";
+                        $sql .= $result['hotel_id'];
+                        $result = pdo_fetch($sql);
+                        $data_arr['hotel'] = $result['name'];
+                        $str_1 = $result['city'];
+                        $str_1 .= $result['region'];
+                        $str_1 .= $result['address'];
+                        $data_arr['address'] = $str_1;
+                        $oppenid = $_SESSION['sc_user_oppenid'];
+                        $sql = "select * from ims_customer where open_id = '{$oppenid}'";
+                        $result = pdo_fetch($sql);
+                        $data_arr['customer'] = $result['name'];
+                        $data_arr['email'] = $result['email'];
+                        $data_arr['tel'] = $result['mobile'];
+                        // print_r($data_arr);
+                        // 余额减少
+                        $acc_ag = $_SESSION["sc_customer_balance_money"] - $_SESSION["sc_customer_need_money"];
+                        $data = array(
+                            'account_balance' => $acc_ag,
+                            'status' => '1'
+                        );
+                        pdo_update('customer', $data, array(
+                            'id' => $customerId
+                        ));
+                        $str = "尊敬的" . $data_arr['customer'] . "(先生/女士)你好：<br/>&nbsp;&nbsp;&nbsp;&nbsp;你已经成功预定" . $data_arr['hotel'] . "的" . $data_arr['room'] . ",预定时间是";
+                        $str .= $data_arr['start_date'] . "至" . $data_arr['end_date'] . ",预定房间数" . $data_arr['hotels_account'] . "间" . ",地点" . $data_arr['address'];
+                        $str .= ".请您准时入住!<br/>&nbsp;&nbsp;&nbsp;&nbsp;如有问题，请致电13982054177!";
+                        $str_2 = $data_arr['customer'] . "(先生/女士)已经预订" . $data_arr['hotel'] . "的" . $data_arr['room'] . ",预定时间是";
+                        $str_2 .= $data_arr['start_date'] . "至" . $data_arr['end_date'] . ",预定房间数" . $data_arr['hotels_account'] . "间." . "<br/>电话:" . $data_arr['tel'];
+                        // $this->dosendMail($str_2,"admin@scbridge.cn");
+                        $this->dosendMail($str_2, "leozheng@scbridge.cn");
+                        $this->dosendMail($str_2, "arielwoo@scbridge.cn");
+                        $this->dosendMail($str_2, "cyndiliu@scbridge.cn");
+                        try {
+                            $this->dosendMail($str, $data_arr['email']);
+                            include $this->template("scbridge:success-reserve");
+                        } catch (phpmailerException $e) {
+                            echo "<script>alert('已经成功预定,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
+                            include $this->template("scbridge:success-reserve");
+                        }
+                    } else {
+                        include $this->template("scbridge:failure-pay");
+                    }
+                } else {
+                    include $this->template("scbridge:failure-money");
+                }
+            } else {
+                include $this->template("scbridge:failure-pay");
+            }
+        } else 
+            if ($payTh == "goods") {
+                // 这里是商品预订流程
+                // 判断金额是否正确
+                if (($needMoney == md5($_SESSION["sc_customer_need_money"])) && ($balanceMoney == md5($_SESSION["sc_customer_balance_money"]))) {
+                    // 判断余额是否充足
+                    if ($_SESSION["sc_customer_need_money"] <= $_SESSION["sc_customer_balance_money"]) {
+                        // 写入数据库
+                        $lastupdate = time();
+                        $lastupdate = date('y-m-d h:i:s', $lastupdate);
+                        $data = array(
+                            "customer_id" => $customerId,
+                            "goods_number" => $goodsNumber,
+                            "goods_id" => $goods_id,
+                            "total_price" => $_SESSION["sc_customer_need_money"],
+                            "status" => "0",
+                            "address" => $address,
+                            'lastupdate' => $lastupdate
+                        );
+                        if (pdo_insert('goods_booking', $data)) {
+                            //
+                            $booking_id = pdo_insertid();
+                            // 选出订单
+                            $sql = 'select * from ims_goods_booking where id = ';
+                            $sql .= $booking_id;
+                            $result = pdo_fetch($sql);
+                            $data_arr = array(
+                                'number' => $result['goods_number'],
+                                'address' => $result['address']
+                            );
+                            // 根据roomid 找房子
+                            $sql = "select * from ims_goods where id = ";
+                            $sql .= $result['goods_id'];
+                            $result = pdo_fetch($sql);
+                            $data_arr['name'] = $result['name'];
+                            $oppenid = $_SESSION['sc_user_oppenid'];
+                            $sql = "select * from ims_customer where open_id = '{$oppenid}'";
+                            $result = pdo_fetch($sql);
+                            $data_arr['customer'] = $result['name'];
+                            $data_arr['email'] = $result['email'];
+                            $data_arr['tel'] = $result['mobile'];
+                            // 余额减少
+                            $acc_ag = $_SESSION["sc_customer_balance_money"] - $_SESSION["sc_customer_need_money"];
+                            $data = array(
+                                'account_balance' => $acc_ag,
+                                'status' => '1'
+                            );
+                            pdo_update('customer', $data, array(
+                                'id' => $customerId
+                            ));
+                            // 减少库存数量
+                            $goodsMsg = pe_fetchOneByField("goods", "*", "id", $goods_id, "", "");
+                            $goodsNum = $goodsMsg['good_stock'] - $_SESSION["sc_customer_goods_number"];
+                            $data = array(
+                                'good_stock' => $goodsNum
+                            );
+                            pdo_update('goods', $data, array(
+                                'id' => $goods_id
+                            ));
+                            // 发送邮件
+                            $str = "尊敬的" . $data_arr['customer'] . "(先生/女士)你好：<br/>&nbsp;&nbsp;&nbsp;&nbsp;你已经成功购买";
+                            $str .= $data_arr['name'] . ".数量是" . $data_arr['number'] . ",你的地点是" . $data_arr['address'];
+                            $str .= ".请您静静等候,我们尽快给您送到.<br/>如有问题，请致电13982054177";
+                            $str_2 = $data_arr['customer'] . "(先生/女士)已经预订" . $data_arr['name'] . ",数量是" . $data_arr['number'] . ",地点是" . $data_arr['address'];
+                            $str_2 .= "<br/>电话:" . $data_arr['tel'];
+                            $this->dosendMail($str_2, "leozheng@scbridge.cn");
+                            $this->dosendMail($str_2, "arielwoo@scbridge.cn");
+                            $this->dosendMail($str_2, "cyndiliu@scbridge.cn");
+                            try {
+                                $this->dosendMail($str, $data_arr['email']);
+                                include $this->template("scbridge:success-reserve");
+                            } catch (phpmailerException $e) {
+                                echo "<script>alert('已经成功购买,请注意修改你的邮箱地址,我们无法给你发邮件')</script>";
+                                include $this->template("scbridge:success-reserve");
+                            }
+                        } else {
+                            include $this->template("scbridge:failure-pay");
+                        }
+                    } else {
+                        include $this->template("scbridge:failure-money");
+                    }
+                } else {
+                    include $this->template("scbridge:failure-pay");
+                }
+            }
+    	
+    	include $this->template('scbridge:success-reserve');
+    	include $this->template('scbridge:footer');
+    	
+    }
+    
     
     public function dopaytrue(){
     	session_start();
@@ -538,6 +728,7 @@ class ScbridgeModule extends WeModule
     		$wxPayHelper->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);
     		$wxPayHelper->setParameter("input_charset", "GBK");
     		$str1 = $wxPayHelper->create_biz_package();
+    		$act = 'yue';
     		include $this->template('scbridge:pay_true');
     	}
     	//include $this->template('scbridge:store-nav');
@@ -596,23 +787,65 @@ class ScbridgeModule extends WeModule
         }
     }
     
+    public function dopaytrue1(){
+    	global $_W,$_GPC;
+    	$oppenid = $_SESSION['sc_user_oppenid'];
+    	$sql = "select * from ims_customer where open_id = '{$oppenid}'";
+    	$result = pdo_fetch($sql);
+        $user_id = $result['id'];
+    	if (! empty($user_id)) {
+    		$sql = "select * from ims_customer where id = '{$user_id}'";
+    		$result = pdo_fetch($sql);
+    		$img_url = $_SESSION['sc_user_info']->headimgurl;
+    		$acc_number = $_SESSION['sc_acc_number'];
+    		$acc_new = $acc_number * 100;
+    		$commonUtil = new CommonUtil();
+    		$wxPayHelper = new WxPayHelper();
+    		$wxPayHelper->setParameter("bank_type", "WX");
+    		$wxPayHelper->setParameter("body", "会员支付");
+    		$wxPayHelper->setParameter("partner", "1220727201");
+    		$wxPayHelper->setParameter("out_trade_no", $commonUtil->create_noncestr());
+    		$wxPayHelper->setParameter('total_fee', "{$acc_new}");
+    		$wxPayHelper->setParameter("fee_type", "1");
+    		$wxPayHelper->setParameter("notify_url", "http://www.kmark.cn/we_scbridge/wxpay_test/notify.php");
+    		$wxPayHelper->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);
+    		$wxPayHelper->setParameter("input_charset", "GBK");
+    		$str1 = $wxPayHelper->create_biz_package();
+    		$act = 'weixin';
+    		include $this->template('scbridge:pay_true');
+    	}
+    }
+    
     // 酒店确定支付信息函数
     public function doreserveDo()
     {
-        global $_W, $_GPC;
+        session_start();
+    	global $_W, $_GPC;
         $open_id = $_SESSION['sc_user_oppenid'];
         $hotel_id = $_POST["hotelId"];
+        $_SESSION['hotel_id'] = $hotel_id;
         $roomId = $_POST["roomType"];
+        $_SESSION['roomId'] = $roomId;
         $startDate = $_POST["startDate"];
+        $_SESSION['startDate'] = $startDate;
         $endDate = $_POST["endDate"];
+        $_SESSION['endDate'] = $endDate;
         $customerName = $_POST['customerName'];
+        $_SESSION['customerName'] = $customerName;
         $customerTel = $_POST["customerTel"];
+        $_SESSION['customerTel'] = $customerTel;
         $remark = $_POST['remark'];
+        $_SESSION['remark'] = $remark;
         $reserveType = $_POST['reserveType'];
+        $_SESSION['reserveType'] = $reserveType;
         $goods_id = $_POST["goodsId"];
+        $_SESSION['goods_id'] = $goods_id;
         $goodsNumber = $_POST["goodsNumber"];
+        $_SESSION['goodsNumber'] = $goodsNumber;
         $address = $_POST["address"];
+        $_SESSION['address'] = $address;
         $roomsNumber = $_POST['roomsNumber'];
+        $_SESSION['roomsNumber'] = $roomsNumber;
         // $meetingName = $_POST['meetingName'];
         
         if ($reserveType == "normalRoom") {
@@ -640,6 +873,7 @@ class ScbridgeModule extends WeModule
                         $roomMsg = pe_fetchOneByField("hotel_room", "*", "id", $roomId, "", "");
                         $days = ((strtotime($endDate) - strtotime($startDate)) / (3600 * 24));
                         $needMoney = $roomMsg['price_vip'] * $roomsNumber * $days;
+                        $_SESSION['sc_acc_number'] = $needMoney;
                         $mMoney = md5($needMoney);
                         $_SESSION["sc_customer_need_money"] = $needMoney;
                         $bMoney = md5($balanceMoney);
@@ -672,6 +906,7 @@ class ScbridgeModule extends WeModule
                         $roomMsg = pe_fetchOneByField("hotel_room", "*", "id", $roomId, "", "");
                         $days = ((strtotime($endDate) - strtotime($startDate)) / (3600 * 24));
                         $needMoney = $roomMsg['price_vip'] * $roomsNumber * $days;
+                        $_SESSION['sc_acc_number'] = $needMoney;
                         $mMoney = md5($needMoney);
                         $_SESSION["sc_customer_need_money"] = $needMoney;
                         $bMoney = md5($balanceMoney);
@@ -699,6 +934,7 @@ class ScbridgeModule extends WeModule
                             $customerId = $customerMsg['id'];
                             $goodsMsg = pe_fetchOneByField("goods", "*", "id", $goods_id, "", "");
                             $needMoney = $goodsMsg['price'] * $goodsNumber;
+                            $_SESSION['sc_acc_number'] = $needMoney;
                             $mMoney = md5($needMoney);
                             $_SESSION["sc_customer_need_money"] = $needMoney;
                             $_SESSION["sc_customer_goods_number"] = $goodsNumber;

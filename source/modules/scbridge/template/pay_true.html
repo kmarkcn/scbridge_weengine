@@ -40,7 +40,7 @@
     	<div class="pay_c_head">
         	支付确认
         </div>
-        <p class="pay_c_p" style='line-height:20px;'>本次充值金额:<br/><span class="pay_c_red" >{$acc_number}</span>元,是否支付?</p>
+        <p class="pay_c_p" style='line-height:20px;'>本次交易金额:<br/><span class="pay_c_red" >{$acc_number}</span>元,是否支付?</p>
         <div class="pay_c_foot">
         	<div class="pay_c_btn_true pay_c_toggle" style='margin:auto;' onclick='callpay()'>支付</div>
         </div>
@@ -51,7 +51,7 @@ function callpay()
 {
 	WeixinJSBridge.invoke('getBrandWCPayRequest',<?php echo $str1; ?>,function(res){
 			if(res.err_msg=='get_brand_wcpay_request:ok'){
-				window.location="http://www.kmark.cn/we_scbridge/index.php?act=module&name=scbridge&do=payresult";
+				window.location="http://www.kmark.cn/we_scbridge/index.php?act=module&name=scbridge&do=payresult&payway={$act}";
 			}else{
 				alert('系统繁忙,支付失败!');
 				window.location="http://www.kmark.cn/we_scbridge/index.php?act=module&name=scbridge&do=member_center";

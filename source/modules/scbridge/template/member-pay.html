@@ -35,13 +35,13 @@
                     </tr>
                     <tr>
                     	<td class="mp-td-03" colspan="2">
-                        	<input class="mp-number" type="number" name='acc_number'> <span class="mp-span-01">万</span>
+                        	<input class="mp-number" type="number" name='acc_number' disabled='disabled' value='1'> <span class="mp-span-01">万</span>
                         </td>
                     </tr>
                     <tr>
                     	<td class="mp-td-03" colspan="2">
                     	<!-- id="submitBtn" type="submit" -->
-                        	<button onclick='javascript:callpay()' style='width:50%;height:35px;font-size:16px;color:#fff;background:#ff9c00;border:0px;border-radius:3px;margin-top:5px;'>{$reminder}{$test}</button> 	
+                        	<button onclick='callpay()' style='width:50%;height:35px;font-size:16px;color:#fff;background:#ff9c00;border:0px;border-radius:3px;margin-top:5px;'>{$reminder}</button> 	
                      </td>
                     </tr>
                 </table>
@@ -55,11 +55,19 @@
 <script>
 function callpay()
 {
-	
-	WeixinJSBridge.invoke('getBrandWCPayRequest',{$str},function(res){
-		WeixinJSBridge.log(res.err_msg);
-		alert(res.err_code+res.err_desc+res.err_msg);
-	}); 
+	WeixinJSBridge.invoke('getBrandWCPayRequest',<?php echo $str1; ?>,function(res){
+			//WeixinJSBridge.log(res.err_msg);
+			//get_brand_wcpay_requestk
+			//alert(res.err_msg);
+			if(res.err_msg=='get_brand_wcpay_request:ok'){
+				//调用发货通知接口
+				//window.location = "http://www.kmark.cn/we_scbridge/notify.php";
+				window.location="http://www.kmark.cn/we_scbridge/index.php?act=module&name=scbridge&do=paydo";
+			}else{
+				alert('系统繁忙,支付失败!');
+				window.location="http://www.kmark.cn/we_scbridge/index.php?act=module&name=scbridge&do=index";
+			}
+	});
 }
 </script>     
         

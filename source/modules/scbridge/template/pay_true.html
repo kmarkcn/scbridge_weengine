@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,user-scalable=no, initial-scale=1">
+<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
+<link href="./resource/scbridge/css/pay_true.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="./resource/scbridge/css/public.css" />
+
+<script type="text/javascript" src="./resource/scbridge/js/jquery.min.js"></script>
+<script type="text/javascript">
+ $(function(){
+
+	var top_height = ($('body').height() - $('.pay_content').height()) /2,
+		left_height = ($('body').width() - $('.pay_content').width()) / 2;
+	$('.pay_content').css({
+			'top': top_height,
+			'left': left_height
+	});
+	
+}) 
+
+</script>
+<title>支付确认</title>
+
+</head>
+
+<body>
+
+<!--以下是会员-公用头部-->
+        <div class="mp-head">
+        	<a href="member-center.html"><img class="mp-h-img" src="{$img_url}"></a>
+            <p class="mp-h-p">
+            	<span class="mp-name">{$result['name']}</span>
+                <span class="mp-h-div" style="line-height:120px;display: inline;">VIP会员</span>
+            </p>
+        </div>
+        <!--以下是会员-公用头部-->
+	<div class="pay_content">
+    	<div class="pay_c_head">
+        	支付确认
+        </div>
+        <p class="pay_c_p" style='line-height:20px;'>本次充值金额:<br/><span class="pay_c_red" >{$acc_number}</span>元,是否支付?</p>
+        <div class="pay_c_foot">
+        	<div class="pay_c_btn_true pay_c_toggle" style='margin:auto;' onclick='callpay()'>支付</div>
+        </div>
+    </div>
+
+<script>
+function callpay()
+{
+	WeixinJSBridge.invoke('getBrandWCPayRequest',<?php echo $str1; ?>,function(res){
+			if(res.err_msg=='get_brand_wcpay_request:ok'){
+				window.location="http://www.kmark.cn/we_scbridge/index.php?act=module&name=scbridge&do=payresult";
+			}else{
+				alert('系统繁忙,支付失败!');
+				window.location="http://www.kmark.cn/we_scbridge/index.php?act=module&name=scbridge&do=member_center";
+			}
+	}); 
+}
+</script> 
+</body>
+</html>
+    

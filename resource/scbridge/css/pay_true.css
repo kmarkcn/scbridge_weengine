@@ -1,0 +1,87 @@
+@charset "utf-8";
+/* CSS Document */
+@media screen and (max-width: 440px){
+	html{ font-size: 62.5%; /* 10/16=62.5% */}
+}
+@media screen and (min-width: 441px) and (max-width: 564px){
+	html{ font-size: 87.5%; /* 10/16=62.5% */}
+}
+@media screen and (min-width: 565px) and (max-width: 3000px){
+	html{ font-size: 112.5%; /* 10/16=62.5% */}
+}
+*{ 
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+html
+,body{
+	background-color: #f2f2f2;
+	height: 100%;
+	width: 100%;
+	overflow-x: hidden;
+}
+.pay_content{
+	position: absolute;
+	margin: 0;
+	min-width: 260px;
+	max-width: 768px;
+	background-color: white;
+	width: 90%;
+	box-shadow: inset 0 0 .5rem gray;
+	border-radius: 5%;
+}
+
+p,span,div{
+	font-family: "微软雅黑", "黑体", "宋体";
+}
+.pay_c_head
+,.pay_c_p
+,.pay_c_foot{
+	width: 100%;
+}
+.pay_c_head{
+    height: 4rem;
+	letter-spacing: .5rem;
+    text-align: center;
+    line-height: 4rem;
+    font-size: 2rem;
+    background-color:#ffad0e;
+    color: white;
+}
+.pay_c_p{
+	padding-top: 4rem;
+	line-height: 6rem;
+	font-size: 1.6rem;
+	text-align: center;
+	color: #666;
+	letter-spacing: .2rem;
+}
+.pay_c_red{
+	color: red;
+}
+.pay_c_foot{
+	height: 8rem;
+	padding: 2rem;
+}
+.pay_c_btn_true
+,.pay_c_btn_false{
+    padding: 0 1rem;
+    width: 40%;
+    height: 4rem;
+    line-height: 3.5rem;
+    text-align: center;
+    font-size: 2rem;
+    font-family: "微软雅黑", "黑体", "宋体";
+    letter-spacing: .5rem;
+    border: 2px solid #ccc;
+    background-color: #ffad0e;
+    color: white;
+    box-shadow: 0 0 .5rem #ccc;
+    cursor: pointer;
+}
+.pay_c_btn_false{ float: right;}
+
+
+
+

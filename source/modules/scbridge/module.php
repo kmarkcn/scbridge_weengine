@@ -503,40 +503,32 @@ class ScbridgeModule extends WeModule
     
     // 主要水写入预定数据库
     public function dopaydo1()
-    {
-    	session_start();
+    {	session_start();
     	global $_W, $_GPC;
-    	$hotel_id = $_SESSION["hotelId"];
+    	$hotel_id = $_SESSION["hotel_id"];
     	$roomId = $_SESSION["roomId"];
     	$startDate = $_SESSION["startDate"];
     	$endDate = $_SESSION["endDate"];
     	$customerName = $_SESSION['customerName'];
     	$customerTel = $_SESSION["customerTel"];
-    	$needMoney = $_SESSION['needMoney'];
-    	$balanceMoney = $_SESSION['balanceMoney'];
-    	$customerId = $_SESSION['customerId'];
     	$remark = $_SESSION['remark'];
-    	$payTh = $_SESSION["payThing"];
+    	$payTh = $_SESSION["reserveType"];
     	$goods_id = $_SESSION["goods_id"];
     	$goodsNumber = $_SESSION["sc_customer_goods_number"];
     	$address = $_SESSION["address"];
     	$roomsNumber = $_SESSION["sc_customer_hotels_number"];
     	//修改订单表，还有进行发送邮件
-    	global $_W, $_GPC;
     	$oppenid = $_SESSION['sc_user_oppenid'];
     	$sql = "select * from ims_customer where open_id = '{$oppenid}'";
     	$result = pdo_fetch($sql);
     	$user_id = $result['id'];
-    	if ($payTh == 'room') {
-            // 判断金额是否正确
-            if (($needMoney == md5($_SESSION["sc_customer_need_money"])) && ($balanceMoney == md5($_SESSION["sc_customer_balance_money"]))) {
-                // 判断余额是否充足
-                if ($_SESSION["sc_customer_need_money"] <= $_SESSION["sc_customer_balance_money"]) {
+    	if ($payTh == 'normalRoom' || $payTh == 'meetingRoom') {
+            	
                     // 写入数据库
                     $lastupdate = time();
                     $lastupdate = date('y-m-d h:i:s', $lastupdate);
                     $data = array(
-                        "customer_id" => $customerId,
+                        "customer_id" => $user_id,
                         "room_id" => $roomId,
                         "start_date" => $startDate,
                         "end_date" => $endDate,
@@ -580,14 +572,6 @@ class ScbridgeModule extends WeModule
                         $data_arr['tel'] = $result['mobile'];
                         // print_r($data_arr);
                         // 余额减少
-                        $acc_ag = $_SESSION["sc_customer_balance_money"] - $_SESSION["sc_customer_need_money"];
-                        $data = array(
-                            'account_balance' => $acc_ag,
-                            'status' => '1'
-                        );
-                        pdo_update('customer', $data, array(
-                            'id' => $customerId
-                        ));
                         $str = "尊敬的" . $data_arr['customer'] . "(先生/女士)你好：<br/>&nbsp;&nbsp;&nbsp;&nbsp;你已经成功预定" . $data_arr['hotel'] . "的" . $data_arr['room'] . ",预定时间是";
                         $str .= $data_arr['start_date'] . "至" . $data_arr['end_date'] . ",预定房间数" . $data_arr['hotels_account'] . "间" . ",地点" . $data_arr['address'];
                         $str .= ".请您准时入住!<br/>&nbsp;&nbsp;&nbsp;&nbsp;如有问题，请致电13982054177!";
@@ -607,24 +591,14 @@ class ScbridgeModule extends WeModule
                     } else {
                         include $this->template("scbridge:failure-pay");
                     }
-                } else {
-                    include $this->template("scbridge:failure-money");
-                }
-            } else {
-                include $this->template("scbridge:failure-pay");
-            }
         } else 
-            if ($payTh == "goods") {
+            if ($payTh == "goodsRes") {
                 // 这里是商品预订流程
                 // 判断金额是否正确
-                if (($needMoney == md5($_SESSION["sc_customer_need_money"])) && ($balanceMoney == md5($_SESSION["sc_customer_balance_money"]))) {
-                    // 判断余额是否充足
-                    if ($_SESSION["sc_customer_need_money"] <= $_SESSION["sc_customer_balance_money"]) {
-                        // 写入数据库
                         $lastupdate = time();
                         $lastupdate = date('y-m-d h:i:s', $lastupdate);
                         $data = array(
-                            "customer_id" => $customerId,
+                            "customer_id" => $user_id,
                             "goods_number" => $goodsNumber,
                             "goods_id" => $goods_id,
                             "total_price" => $_SESSION["sc_customer_need_money"],
@@ -655,14 +629,6 @@ class ScbridgeModule extends WeModule
                             $data_arr['email'] = $result['email'];
                             $data_arr['tel'] = $result['mobile'];
                             // 余额减少
-                            $acc_ag = $_SESSION["sc_customer_balance_money"] - $_SESSION["sc_customer_need_money"];
-                            $data = array(
-                                'account_balance' => $acc_ag,
-                                'status' => '1'
-                            );
-                            pdo_update('customer', $data, array(
-                                'id' => $customerId
-                            ));
                             // 减少库存数量
                             $goodsMsg = pe_fetchOneByField("goods", "*", "id", $goods_id, "", "");
                             $goodsNum = $goodsMsg['good_stock'] - $_SESSION["sc_customer_goods_number"];
@@ -691,17 +657,10 @@ class ScbridgeModule extends WeModule
                         } else {
                             include $this->template("scbridge:failure-pay");
                         }
-                    } else {
-                        include $this->template("scbridge:failure-money");
-                    }
-                } else {
-                    include $this->template("scbridge:failure-pay");
-                }
             }
-    	
     	include $this->template('scbridge:success-reserve');
-    	include $this->template('scbridge:footer');
-    	
+    	include $this->template('scbridge:footer'); 
+    	 
     }
     
     
@@ -713,9 +672,9 @@ class ScbridgeModule extends WeModule
     		$sql = "select * from ims_customer where id = '{$user_id}'";
     		$result = pdo_fetch($sql);
     		$img_url = $_SESSION['sc_user_info']->headimgurl;
-    		$acc_number = $_GPC['acc_number'] * 0.01;
+    		$acc_number = $_GPC['acc_number'] * 10000;
     		$_SESSION['sc_acc_number'] = $acc_number;
-    		$acc_new = $_GPC['acc_number'];
+    		$acc_new = $acc_number * 100;
     		$commonUtil = new CommonUtil();
     		$wxPayHelper = new WxPayHelper();
     		$wxPayHelper->setParameter("bank_type", "WX");
@@ -728,7 +687,7 @@ class ScbridgeModule extends WeModule
     		$wxPayHelper->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);
     		$wxPayHelper->setParameter("input_charset", "GBK");
     		$str1 = $wxPayHelper->create_biz_package();
-    		$act = 'yue';
+    		$payway = 'yue';
     		include $this->template('scbridge:pay_true');
     	}
     	//include $this->template('scbridge:store-nav');
@@ -811,7 +770,7 @@ class ScbridgeModule extends WeModule
     		$wxPayHelper->setParameter("spbill_create_ip", $_SERVER['REMOTE_ADDR']);
     		$wxPayHelper->setParameter("input_charset", "GBK");
     		$str1 = $wxPayHelper->create_biz_package();
-    		$act = 'weixin';
+    		$payway = 'weixin';
     		include $this->template('scbridge:pay_true');
     	}
     }

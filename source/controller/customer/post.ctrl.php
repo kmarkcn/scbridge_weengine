@@ -10,7 +10,10 @@ if (checksubmit('submit')) {
 	$lastupdate=time();
 	$lastupdate=date('y-m-d h:i:s',$lastupdate);
 	
-
+/* if($_GPC['account_balance']>0){
+	$_GPC['status'] = 1;
+} */
+	
 $data=array(
 		'name'=>$_GPC['name'],
 		'mobile'=>$_GPC['mobile'],
